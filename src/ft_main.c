@@ -71,15 +71,37 @@ int main() {
 }
 */
 #include <readline/readline.h>
+#include <readline/history.h>
+#include <stdlib.h>
+
+void new_line_handler() {
+    printf("New Line created\n");
+}
+
+
 int main(void)
 {
     char *line;
 
     printf("Dentro da main\n");
-    line = readline("minishell: ");
-    if (!line)
-        printf("readline retornou nulo\n");
-    else
-        printf("radline retornou um ponteiro\n");
+    while (1)
+    {
+        line = NULL;
+        line = readline("minishell: ");
+        if (!line)
+            printf("readline retornou nulo\n");
+        else
+        {
+            printf("radline retornou um ponteiro\n");
+            add_history(line);
+        }
+        printf("readline capturou: %s\n", line);
+//        rl_clear_history(); //limpa o histórico de comandos armazenados na memória. 
+//        rl_on_new_line = new_line_handler;
+//    (*rl_on_new_line)(void); //chama uma 
+        free(line);
+    }
+    line = NULL;
+//    exit(EXIT_SUCCESS);
     return (0);
 }
