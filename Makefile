@@ -14,7 +14,7 @@ COMP		= cc
 all:	$(NAME)
 
 $(NAME):	$(LB) $(LOCLHEADER)/ft_$(NAME).h
-	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline
+	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline -ltinfo
 
 $(LB):	$(LOCLIBFT)/libft.a $(OBJS) $(LOCLHEADER)/ft_$(NAME).h
 	cp $(LOCLIBFT)/libft.a $(LB)

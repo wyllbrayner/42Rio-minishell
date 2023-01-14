@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,97 +11,91 @@
 /* ************************************************************************** */
 
 #include "../header/ft_minishell.h"
-#include <unistd.h>
-/*
-int	main(void)
+
+void ft_free_minishell(t_minishell *sh, int status)
 {
-    char *term;
-	printf("Dentro da main\n");
+    long i;
 
-    term = ttyname(0);
-    printf("This is terminal %s\n",term);
-	return (0);
-}
-*/
-/*
-#include <stdio.h>
-#include <unistd.h>
-
-int main() {
-    char *pathname = "file.txt";
-    if (access(pathname, F_OK) == 0) {
-        printf("File exists\n");
-    } else {
-        printf("File does not exist\n");
+    i = 0;
+    if (status == 0)
+    {
+        free(sh->line);
+        sh->line = NULL;
     }
-    if (access(pathname, R_OK) == 0) {
-        printf("File is readable\n");
-    } else {
-        printf("File is not readable\n");
-    }
-    if (access(pathname, W_OK) == 0) {
-        printf("File is writable\n");
-    } else {
-        printf("File is not writable\n");
+    if (status == 1)
+    {
+        while (i < sh->parse_len)
+        {
+            free(sh->parse_str[i]);
+            sh->parse_str[i++] = NULL;
+        }
+        free(sh->parse_str);
+        sh->parse_str = NULL;
     }
 }
-*/
 
-/*
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <dirent.h>
-int main() {
-    char *cwd;
-    char buff[1024];
+void ft_parse(t_minishell *sh) // sei que será necessário separar a string recebida para análise futura.
+{
+    long    i; // criei um contador para também retornar a quantidade de parametros recebida.
 
-    cwd = getcwd(buff, 1024 + 1);
-    if (cwd != NULL) {
-        printf("Current working dir: %s\n", cwd);
-    } else {
-        perror("getcwd() error");
+    sh->parse_str = ft_split(sh->line, ' ');
+    sh->parse_len = -1;
+    if (*sh->parse_str != NULL)
+    {
+        i = 0;
+        while (sh->parse_str[i])
+            i++;
+        sh->parse_len = i;
     }
-    char *dir = "/Users/woliveir/Desktop/";
-    opendir(dir);
-    #include <sys/types.h>
-    printf("slot do tty atual %i\n",ttyslot());
-    return 0;
-}
-*/
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-
-void new_line_handler() {
-    printf("New Line created\n");
 }
 
+void ft_minishell(void)
+{
+    t_minishell sh;
+    int         count;  // só para simular uma forma de saída temporária
+
+    sh.running = TRUE;
+    sh.line = NULL;
+    count = 0;  // só para simular uma forma de saída temporária
+    while (sh.running)
+    {
+        sh.line = readline("minishell: ");
+        if (!sh.line)
+        {
+            printf("readline retornou nulo e o programa será encerrado!\n");
+            sh.running = FALSE;
+        }
+        else
+        {
+            printf("radline retornou um ponteiro contendo %s\n", sh.line);
+//            add_history(sh.line);
+            ft_parse(&sh);
+            if (sh.parse_len == -1)
+            {
+                printf("split retornou error e o programa será encerrado agora!\n");
+                sh.running = FALSE;
+            }
+            else
+            { //testando o retorno da split. Podemos usar essa parte para dar sequencia no programa.
+                long i = 0;
+                while(i < sh.parse_len)
+                {
+                    printf("comando %li recebido da split: %s\n", i, sh.parse_str[i]);
+                    i++;
+                }
+                ft_free_minishell(&sh, 1);
+            }
+            ft_free_minishell(&sh, 0);
+        }
+        count++;  // só para simular uma forma de saída temporária
+        if (count == 3) // só para simular uma forma de saída temporária
+            sh.running = FALSE;
+    }
+    exit(EXIT_SUCCESS); //mesmo com isto está dando still reachable: 208,329 bytes in 231 blocks no valgrind.
+}
 
 int main(void)
 {
-    char *line;
-
-    printf("Dentro da main\n");
-    while (1)
-    {
-        line = NULL;
-        line = readline("minishell: ");
-        if (!line)
-            printf("readline retornou nulo\n");
-        else
-        {
-            printf("radline retornou um ponteiro\n");
-            add_history(line);
-        }
-        printf("readline capturou: %s\n", line);
-//        rl_clear_history(); //limpa o histórico de comandos armazenados na memória. 
-//        rl_on_new_line = new_line_handler;
-//    (*rl_on_new_line)(void); //chama uma 
-        free(line);
-    }
-    line = NULL;
-//    exit(EXIT_SUCCESS);
+    ft_minishell();
     return (0);
 }

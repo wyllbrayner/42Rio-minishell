@@ -13,9 +13,24 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../libft/libft.h"
 # include <stdio.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+
+# define TRUE 1
+# define FALSE 0;
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
+
+typedef struct  ft_minishell
+{
+    int     running;
+    char    *line;
+    char    **parse_str;
+    long    parse_len;
+}               t_minishell;
 
 #endif
