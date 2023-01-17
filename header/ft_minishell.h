@@ -28,10 +28,15 @@ typedef struct  ft_minishell
     int     ret;
     long    parse_len;
     char    *path;
+    char    **path2;
     char    *pwd;
     char    *line;
     char    **env;
     char    **parse_str;
 }               t_minishell;
+
+void	start_command(t_minishell *sh, int *rato);
+char	*access_command(char *cmd, char **str);
+int     ft_print(void);
 
 #endif

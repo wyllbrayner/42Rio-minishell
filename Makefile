@@ -1,7 +1,7 @@
 LB			= lib$(NAME).a
 LOCLIBFT	= ./libft
 LOCLHEADER	= ./header
-SRCS		= $(wildcard src/ft_*.c)
+SRCS		= $(wildcard src/ft_*.c) $(wildcard src/builtins/ft_*.c)
 OBJS		= $(SRCS:.c=.o)
 NAME		= minishell
 UTIL		= ar
@@ -14,7 +14,8 @@ COMP		= cc
 all:	$(NAME)
 
 $(NAME):	$(LB) $(LOCLHEADER)/ft_$(NAME).h
-	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline -ltinfo
+	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline
+##	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline -ltinfo
 
 $(LB):	$(LOCLIBFT)/libft.a $(OBJS) $(LOCLHEADER)/ft_$(NAME).h
 	cp $(LOCLIBFT)/libft.a $(LB)
