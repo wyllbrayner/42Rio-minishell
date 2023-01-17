@@ -12,31 +12,40 @@
 
 #include "../header/ft_minishell.h"
 
+void ft_free_minishell_aux(char *str)
+{
+    if (str)
+        free(str);
+    str = NULL;
+}
+
 void ft_free_minishell(t_minishell *sh, int status)
 {
     long i;
 
     i = 0;
     if (status == 0)
-    {
-        free(sh->line);
-        sh->line = NULL;
-    }
+        ft_free_minishell_aux(sh->line);
     if (status == 1)
     {
         while (i < sh->parse_len)
         {
-            free(sh->parse_str[i]);
-            sh->parse_str[i++] = NULL;
+            ft_free_minishell_aux(sh->parse_str[i]);
+            i++;
         }
         free(sh->parse_str);
         sh->parse_str = NULL;
     }
+    if (status == 2)
+    {
+        ft_free_minishell_aux(sh->path);
+        ft_free_minishell_aux(sh->pwd);
+    }
 }
 
-void ft_parse(t_minishell *sh) // sei que será necessário separar a string recebida para análise futura.
+void ft_parse(t_minishell *sh)
 {
-    long    i; // criei um contador para também retornar a quantidade de parametros recebida.
+    long    i;
 
     sh->parse_str = ft_split(sh->line, ' ');
     sh->parse_len = -1;
@@ -49,53 +58,90 @@ void ft_parse(t_minishell *sh) // sei que será necessário separar a string rec
     }
 }
 
-void ft_minishell(void)
+void    ft_minishell_error(t_minishell *sh)
+{
+    if (sh->ret == -1)
+        printf("Erro ao carregar a estrutura. O programa será encerrado agora!\n");
+    if (sh->ret == -2)
+        printf("readline retornou nulo e o programa será encerrado agora!\n");
+    else if (sh->ret == -3)
+        printf("split retornou error e o programa será encerrado agora!\n");  
+}
+
+void    ft_init_var(t_minishell *sh)
+{
+    int i;
+
+    i = 0;
+    sh->running = TRUE;
+    sh->ret = 0;
+    sh->parse_len = 0;
+    sh->path = NULL;
+    sh->pwd = NULL;
+    sh->line = NULL;
+    sh->parse_str = NULL;
+    while (sh->env[i] && (sh->ret == 0))
+    {
+        if (ft_strncmp(sh->env[i], "PWD", 3) == 0)
+        {
+            sh->pwd = ft_strdup((sh->env[i]+4));
+            if (!sh->pwd)
+                sh->ret = -1;
+        }
+        else if (ft_strncmp(sh->env[i], "PATH", 4) == 0)
+        {
+            sh->path = ft_strdup((sh->env[i]+5));
+            if (!sh->path)
+                sh->ret = -1;
+        }
+        i++;
+    }
+    if (sh->ret < 0)
+        sh->running = FALSE;
+}
+
+void ft_minishell(char **envp)
 {
     t_minishell sh;
-    int         count;  // só para simular uma forma de saída temporária
 
-    sh.running = TRUE;
-    sh.line = NULL;
-    count = 0;  // só para simular uma forma de saída temporária
-    while (sh.running)
+    sh.env = envp;
+    ft_init_var(&sh);
+    while (sh.running && (sh.ret == 0))
     {
-        sh.line = readline("minishell: ");
+        sh.line = readline("(Minishell - 42Rio): ");
         if (!sh.line)
-        {
-            printf("readline retornou nulo e o programa será encerrado!\n");
-            sh.running = FALSE;
-        }
+            sh.ret = -2;
         else
         {
-            printf("radline retornou um ponteiro contendo %s\n", sh.line);
-//            add_history(sh.line);
+            add_history(sh.line);
             ft_parse(&sh);
             if (sh.parse_len == -1)
-            {
-                printf("split retornou error e o programa será encerrado agora!\n");
-                sh.running = FALSE;
-            }
+                sh.ret = -3;
             else
-            { //testando o retorno da split. Podemos usar essa parte para dar sequencia no programa.
+            {
                 long i = 0;
                 while(i < sh.parse_len)
                 {
                     printf("comando %li recebido da split: %s\n", i, sh.parse_str[i]);
+                    if ((ft_strncmp(sh.parse_str[i], "exit", 4) == 0) && (!sh.parse_str[i][4]))
+                        sh.running = FALSE;
                     i++;
                 }
                 ft_free_minishell(&sh, 1);
             }
             ft_free_minishell(&sh, 0);
         }
-        count++;  // só para simular uma forma de saída temporária
-        if (count == 3) // só para simular uma forma de saída temporária
-            sh.running = FALSE;
     }
-    exit(EXIT_SUCCESS); //mesmo com isto está dando still reachable: 208,329 bytes in 231 blocks no valgrind.
+    if (sh.ret < 0)
+        ft_minishell_error(&sh);
+    ft_free_minishell(&sh, 2);
+    rl_clear_history();
 }
 
-int main(void)
+int main(int argc, char **argv, char **envp)
 {
-    ft_minishell();
+    (void)argc;
+    (void)argv;
+    ft_minishell(envp);
     return (0);
 }

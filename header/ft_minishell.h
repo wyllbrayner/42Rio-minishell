@@ -22,15 +22,16 @@
 # define TRUE 1
 # define FALSE 0;
 
-# define INT_MAX 2147483647
-# define INT_MIN -2147483648
-
 typedef struct  ft_minishell
 {
     int     running;
-    char    *line;
-    char    **parse_str;
+    int     ret;
     long    parse_len;
+    char    *path;
+    char    *pwd;
+    char    *line;
+    char    **env;
+    char    **parse_str;
 }               t_minishell;
 
 #endif
