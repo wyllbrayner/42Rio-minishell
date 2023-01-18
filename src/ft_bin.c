@@ -23,6 +23,7 @@ char	*access_command(char *cmd, char **str)
 		free(tmp);
 		if (access(com, X_OK | F_OK) == 0)
 		{
+			printf("dentro da access_command | cmd: %s\n", com);
 			return (com);
 		}
 		free(com);
@@ -39,17 +40,19 @@ void	start_command(t_minishell *sh, int *rato)
 	tmp = access_command(sh->parse_str[0], sh->path);
 	if (!tmp)
 	{
-		printf("Command not found\n");
+		sh->ret = -4;
+		ft_minishell_error(sh, sh->parse_str[0]);
 	}
 	else
 	{
 		*rato = fork();
 		if (*rato == 0)
 		{
-			printf("Startou filho\n");
+//			printf("Startou filho\n");
+			printf("tmp: %s | sh->parse_str[0]: %s\n", tmp, sh->parse_str[0]);
 			execve(tmp, &sh->parse_str[0], NULL);
 		}
-		printf("pai continuou\n");
+//		printf("pai continuou\n");
 		// waitpid(pid, NULL, 0);
 	}
 	free(tmp);

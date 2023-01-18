@@ -12,66 +12,6 @@
 
 #include "../header/ft_minishell.h"
 
-void ft_free_minishell_single_aux(char *str)
-{
-    if (str)
-        free(str);
-    str = NULL;
-}
-
-void ft_free_minishell_double_aux(char **str_double)
-{
-    long    i;
-
-    i = 0;
-    if (str_double)
-    {
-        while (str_double[i])
-        {
-            ft_free_minishell_single_aux(str_double[i]);
-            i++;
-        }
-        free(str_double);
-        str_double = NULL;
-    }
-}
-
-void ft_free_minishell(t_minishell *sh, int status)
-{
-    long i;
-
-    if (status == 1)
-    {
-        ft_free_minishell_double_aux(sh->parse_str);
-        ft_free_minishell_single_aux(sh->line);
-    }
-    if (status == 2)
-    {
-        ft_free_minishell_double_aux(sh->path);
-        ft_free_minishell_single_aux(sh->pwd);
-    }
-}
-
-char *ft_join_path(char const *path, char const *cmd)
-{
-    char *tmp1;
-    char *tmp2;
-
-    tmp1 = NULL;
-    tmp2 = NULL;
-    tmp1 = ft_strjoin(path, "/");
-    if (!tmp1)
-        return (NULL);
-    tmp2 = ft_strjoin(tmp1, cmd);
-    if (!tmp2)
-    {
-        ft_free_minishell_single_aux(tmp1);
-        return (NULL);
-    }
-//    printf("tmp2: %s", tmp2);
-    return(tmp2);
-}
-
 void    ft_parse_comand_is_valid(t_minishell *sh)
 {
     long    i;
@@ -88,9 +28,7 @@ void    ft_parse_comand_is_valid(t_minishell *sh)
 
 // int access(const char *pathname, int mode);
 // F_OK, R_OK, W_OK, X_OK
-
 }
-
 
 void ft_parse(t_minishell *sh)
 {
@@ -98,14 +36,17 @@ void ft_parse(t_minishell *sh)
 //    ft_parse_comand_is_valid(sh);
 }
 
-void    ft_minishell_error(t_minishell *sh)
+void    ft_minishell_error(t_minishell *sh, char *str)
 {
     if (sh->ret == -1)
         printf("Erro ao carregar a estrutura. O programa será encerrado agora!\n");
     else if (sh->ret == -2)
         printf("readline retornou nulo e o programa será encerrado agora!\n");
     else if (sh->ret == -3)
-        printf("split retornou error e o programa será encerrado agora!\n");  
+        printf("split retornou error e o programa será encerrado agora!\n");
+    else if (sh->ret == -4)
+        printf("(Minishell): %s: command not found\n", str);
+    sh->ret = 0;
 }
 
 void    ft_init_var(t_minishell *sh)
@@ -139,6 +80,35 @@ void    ft_init_var(t_minishell *sh)
         sh->running = FALSE;
 }
 
+void    ft_select_way(t_minishell *sh)
+{
+    if ((ft_strncmp(sh->parse_str[0], "echo", 4) == 0) && (!sh->parse_str[0][4]))
+        printf("Chamar a função builtin echo\n");
+    else if ((ft_strncmp(sh->parse_str[0], "pwd", 3) == 0) && (!sh->parse_str[0][3]))
+        printf("Chamar a função builtin pwd\n");
+    else if ((ft_strncmp(sh->parse_str[0], "env", 3) == 0) && (!sh->parse_str[0][3]))
+        printf("Chamar a função builtin env\n");
+    else if ((ft_strncmp(sh->parse_str[0], "cd", 2) == 0) && (!sh->parse_str[0][2]))
+        printf("Chamar a função builtin cd\n");
+    else if ((ft_strncmp(sh->parse_str[0], "export", 6) == 0) && (!sh->parse_str[0][6]))
+        printf("Chamar a função builtin export\n");
+    else if ((ft_strncmp(sh->parse_str[0], "unset", 5) == 0) && (!sh->parse_str[0][5]))
+        printf("Chamar a função builtin unset\n");
+    else if ((ft_strncmp(sh->parse_str[0], "bash", 4) == 0) && (!sh->parse_str[0][4]))
+        printf("Chamar a função builtin bash\n");
+    else if (ft_strncmp(sh->parse_str[0], "exit", 4) == 0)
+        ft_builtin_exit(sh, 0);
+    else
+    {
+    /// JONATAS sugiro colocar sua função a partir daqui!!!
+        int rato;
+        rato = 0;
+        start_command(sh, &rato);
+        wait(NULL);
+//        waitpid(rato, NULL, 0);
+    }
+}
+
 void ft_minishell(char **envp)
 {
     t_minishell sh;
@@ -159,30 +129,23 @@ void ft_minishell(char **envp)
             else
             {
 /*
-                /// JONATAS sugiro colocar sua função a partir daqui!!!
-                int rato;
-                rato = 0;
-                start_command(&sh, &rato);
-//                wait(NULL);
-                waitpid(rato, NULL, 0);
-*/
                 long i = 0;
-                while(sh.parse_str[i])
+                while(sh.parse_str[i] && sh.running)
                 {
                     printf("comando %li recebido da split: %s\n", i, sh.parse_str[i]);
-                    if ((ft_strncmp(sh.parse_str[i], "exit", 4) == 0) && (!sh.parse_str[i][4]))
-                        sh.running = FALSE;
                     i++;
                 }
+*/
+                ft_select_way(&sh);
             }
             ft_free_minishell(&sh, 1);
         }
     }
     if (sh.ret < 0)
-        ft_minishell_error(&sh);
+        ft_minishell_error(&sh, NULL);
     ft_free_minishell(&sh, 2);
 //    rl_clear_history();
-//    clear_history();
+    clear_history();
 }
 
 int main(int argc, char **argv, char **envp)

@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
-# include <readline/history.h>
+//# include <readline/history.h>
 
 # define TRUE 1
 # define FALSE 0;
@@ -32,11 +32,17 @@ typedef struct  ft_minishell
     char    *line;
     char    **env;
     char    **parse_str;
-}               t_minishell;
+}           t_minishell;
 
 void	start_command(t_minishell *sh, int *rato);
 char	*access_command(char *cmd, char **str);
 
+void    ft_builtin_exit(t_minishell *sh, long i);
+
+void    ft_minishell_error(t_minishell *sh, char *str);
+
+void    ft_free_minishell_single_aux(char *str);
+void    ft_free_minishell(t_minishell *sh, int status);
 
 int     ft_print(void);
 
