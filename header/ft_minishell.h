@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -26,9 +27,7 @@ typedef struct  ft_minishell
 {
     int     running;
     int     ret;
-    long    parse_len;
-    char    *path;
-    char    **path2;
+    char    **path;
     char    *pwd;
     char    *line;
     char    **env;
@@ -37,6 +36,8 @@ typedef struct  ft_minishell
 
 void	start_command(t_minishell *sh, int *rato);
 char	*access_command(char *cmd, char **str);
+
+
 int     ft_print(void);
 
 #endif

@@ -33,11 +33,35 @@ char	*access_command(char *cmd, char **str)
 
 void	start_command(t_minishell *sh, int *rato)
 {
+	//int	pid;
+	char 	*tmp;
+	
+	tmp = access_command(sh->parse_str[0], sh->path);
+	if (!tmp)
+	{
+		printf("Command not found\n");
+	}
+	else
+	{
+		*rato = fork();
+		if (*rato == 0)
+		{
+			printf("Startou filho\n");
+			execve(tmp, &sh->parse_str[0], NULL);
+		}
+		printf("pai continuou\n");
+		// waitpid(pid, NULL, 0);
+	}
+	free(tmp);
+}
+/*
+void	start_command(t_minishell *sh, int *rato)
+{
 	// int	pid;
 	char 	*tmp;
 	char	*i;
 	
-	tmp = access_command(sh->parse_str[0], sh->path2);
+	tmp = access_command(sh->parse_str[0], sh->path);
 	i = tmp;
 	free(tmp);
 	tmp = i;
@@ -57,3 +81,4 @@ void	start_command(t_minishell *sh, int *rato)
 		// waitpid(pid, NULL, 0);
 	}	
 }
+*/
