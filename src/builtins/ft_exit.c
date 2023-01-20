@@ -14,13 +14,6 @@
 
 void ft_builtin_exit(t_minishell *sh, long i)
 {
-    if (!sh->parse_str[i][4])
-    {
-        sh->running = FALSE;
-    }
-    else
-    {
-        sh->ret = -4;
-        ft_minishell_error(sh, sh->parse_str[i]);
-    }
+    (void)i;
+    sh->running = FALSE;
 }

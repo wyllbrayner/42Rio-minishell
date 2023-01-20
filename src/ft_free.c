@@ -46,27 +46,8 @@ void ft_free_minishell(t_minishell *sh, int status)
     if (status == 2)
     {
         ft_free_minishell_double_aux(sh->path);
-        ft_free_minishell_single_aux(sh->pwd);
+        ft_free_minishell_double_aux(sh->env);
+
+//        ft_free_minishell_single_aux(sh->pwd);
     }
 }
-
-/*
-char *ft_join_path(char const *path, char const *cmd)
-{
-    char *tmp1;
-    char *tmp2;
-
-    tmp1 = NULL;
-    tmp2 = NULL;
-    tmp1 = ft_strjoin(path, "/");
-    if (!tmp1)
-        return (NULL);
-    tmp2 = ft_strjoin(tmp1, cmd);
-    if (!tmp2)
-    {
-        ft_free_minishell_single_aux(tmp1);
-        return (NULL);
-    }
-    return(tmp2);
-}
-*/

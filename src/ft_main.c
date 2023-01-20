@@ -12,30 +12,6 @@
 
 #include "../header/ft_minishell.h"
 
-void    ft_parse_comand_is_valid(t_minishell *sh)
-{
-    long    i;
-
-    i = 0;
-    while (sh->parse_str[i])
-    {
-        if ((ft_strncmp(sh->parse_str[i], "|", 1) == 0) || (ft_strncmp(sh->parse_str[i], "<", 1) == 0) || (ft_strncmp(sh->parse_str[i], "<<", 2) == 0) || (ft_strncmp(sh->parse_str[i], ">", 1) == 0) || (ft_strncmp(sh->parse_str[i], ">>", 2) == 0))
-            printf("%s     é um PIPE ou > ou <\n", sh->parse_str[i]);
-        else
-            printf("%s não é um PIPE ou > ou <\n", sh->parse_str[i]);
-        i++;        
-    }
-
-// int access(const char *pathname, int mode);
-// F_OK, R_OK, W_OK, X_OK
-}
-
-void ft_parse(t_minishell *sh)
-{
-    sh->parse_str = ft_split(sh->line, ' ');
-//    ft_parse_comand_is_valid(sh);
-}
-
 void    ft_minishell_error(t_minishell *sh, char *str)
 {
     if (sh->ret == -1)
@@ -49,54 +25,23 @@ void    ft_minishell_error(t_minishell *sh, char *str)
     sh->ret = 0;
 }
 
-void    ft_init_var(t_minishell *sh)
-{
-    long i;
-
-    i = 0;
-    sh->running = TRUE;
-    sh->ret = 0;
-    sh->path = NULL;
-    sh->pwd = NULL;
-    sh->line = NULL;
-    sh->parse_str = NULL;
-    while (sh->env[i] && (sh->ret == 0))
-    {
-        if (ft_strncmp(sh->env[i], "PWD", 3) == 0)
-        {
-            sh->pwd = ft_strdup((sh->env[i]+4));
-            if (!sh->pwd)
-                sh->ret = -1;
-        }
-        else if (ft_strncmp(sh->env[i], "PATH", 4) == 0)
-        {
-            sh->path = ft_split(sh->env[i]+5, ':');
-            if (!sh->path)
-                sh->ret = -1;
-        }
-        i++;
-    }
-    if (sh->ret < 0)
-        sh->running = FALSE;
-}
-
 void    ft_select_way(t_minishell *sh)
 {
-    if ((ft_strncmp(sh->parse_str[0], "echo", 4) == 0) && (!sh->parse_str[0][4]))
+    if (ft_strncmp(sh->parse_str[0], "echo", 5) == 0)
         printf("Chamar a função builtin echo\n");
-    else if ((ft_strncmp(sh->parse_str[0], "pwd", 3) == 0) && (!sh->parse_str[0][3]))
+    else if (ft_strncmp(sh->parse_str[0], "pwd", 4) == 0)
         printf("Chamar a função builtin pwd\n");
-    else if ((ft_strncmp(sh->parse_str[0], "env", 3) == 0) && (!sh->parse_str[0][3]))
-        printf("Chamar a função builtin env\n");
-    else if ((ft_strncmp(sh->parse_str[0], "cd", 2) == 0) && (!sh->parse_str[0][2]))
+    else if (ft_strncmp(sh->parse_str[0], "env", 4) == 0)
+        ft_builtin_env(sh, 0);
+    else if (ft_strncmp(sh->parse_str[0], "cd", 3) == 0)
         printf("Chamar a função builtin cd\n");
-    else if ((ft_strncmp(sh->parse_str[0], "export", 6) == 0) && (!sh->parse_str[0][6]))
+    else if (ft_strncmp(sh->parse_str[0], "export", 7) == 0)
         printf("Chamar a função builtin export\n");
-    else if ((ft_strncmp(sh->parse_str[0], "unset", 5) == 0) && (!sh->parse_str[0][5]))
+    else if (ft_strncmp(sh->parse_str[0], "unset", 6) == 0)
         printf("Chamar a função builtin unset\n");
-    else if ((ft_strncmp(sh->parse_str[0], "bash", 4) == 0) && (!sh->parse_str[0][4]))
+    else if (ft_strncmp(sh->parse_str[0], "bash", 5) == 0)
         printf("Chamar a função builtin bash\n");
-    else if (ft_strncmp(sh->parse_str[0], "exit", 4) == 0)
+    else if (ft_strncmp(sh->parse_str[0], "exit", 5) == 0)
         ft_builtin_exit(sh, 0);
     else
     {
@@ -109,12 +54,57 @@ void    ft_select_way(t_minishell *sh)
     }
 }
 
+void    ft_init_var(t_minishell *sh, char **envp)
+{
+    long    i;
+
+    i = 0;
+    sh->ret = 0;
+    sh->running = TRUE;
+    sh->path = NULL;
+    sh->line = NULL;
+    sh->env = NULL;
+    sh->parse_str = NULL;
+    sh->tmp1 = NULL;
+    while (envp[i])
+        i++;
+    sh->env = (char **)malloc(sizeof(char *) * (++i));
+    if (!sh->env)
+        sh->ret = -1;
+    --i;
+    while ((--i >= 0) && (sh->ret == 0))
+    {
+        sh->tmp1 = ft_strdup(envp[i]);
+        if (!sh->tmp1)
+            sh->ret = -1;
+        else
+        {
+            sh->env[i] = sh->tmp1;
+            sh->tmp1 = NULL;
+            if (ft_strncmp(sh->env[i], "PATH", 4) == 0)
+            {
+                sh->path = ft_split(sh->env[i]+5, ':');
+                if (!sh->path)
+                    sh->ret = -1;
+            }
+        }
+    }
+    if (sh->ret < 0)
+        sh->running = FALSE;
+}
+
+/*
+void new_line_handler(void) {
+    printf("New Line created\n");
+}
+*/
+
 void ft_minishell(char **envp)
 {
     t_minishell sh;
 
-    sh.env = envp;
-    ft_init_var(&sh);
+    ft_init_var(&sh, envp);
+//    new_line_handler();
     while (sh.running && (sh.ret == 0))
     {
         sh.line = readline("(Minishell - 42Rio): ");
@@ -128,13 +118,10 @@ void ft_minishell(char **envp)
                 sh.ret = -3;
             else
             {
-/*
-                long i = 0;
-                while(sh.parse_str[i] && sh.running)
-                {
+                long i = -1;
+                while(sh.parse_str[++i] && sh.running)
                     printf("comando %li recebido da split: %s\n", i, sh.parse_str[i]);
-                    i++;
-                }
+/*
 */
                 ft_select_way(&sh);
             }
@@ -144,14 +131,12 @@ void ft_minishell(char **envp)
     if (sh.ret < 0)
         ft_minishell_error(&sh, NULL);
     ft_free_minishell(&sh, 2);
-//    rl_clear_history();
-    clear_history();
 }
 
 int main(int argc, char **argv, char **envp)
 {
-    (void)argc;
     (void)argv;
-    ft_minishell(envp);
+    if (argc == 1)
+        ft_minishell(envp);
     return (0);
 }

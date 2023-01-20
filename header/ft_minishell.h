@@ -18,28 +18,39 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
-//# include <readline/history.h>
+# include <readline/history.h>
 
 # define TRUE 1
 # define FALSE 0;
 
-typedef struct  ft_minishell
+///typedef struct  s_control
+///{
+///    int     running;
+///    int     ret;
+///}   t_control;
+
+typedef struct  s_minishell
 {
-    int     running;
+///    t_control *control;
     int     ret;
+    int     running;
     char    **path;
-    char    *pwd;
     char    *line;
     char    **env;
     char    **parse_str;
+    char    *tmp1;
 }           t_minishell;
 
 void	start_command(t_minishell *sh, int *rato);
 char	*access_command(char *cmd, char **str);
 
 void    ft_builtin_exit(t_minishell *sh, long i);
+void    ft_builtin_env(t_minishell *sh, long i);
+void    ft_builtin_export(t_minishell *sh, long i);
 
 void    ft_minishell_error(t_minishell *sh, char *str);
+void    ft_parse(t_minishell *sh);
+void    ft_parse_comand_is_valid(t_minishell *sh);
 
 void    ft_free_minishell_single_aux(char *str);
 void    ft_free_minishell(t_minishell *sh, int status);
