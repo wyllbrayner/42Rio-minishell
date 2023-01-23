@@ -71,7 +71,6 @@ void ft_valid_out_redirect(t_minishell *sh)
             count++;
             if ((count == 2) && (sh->line[i - 1] != '>'))
             {
-                printf("Dentro da ft_valid_out_redirect i: %ld count: %ld\n", i, count);
                 sh->ret = -6;
                 return ;
             }
@@ -84,8 +83,6 @@ void ft_valid_out_redirect(t_minishell *sh)
         return ;
     }
     i = 0;
-/*
-*/
     while (sh->line[i] && (sh->line[i] != '>'))
         i++;
     if (sh->line[i] == '>' && (ft_isspace(sh->line[i - 1])))
@@ -132,13 +129,122 @@ void ft_valid_out_redirect(t_minishell *sh)
                         {
                             sh->out_redirect_file_fd[j] = open(sh->out_redirect_file[j], O_WRONLY | O_CREAT, 0666);
                             if (sh->out_redirect_file_fd[j] == -1)
-                                sh->ret = -7;
+                            {
+                                sh->ret = -8;
+                                ft_minishell_error(sh, sh->out_redirect_file[j]);
+                                return ;
+                            }
                         }
                         else
                         {
                             sh->out_redirect_file_fd[j] = open(sh->out_redirect_file[j], O_WRONLY | O_CREAT | O_APPEND, 0666);
                             if (sh->out_redirect_file_fd[j] == -1)
-                                sh->ret -7;
+                            {
+                                sh->ret = -8;
+                                ft_minishell_error(sh, sh->out_redirect_file[j]);
+                                return ;
+                            }
+                        }
+                        j++;
+                    }
+                }
+            }
+        }
+        else
+            sh->ret = -6;
+    }
+}
+
+void ft_valid_in_redirect(t_minishell *sh)
+{
+    long    i;
+    long    j;
+    long    count;
+    long    start;
+
+    i = 0;
+    start = 0;
+    count = 0;
+    while (sh->line[i])
+    {
+        if (sh->line[i] == '<')
+        {
+            count++;
+            if ((count == 2) && (sh->line[i - 1] != '<'))
+            {
+                sh->ret = -6;
+                return ;
+            }
+        }
+        i++;
+    }
+    if (count > 2)
+    {
+        sh->ret = -6;
+        return ;
+    }
+    i = 0;
+    while (sh->line[i] && (sh->line[i] != '<'))
+        i++;
+    if (sh->line[i] == '<' && (ft_isspace(sh->line[i - 1])))
+    {
+        sh->in_redirect = 1;
+        i++;
+        if (sh->line[i] && (sh->line[i] == '<'))
+        {
+            sh->in_redirect = 2;
+            i++;
+        }
+        if (sh->line[i] && (!ft_isspace(sh->line[i])))
+        {
+            sh->ret = -6;
+            return ;
+        }
+        start = i;
+        while (sh->line[i] && ((sh->line[i] != '|') && (sh->line[i] != '>')))
+            i++;
+        if (i > start)
+        {
+            sh->in_redirect_file = ft_split(ft_substr(&sh->line[start], 0, (size_t)(i - (start))), ' ');
+            if (!sh->in_redirect_file)
+            {
+                sh->ret = -3;
+                return ;
+            }
+            else
+            {
+                while (sh->in_redirect_file[sh->in_redirect_file_fd_amount])
+                    sh->in_redirect_file_fd_amount++;
+                sh->in_redirect_file_fd = (int *)malloc(sizeof(int) * sh->in_redirect_file_fd_amount);
+                if (!sh->in_redirect_file_fd)
+                {
+                    sh->ret = -3;
+                    return ;
+                }
+                else
+                {
+                    j = 0;
+                    while (sh->in_redirect_file[j])
+                    {
+                        if (sh->in_redirect == 1)
+                        {
+                            sh->in_redirect_file_fd[j] = open(sh->in_redirect_file[j], O_WRONLY | O_CREAT, 0666);
+                            if (sh->in_redirect_file_fd[j] == -1)
+                            {
+                                sh->ret = -8;
+                                ft_minishell_error(sh, sh->in_redirect_file[j]);
+                                return ;
+                            }
+                        }
+                        else
+                        {
+                            sh->in_redirect_file_fd[j] = open(sh->in_redirect_file[j], O_WRONLY | O_CREAT | O_APPEND, 0666);
+                            if (sh->in_redirect_file_fd[j] == -1)
+                            {
+                                sh->ret = -8;
+                                ft_minishell_error(sh, sh->in_redirect_file[j]);
+                                return ;
+                            }
                         }
                         j++;
                     }
@@ -158,11 +264,11 @@ void ft_parse(t_minishell *sh)
     ft_valid_out_redirect(sh);
     if (sh->ret < 0)
         return ;
-/*
     ft_valid_in_redirect(sh);
     if (sh->ret < 0)
         return ;
     sh->parse_str = ft_split(sh->line, ' ');
+/*
     ft_parse_comand_is_valid(sh);
 */
 }
