@@ -19,20 +19,22 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
 
 # define TRUE 1
 # define FALSE 0;
 
-///typedef struct  s_control
-///{
-///    int     running;
-///    int     ret;
-///}   t_control;
-
 typedef struct  s_minishell
 {
-///    t_control *control;
     int     ret;
+    int     out_redirect;
+    char    **out_redirect_file;
+    int     *out_redirect_file_fd;
+    long    out_redirect_file_fd_amount;
+    int     in_redirect;
+    char    **in_redirect_file;
+    int     *in_redirect_file_fd;
+    long    in_redirect_file_fd_amount;
     int     running;
     char    **path;
     char    *line;
