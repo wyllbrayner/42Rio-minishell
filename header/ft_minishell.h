@@ -40,21 +40,23 @@ typedef struct  s_minishell
     char    *line;
     char    **env;
     char    **parse_str;
+    char    *erro;
     char    *tmp1;
 }           t_minishell;
 
-void	start_command(t_minishell *sh, int *rato);
-char	*access_command(char *cmd, char **str);
+void	ft_start_command(t_minishell *sh, int *rato);
+char	*ft_access_command(char *cmd, char **str);
 
-void    ft_builtin_exit(t_minishell *sh, long i);
-void    ft_builtin_env(t_minishell *sh, long i);
-void    ft_builtin_export(t_minishell *sh, long i);
+void    ft_builtin_exit(t_minishell *sh);
+void    ft_builtin_env(t_minishell *sh);
 
-void    ft_minishell_error(t_minishell *sh, char *str);
+void    ft_minishell_error(t_minishell *sh);
+void    ft_select_way(t_minishell *sh);
 void    ft_parse(t_minishell *sh);
 void    ft_parse_comand_is_valid(t_minishell *sh);
 
 void    ft_free_minishell_single_aux(char *str);
+void    ft_free_minishell_double_aux(char **str_double);
 void    ft_free_minishell(t_minishell *sh, int status);
 
 int     ft_print(void);

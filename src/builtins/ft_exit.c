@@ -12,8 +12,8 @@
 
 #include "../../header/ft_minishell.h"
 
-void ft_builtin_exit(t_minishell *sh, long i)
+void ft_builtin_exit(t_minishell *sh)
 {
-    (void)i;
+    printf("exit\n");
     sh->running = FALSE;
 }

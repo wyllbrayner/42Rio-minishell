@@ -12,64 +12,43 @@
 
 #include "../header/ft_minishell.h"
 
-/*
-char *ft_join_path(char const *path, char const *cmd)
-{
-    char *tmp1;
-    char *tmp2;
-
-    tmp1 = NULL;
-    tmp2 = NULL;
-    tmp1 = ft_strjoin(path, "/");
-    if (!tmp1)
-        return (NULL);
-    tmp2 = ft_strjoin(tmp1, cmd);
-    if (!tmp2)
-    {
-        ft_free_minishell_single_aux(tmp1);
-        return (NULL);
-    }
-    return(tmp2);
-}
-*/
-
 void ft_valid_quotes(t_minishell *sh)
 {
     long    i;
     long    count_s;
     long    count_d;
 
-    i = 0;
-    count_s = 0;
-    count_d = 0;
-    while (sh->line[i])
+    if (sh)
     {
-        if (sh->line[i] == '\'')
-            count_s++;
-        else if (sh->line[i] == '\"')
-            count_d++;
-        i++;
+        i = 0;
+        count_s = 0;
+        count_d = 0;
+        while (sh->line[i])
+        {
+            if (sh->line[i] == '\'')
+                count_s++;
+            else if (sh->line[i] == '\"')
+                count_d++;
+            i++;
+        }
+        if (((count_s % 2) != 0) || ((count_d % 2) != 0))
+            sh->ret = -5;
     }
-    if (((count_s % 2) != 0) || ((count_d % 2) != 0))
-        sh->ret = -5;
 }
 
-void ft_valid_out_redirect(t_minishell *sh)
+void ft_valid_redirect_flow_aux(t_minishell *sh, int c)
 {
     long    i;
-    long    j;
     long    count;
-    long    start;
 
     i = 0;
-    start = 0;
     count = 0;
     while (sh->line[i])
     {
-        if (sh->line[i] == '>')
+        if (sh->line[i] == c)
         {
             count++;
-            if ((count == 2) && (sh->line[i - 1] != '>'))
+            if ((count == 2) && (sh->line[i - 1] != c))
             {
                 sh->ret = -6;
                 return ;
@@ -78,13 +57,27 @@ void ft_valid_out_redirect(t_minishell *sh)
         i++;
     }
     if (count > 2)
-    {
         sh->ret = -6;
-        return ;
-    }
+}
+
+void ft_valid_redirect_out(t_minishell *sh)
+{
+    long    i;
+    long    j;
+    long    start;
+
     i = 0;
+    start = 0;
+    ft_valid_redirect_flow_aux(sh, '>');
+    if (sh-> ret < 0)
+        return ;
     while (sh->line[i] && (sh->line[i] != '>'))
         i++;
+    if (i == 0)
+    {
+        sh->ret = -8;
+        return;
+    }
     if (sh->line[i] == '>' && (ft_isspace(sh->line[i - 1])))
     {
         sh->out_redirect = 1;
@@ -104,7 +97,9 @@ void ft_valid_out_redirect(t_minishell *sh)
             i++;
         if (i > start)
         {
-            sh->out_redirect_file = ft_split(ft_substr(&sh->line[start], 0, (size_t)(i - (start))), ' ');
+            sh->tmp1 = ft_substr(&sh->line[start], 0, (size_t)(i - (start)));
+            sh->out_redirect_file = ft_split(sh->tmp1, ' ');
+            ft_free_minishell_single_aux(sh->tmp1);
             if (!sh->out_redirect_file)
             {
                 sh->ret = -3;
@@ -130,8 +125,8 @@ void ft_valid_out_redirect(t_minishell *sh)
                             sh->out_redirect_file_fd[j] = open(sh->out_redirect_file[j], O_WRONLY | O_CREAT, 0666);
                             if (sh->out_redirect_file_fd[j] == -1)
                             {
-                                sh->ret = -8;
-                                ft_minishell_error(sh, sh->out_redirect_file[j]);
+                                sh->ret = -7;
+                                sh->erro = sh->out_redirect_file[j];
                                 return ;
                             }
                         }
@@ -140,8 +135,8 @@ void ft_valid_out_redirect(t_minishell *sh)
                             sh->out_redirect_file_fd[j] = open(sh->out_redirect_file[j], O_WRONLY | O_CREAT | O_APPEND, 0666);
                             if (sh->out_redirect_file_fd[j] == -1)
                             {
-                                sh->ret = -8;
-                                ft_minishell_error(sh, sh->out_redirect_file[j]);
+                                sh->ret = -7;
+                                sh->erro = sh->out_redirect_file[j];
                                 return ;
                             }
                         }
@@ -155,37 +150,24 @@ void ft_valid_out_redirect(t_minishell *sh)
     }
 }
 
-void ft_valid_in_redirect(t_minishell *sh)
+void ft_valid_redirect_in(t_minishell *sh)
 {
     long    i;
     long    j;
-    long    count;
     long    start;
 
     i = 0;
     start = 0;
-    count = 0;
-    while (sh->line[i])
-    {
-        if (sh->line[i] == '<')
-        {
-            count++;
-            if ((count == 2) && (sh->line[i - 1] != '<'))
-            {
-                sh->ret = -6;
-                return ;
-            }
-        }
-        i++;
-    }
-    if (count > 2)
-    {
-        sh->ret = -6;
+    ft_valid_redirect_flow_aux(sh, '<');
+    if (sh-> ret < 0)
         return ;
-    }
-    i = 0;
     while (sh->line[i] && (sh->line[i] != '<'))
         i++;
+    if (i == 0)
+    {
+        sh->ret = -8;
+        return;
+    }
     if (sh->line[i] == '<' && (ft_isspace(sh->line[i - 1])))
     {
         sh->in_redirect = 1;
@@ -204,8 +186,10 @@ void ft_valid_in_redirect(t_minishell *sh)
         while (sh->line[i] && ((sh->line[i] != '|') && (sh->line[i] != '>')))
             i++;
         if (i > start)
-        {
-            sh->in_redirect_file = ft_split(ft_substr(&sh->line[start], 0, (size_t)(i - (start))), ' ');
+        {   
+            sh->tmp1 = ft_substr(&sh->line[start], 0, (size_t)(i - (start)));
+            sh->in_redirect_file = ft_split(sh->tmp1, ' ');
+            ft_free_minishell_single_aux(sh->tmp1);
             if (!sh->in_redirect_file)
             {
                 sh->ret = -3;
@@ -231,8 +215,8 @@ void ft_valid_in_redirect(t_minishell *sh)
                             sh->in_redirect_file_fd[j] = open(sh->in_redirect_file[j], O_WRONLY | O_CREAT, 0666);
                             if (sh->in_redirect_file_fd[j] == -1)
                             {
-                                sh->ret = -8;
-                                ft_minishell_error(sh, sh->in_redirect_file[j]);
+                                sh->ret = -7;
+                                sh->erro = sh->in_redirect_file[j];
                                 return ;
                             }
                         }
@@ -241,8 +225,8 @@ void ft_valid_in_redirect(t_minishell *sh)
                             sh->in_redirect_file_fd[j] = open(sh->in_redirect_file[j], O_WRONLY | O_CREAT | O_APPEND, 0666);
                             if (sh->in_redirect_file_fd[j] == -1)
                             {
-                                sh->ret = -8;
-                                ft_minishell_error(sh, sh->in_redirect_file[j]);
+                                sh->ret = -7;
+                                sh->erro = sh->in_redirect_file[j];
                                 return ;
                             }
                         }
@@ -256,23 +240,150 @@ void ft_valid_in_redirect(t_minishell *sh)
     }
 }
 
-void ft_parse(t_minishell *sh)
-{
-    ft_valid_quotes(sh);
-    if (sh->ret < 0)
-        return ;
-    ft_valid_out_redirect(sh);
-    if (sh->ret < 0)
-        return ;
-    ft_valid_in_redirect(sh);
-    if (sh->ret < 0)
-        return ;
-    sh->parse_str = ft_split(sh->line, ' ');
 /*
-    ft_parse_comand_is_valid(sh);
-*/
+int ft_valid_command_aux(t_minishell *sh, char *cmd)
+{
+    if (sh && cmd)
+    {
+        if (ft_strncmp(cmd, "echo", 5) == 0)
+        {
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+        else if (ft_strncmp(cmd, "cd", 3) == 0)
+        {
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+
+        else if (ft_strncmp(cmd, "pwd", 4) == 0)
+        {
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+        else if (ft_strncmp(cmd, "export", 7) == 0)
+        {
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+        else if (ft_strncmp(cmd, "unset", 6) == 0)
+        {
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+        else if (ft_strncmp(cmd, "env", 4) == 0)
+        {
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+        else if (ft_strncmp(cmd, "exit", 5) == 0)
+        {
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+        else if (ft_strchr("-<>|\"\'", cmd[0]))
+        {
+            printf("Dentro da ft_valid_command_aux | %s NÃO É COMANDO, MAS RETORNO SERÁ = 1\n", cmd);
+            return (1);
+        }
+        else
+        {
+            sh->tmp1 = ft_access_command(cmd, sh->path);
+            if (!sh->tmp1)
+            {
+                printf("Dentro da ft_valid_command_aux | %s NEXISTE\n", cmd);
+                return (0);
+            }
+            ft_free_minishell_single_aux(sh->tmp1);
+            printf("Dentro da ft_valid_command_aux | %s EXISTE\n", cmd);
+            return (1);
+        }
+    }
+    printf("Dentro da ft_valid_command_aux | %s NEXISTE\n", cmd);
+    return (0);
 }
 
+void ft_valid_comand(t_minishell *sh)
+{
+    long    i;
+
+    i = 0;
+    while (sh->parse_str[i])
+    {
+        if (!ft_valid_command_aux(sh, sh->parse_str[i]))
+        {
+            sh->ret = -4;
+            sh->erro = sh->parse_str[i];
+            return ;
+        }
+        i++;
+    }
+}
+*/
+
+void ft_valid_cmd(t_minishell *sh)
+{
+    sh->tmp1 = ft_strtrim(sh->line, " ");
+    if (!sh->tmp1)
+        sh->ret = -3;
+    else if ((ft_strlen(sh->tmp1) == 0) || ((ft_strlen(sh->tmp1) == 1) && ft_isspace(sh->tmp1[0])))
+        sh->ret = -8;
+    ft_free_minishell_single_aux(sh->tmp1);
+}
+
+void ft_parse(t_minishell *sh)
+{
+    if (sh)
+    {
+        ft_valid_cmd(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_valid_quotes(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_valid_redirect_out(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_valid_redirect_in(sh);
+        if (sh->ret < 0)
+            return ;
+        sh->parse_str = ft_split(sh->line, ' ');
+        if (!sh->parse_str)
+        {
+            sh->ret = -3;
+            return ;
+        }
+/*
+        ft_valid_comand(sh);
+        if (sh->ret < 0)
+            return ;
+*/
+
+    }
+    else
+        sh->ret = -1;
+}
+
+/*
+char *ft_join_path(char const *path, char const *cmd)
+{
+    char *tmp1;
+    char *tmp2;
+
+    tmp1 = NULL;
+    tmp2 = NULL;
+    tmp1 = ft_strjoin(path, "/");
+    if (!tmp1)
+        return (NULL);
+    tmp2 = ft_strjoin(tmp1, cmd);
+    if (!tmp2)
+    {
+        ft_free_minishell_single_aux(tmp1);
+        return (NULL);
+    }
+    return(tmp2);
+}
+*/
 
 /*
                     int c = 0;

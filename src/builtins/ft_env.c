@@ -12,11 +12,10 @@
 
 #include "../../header/ft_minishell.h"
 
-void ft_builtin_env(t_minishell *sh, long i)
+void ft_builtin_env(t_minishell *sh)
 {
     long    j;
 
-    (void)i;
     j = 0;
     while (sh->env[j])
     {

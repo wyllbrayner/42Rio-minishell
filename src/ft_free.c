@@ -21,7 +21,7 @@ void ft_free_minishell_single_aux(char *str)
     }
 }
 
-static void ft_free_minishell_double_aux(char **str_double)
+void ft_free_minishell_double_aux(char **str_double)
 {
     long    i;
 
@@ -50,19 +50,25 @@ static void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
             close(file_fd[i]);
             i++;
         }
+        free(file_fd);
+        file_fd = NULL;
     }
 }
 
 void ft_free_minishell(t_minishell *sh, int status)
 {
-    if (status == 1)
+    if (sh && (status == 1))
     {
         ft_free_minishell_single_aux(sh->line);
         ft_free_minishell_double_aux(sh->parse_str);
-//        ft_free_minishell_single_aux(sh->tmp1); //confirmar que pode!!!
+        ft_free_minishell_double_aux(sh->out_redirect_file);
         ft_free_minishell_close_fd(sh->out_redirect_file_fd, sh->out_redirect_file_fd_amount);
+        ft_free_minishell_double_aux(sh->in_redirect_file);
+        ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
+        sh->out_redirect = 0;
+        sh->in_redirect = 0;
     }
-    if (status == 2)
+    if (sh && (status == 2))
     {
         ft_free_minishell_double_aux(sh->env);
         ft_free_minishell_double_aux(sh->path);

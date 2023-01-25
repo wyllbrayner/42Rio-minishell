@@ -12,51 +12,55 @@
 
 #include "../header/ft_minishell.h"
 
-char	*access_command(char *cmd, char **str)
+char	*ft_access_command(char *cmd, char **path)
 {
 	char	*tmp;
 	char	*com;
-	while(*str)
+
+	if (cmd && path)
 	{
-		tmp = ft_strjoin(*str, "/");
-		com = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(com, X_OK | F_OK) == 0)
+		while(*path)
 		{
-//			printf("dentro da access_command | cmd: %s\n", com);
-			return (com);
+			tmp = ft_strjoin(*path, "/");
+			com = ft_strjoin(tmp, cmd);
+			free(tmp);
+			if (access(com, X_OK | F_OK) == 0)
+				return (com);
+			free(com);
+			path++;
 		}
-		free(com);
-		str++;
 	}
 	return(0);
 }
 
-void	start_command(t_minishell *sh, int *rato)
+void	ft_start_command(t_minishell *sh, int *rato)
 {
 	//int	pid;
 	char 	*tmp;
 
-	tmp = access_command(sh->parse_str[0], sh->path);
-	if (!tmp)
+	if (sh && rato)
 	{
-		sh->ret = -4;
-		ft_minishell_error(sh, sh->parse_str[0]);
-	}
-	else
-	{
-		*rato = fork();
-		if (*rato == 0)
+		tmp = ft_access_command(sh->parse_str[0], sh->path);
+		if (!tmp)
 		{
-//			printf("Startou filho\n");
-//			printf("tmp: %s | sh->parse_str[0]: %s\n", tmp, sh->parse_str[0]);
-			execve(tmp, &sh->parse_str[0], NULL);
+			sh->ret = -4;
+			sh->erro = sh->parse_str[0];
+			ft_minishell_error(sh);
+			return ;
 		}
-//		printf("pai continuou\n");
-		// waitpid(pid, NULL, 0);
+		else
+		{
+			*rato = fork();
+			if (*rato == 0)
+			{
+				execve(tmp, &sh->parse_str[0], NULL);
+			}
+			// waitpid(pid, NULL, 0);
+		}
+		ft_free_minishell_single_aux(tmp);
 	}
-	free(tmp);
 }
+
 /*
 void	start_command(t_minishell *sh, int *rato)
 {
