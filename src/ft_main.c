@@ -12,6 +12,9 @@
 
 #include "../header/ft_minishell.h"
 
+
+t_minishell sh;
+
 void    ft_init_var(t_minishell *sh, char **envp)
 {
     long    i;
@@ -28,7 +31,8 @@ void    ft_init_var(t_minishell *sh, char **envp)
         sh->in_redirect_file = NULL;
         sh->in_redirect_file_fd = NULL;
         sh->in_redirect_file_fd_amount = 0;
-        sh->running = TRUE;
+        sh->running = 1;
+        sh->s_int = 0;
         sh->path = NULL;
         sh->line = NULL;
         sh->env = NULL;
@@ -64,7 +68,7 @@ void    ft_init_var(t_minishell *sh, char **envp)
     else
         sh->ret = -1;
     if (sh->ret < 0)
-        sh->running = FALSE;
+        sh->running = F;
 }
 
 /*
@@ -74,16 +78,31 @@ void new_line_handler(void) {
 new_line_handler(); // na main!!
 */
 
+void ft_sigint_handler(int sig)
+{
+    sh.s_int = 1;
+    write (1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 void ft_minishell(char **envp)
 {
-    t_minishell sh;
+//    t_minishell sh;
+    char        *cwd;
+    char        buff[PATH_MAX + 1];
 
 //    (void **)envp;
 //    ft_init_var(&sh, NULL);
     ft_init_var(&sh, envp);
+    signal(SIGINT, &ft_sigint_handler);
     while (sh.running && (sh.ret == 0))
     {
-        sh.line = readline("(Minishell - 42Rio): ");
+        cwd = getcwd(buff, PATH_MAX);
+        ft_strlcat(cwd, ":> ", ft_strlen(cwd) + 4);
+//        sh.line = readline("(Minishell - 42Rio): ");
+        sh.line = readline(cwd);
         if (!sh.line)
             sh.ret = -3;
         else

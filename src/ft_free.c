@@ -67,6 +67,7 @@ void ft_free_minishell(t_minishell *sh, int status)
         ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
         sh->out_redirect = 0;
         sh->in_redirect = 0;
+        sh->s_int = 0;
     }
     if (sh && (status == 2))
     {

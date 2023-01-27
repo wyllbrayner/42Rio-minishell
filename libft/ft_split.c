@@ -25,7 +25,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	qtd_plv = ft_count_word(s, c);
-	str = (char **)malloc(sizeof(str) * (qtd_plv + 1));
+	str = (char **)malloc(sizeof(char *) * (qtd_plv + 1));
 	if (!str)
 		return (NULL);
 	ft_split_word(s, c, str, qtd_plv);

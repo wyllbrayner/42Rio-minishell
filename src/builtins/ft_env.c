@@ -17,7 +17,7 @@ void ft_builtin_env(t_minishell *sh)
     long    j;
 
     j = 0;
-    while (sh->env[j])
+    while (sh->env[j] && (sh->s_int == 0))
     {
         printf("%s\n", sh->env[j]);
         j++;

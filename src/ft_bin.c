@@ -53,7 +53,7 @@ void	ft_start_command(t_minishell *sh, int *rato)
 			*rato = fork();
 			if (*rato == 0)
 			{
-				execve(tmp, &sh->parse_str[0], NULL);
+				execve(tmp, &sh->parse_str[0], sh->env);
 			}
 			// waitpid(pid, NULL, 0);
 		}

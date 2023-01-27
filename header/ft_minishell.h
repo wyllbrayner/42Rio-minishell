@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <linux/limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
@@ -21,8 +22,8 @@
 # include <readline/history.h>
 # include <fcntl.h>
 
-# define TRUE 1
-# define FALSE 0;
+# define T 1;
+# define F 0;
 
 typedef struct  s_minishell
 {
@@ -36,6 +37,7 @@ typedef struct  s_minishell
     int     *in_redirect_file_fd;
     long    in_redirect_file_fd_amount;
     int     running;
+    int     s_int;
     char    **path;
     char    *line;
     char    **env;
@@ -43,6 +45,8 @@ typedef struct  s_minishell
     char    *erro;
     char    *tmp1;
 }           t_minishell;
+
+//extern t_minishell	sh;
 
 void	ft_start_command(t_minishell *sh, int *rato);
 char	*ft_access_command(char *cmd, char **str);

@@ -15,5 +15,5 @@
 void ft_builtin_exit(t_minishell *sh)
 {
     printf("exit\n");
-    sh->running = FALSE;
+    sh->running = 0;
 }
