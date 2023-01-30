@@ -16,7 +16,8 @@
 # include "../libft/libft.h"
 # include <stdio.h>
 
-# include <linux/limits.h>
+//# include <linux/limits.h>
+//# include <limits.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
@@ -26,6 +27,7 @@
 
 # define TRUE 1;
 # define FALSE 0;
+//# define PATH_MAX 1024;
 
 typedef struct doubly_node
 {
@@ -33,14 +35,6 @@ typedef struct doubly_node
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
 }	t_node;
-
-typedef struct doubly_linked_list
-{
-	t_node	*begin;
-	t_node	*end;
-	size_t	size;
-}	t_list;
-
 
 typedef struct  s_minishell
 {
@@ -55,14 +49,14 @@ typedef struct  s_minishell
     long    in_redirect_file_fd_amount;
     int     running;
     int     s_int;
-    char    *cwd;
-    char    *buff;
+//    char    *cwd;
+//    char    *buff;
     char    **path;
     char    *line;
     char    **env;
     char    **parse_str;
     char    *erro;
-    t_list  *lstcmd;
+    t_node  *head;
     char    *tmp1;
     char    *tmp2;
     char    **tmp3;
@@ -85,8 +79,9 @@ char	*ft_access_command(char *cmd, char **str);
 void    ft_minishell_error(t_minishell *sh);
 void    ft_parse_comand_is_valid(t_minishell *sh);
 
-t_list	*ft_list_create(void);
-void	ft_list_add_last(t_list *l, char **cmd);
-void	ft_list_destroy(t_list **l_ref);
+void    ft_list_destroy(t_node **head);
+void    ft_list_add_last(t_node **head, t_node *node);
+t_node	*ft_node_create(char **cmd);
+void    ft_print_list(const t_minishell *sh);
 
 #endif

@@ -12,8 +12,6 @@
 
 #include "../header/ft_minishell.h"
 
-//extern t_minishell sh;
-
 void    ft_minishell_error(t_minishell *sh)
 {
     if (sh)
@@ -64,12 +62,10 @@ void    ft_select_way(t_minishell *sh)
             ft_builtin_exit(sh);
         else
         {
-        /// JONATAS sugiro colocar sua função a partir daqui!!!
             int rato;
             rato = 0;
             ft_start_command(sh, &rato);
             wait(NULL);
-    //        waitpid(rato, NULL, 0);
         }
     }
     else

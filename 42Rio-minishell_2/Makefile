@@ -8,7 +8,7 @@ UTIL		= ar
 OPT			= rc
 SUMM		= ranlib
 RM			= rm -f
-FLAG		= -Wall -Wextra -Werror
+FLAG		= -g -Wall -Wextra -Werror
 COMP		= cc
 
 all:	$(NAME)
