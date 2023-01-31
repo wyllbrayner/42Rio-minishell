@@ -14,7 +14,7 @@
 
 void ft_valid_empty_cmd(t_minishell *sh)
 {
-    printf("Dentro da ft_valid_empty_cmd | inicio\n");
+//    printf("Dentro da ft_valid_empty_cmd | inicio\n");
     sh->tmp1 = ft_strtrim(sh->line, " ");
     if (!sh->tmp1)
     {
@@ -26,7 +26,7 @@ void ft_valid_empty_cmd(t_minishell *sh)
         sh->ret = -8;
     }
     ft_free_minishell_single_aux(sh->tmp1);
-    printf("Dentro da ft_valid_empty_cmd | fim\n");
+//    printf("Dentro da ft_valid_empty_cmd | fim\n");
 }
 
 void ft_valid_quotes(t_minishell *sh)
@@ -35,7 +35,7 @@ void ft_valid_quotes(t_minishell *sh)
     long    count_s;
     long    count_d;
 
-    printf("Dentro da ft_valid_quotes | inicio\n");
+//    printf("Dentro da ft_valid_quotes | inicio\n");
     if (sh)
     {
         i = 0;
@@ -54,12 +54,12 @@ void ft_valid_quotes(t_minishell *sh)
             sh->ret = -5;
         }
     }
-    printf("Dentro da ft_valid_quotes | fim\n");
+//    printf("Dentro da ft_valid_quotes | fim\n");
 }
 
 int ft_valid_command_aux(t_minishell *sh, char *cmd)
 {
-    printf("Dentro da ft_valid_comand_aux | inicio\n");
+//    printf("Dentro da ft_valid_comand_aux | inicio\n");
     if (sh && cmd)
     {
         if (ft_strncmp(cmd, "echo", 5) == 0)
@@ -85,7 +85,7 @@ int ft_valid_command_aux(t_minishell *sh, char *cmd)
             return (1);
         }
     }
-    printf("Dentro da ft_valid_comand_aux | fim\n");
+//    printf("Dentro da ft_valid_comand_aux | fim\n");
     return (0);
 }
 
@@ -115,7 +115,7 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
 {
     long    i;
 
-    printf("Dentro da valide_lexcal_cmd | inicio\n");
+//    printf("Dentro da valide_lexcal_cmd | inicio\n");
     i = 0;
     sh->tmp3 = (char **)malloc(sizeof(char *) * 2);
     if (!sh->tmp3)
@@ -158,39 +158,39 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
         if (sh->parse_str[i])
             i++;
     }
-    ft_free_minishell_double_aux(sh->tmp3);
-    printf("Dentro da valide_lexcal_cmd | fim\n");
+    ft_free_minishell_double_aux(sh->tmp3); // ver a partir daqui!
+//    printf("Dentro da valide_lexcal_cmd | fim\n");
 }
 
 void ft_parse(t_minishell *sh)
 {
-    printf("Dentro da parse | inicio\n");
+//    printf("Dentro da parse | inicio\n");
     if (sh)
     {
         ft_valid_empty_cmd(sh);
         if (sh->ret < 0)
             return ;
-        printf("Após a emplty cmd ret: %d\n", sh->ret);
+//        printf("Após a emplty cmd ret: %d\n", sh->ret);
         ft_valid_quotes(sh);
         if (sh->ret < 0)
             return ;
-        printf("Após a valid quotes ret: %d\n", sh->ret);
+//        printf("Após a valid quotes ret: %d\n", sh->ret);
         sh->parse_str = ft_split(sh->line, ' ');
         if (!sh->parse_str)
         {
             sh->ret = -3;
             return ;
         }
-        printf("Após a split ret: %d\n", sh->ret);
+//        printf("Após a split ret: %d\n", sh->ret);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
             return ;
         ft_print_list(sh);
-        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
+//        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
     }
     else
         sh->ret = -1;
-    printf("Dentro da parse | fim\n");
+//    printf("Dentro da parse | fim\n");
 }
 
 
