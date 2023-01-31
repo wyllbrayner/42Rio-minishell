@@ -89,9 +89,18 @@ int ft_valid_command_aux(t_minishell *sh, char *cmd)
     return (0);
 }
 
+/*
 int ft_pipe_or_redirect(t_minishell *sh, long i)
 {
     return (sh->parse_str[i][0] == '|' || sh->parse_str[i][0] == '<' || sh->parse_str[i][0] == '>');
+}
+*/
+
+
+
+int ft_pipe_or_redirect(char *cmd)
+{
+    return (cmd[0] == '|' || cmd[0] == '<' || cmd[0] == '>');
 }
 
 int ft_valid_file(t_minishell *sh, long i)
@@ -113,6 +122,36 @@ int ft_valid_file(t_minishell *sh, long i)
 
 void ft_valid_lexcal_cmd(t_minishell *sh)
 {
+    t_node  *tmp;
+    long    i;
+
+    tmp = sh->head;
+    i = 0;
+    tmp = tmp->next;
+    while (tmp)
+    {
+        if ((i == 0) && (tmp->cmd[0][0] == '|'))
+        {
+            sh->ret = -6;
+            ft_free_minishell_single_aux(sh->tmp1);
+            sh->tmp1 = ft_strdup("|");
+            sh->erro = sh->tmp1;
+        }
+        else if (tmp->cmd[0][0] == '|' && ((tmp->next) && (tmp->next->cmd[0][0] == '|')))
+        {
+            sh->ret = -6;
+            ft_free_minishell_single_aux(sh->tmp1);
+            sh->tmp1 = ft_strdup("|");
+            sh->erro = sh->tmp1;
+        }
+        tmp = tmp->next;
+        i++;
+    }
+}
+
+//void ft_valid_lexcal_cmd(t_minishell *sh)
+void ft_put_cmd_in_lst(t_minishell *sh)
+{
     long    i;
 
 //    printf("Dentro da valide_lexcal_cmd | inicio\n");
@@ -129,7 +168,8 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
     {
         sh->tmp3[0] = ft_strdup(sh->parse_str[i]);
         i++;
-        while (sh->parse_str[i] && !ft_pipe_or_redirect(sh, i))
+//        while (sh->parse_str[i] && !ft_pipe_or_redirect(sh, i))
+        while (sh->parse_str[i] && !ft_pipe_or_redirect(sh->parse_str[i]))
         {
             sh->tmp1 = ft_strjoin(sh->tmp3[0], " ");
             sh->tmp2 = ft_strjoin(sh->tmp1, sh->parse_str[i]);
@@ -149,7 +189,8 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
         }
         ft_list_add_last(&sh->head, ft_node_create(sh->tmp3));
         sh->tmp3[0] = NULL;
-        if (sh->parse_str[i] && ft_pipe_or_redirect(sh, i))
+//        if (sh->parse_str[i] && ft_pipe_or_redirect(sh, i))
+        if (sh->parse_str[i] && ft_pipe_or_redirect(sh->parse_str[i]))
         {
             sh->tmp3[0] = ft_strdup(sh->parse_str[i]);
             ft_list_add_last(&sh->head, ft_node_create(sh->tmp3));
@@ -182,7 +223,8 @@ void ft_parse(t_minishell *sh)
             return ;
         }
 //        printf("Após a split ret: %d\n", sh->ret);
-        ft_valid_lexcal_cmd(sh);
+//        ft_valid_lexcal_cmd(sh);
+        ft_put_cmd_in_lst(sh);
         if (sh->ret < 0)
             return ;
         ft_print_list(sh);
