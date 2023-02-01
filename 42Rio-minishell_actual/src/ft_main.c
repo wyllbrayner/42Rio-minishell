@@ -83,7 +83,9 @@ void ft_minishell(t_minishell *sh)
 //        ft_strlcat(sh->cwd, ":> ", ft_strlen(sh->cwd) + 4);
 //        sh->line = readline("(Minishell - 42Rio): ");
 //        sh->line = readline(sh->cwd);
-        sh->line = "ls -la Makefile src/ft_main.c | | grep main | cat src/ft_parse.c";
+//        sh->line = "ls -la Makefile src/ft_main.c | grep main | cat src/ft_parse.c";
+//        sh->line = "ls -la Makefile src/ft_main.c | grep main | | src/ft_parse.c";
+        sh->line = "ls -la Makefile src/ft_main.c | grep main | src/ft_parse.c";
         if (!sh->line)
             sh->ret = -3;
         else

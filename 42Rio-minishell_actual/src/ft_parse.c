@@ -100,7 +100,8 @@ int ft_pipe_or_redirect(t_minishell *sh, long i)
 
 int ft_pipe_or_redirect(char *cmd)
 {
-    return (cmd[0] == '|' || cmd[0] == '<' || cmd[0] == '>');
+    return (cmd[0] == '|');
+//    return (cmd[0] == '|' || cmd[0] == '<' || cmd[0] == '>');
 }
 
 int ft_valid_file(t_minishell *sh, long i)
@@ -122,27 +123,30 @@ int ft_valid_file(t_minishell *sh, long i)
 
 void ft_valid_lexcal_cmd(t_minishell *sh)
 {
-    t_node  *tmp;
     long    i;
+    t_node  *tmp;
 
-    tmp = sh->head;
     i = 0;
-    tmp = tmp->next;
+    tmp = sh->head;
     while (tmp)
     {
         if ((i == 0) && (tmp->cmd[0][0] == '|'))
         {
             sh->ret = -6;
-            ft_free_minishell_single_aux(sh->tmp1);
-            sh->tmp1 = ft_strdup("|");
-            sh->erro = sh->tmp1;
+//            ft_free_minishell_single_aux(sh->tmp1);
+//            sh->tmp1 = ft_strdup("|");
+//            sh->erro = sh->tmp1;
+            sh->erro ="|"; 
+            return ;
         }
         else if (tmp->cmd[0][0] == '|' && ((tmp->next) && (tmp->next->cmd[0][0] == '|')))
         {
             sh->ret = -6;
-            ft_free_minishell_single_aux(sh->tmp1);
-            sh->tmp1 = ft_strdup("|");
-            sh->erro = sh->tmp1;
+//            ft_free_minishell_single_aux(sh->tmp1);
+//            sh->tmp1 = ft_strdup("|");
+//            sh->erro = sh->tmp1;
+            sh->erro = "|";
+            return ;
         }
         tmp = tmp->next;
         i++;
@@ -199,7 +203,7 @@ void ft_put_cmd_in_lst(t_minishell *sh)
         if (sh->parse_str[i])
             i++;
     }
-    ft_free_minishell_double_aux(sh->tmp3); // ver a partir daqui!
+    ft_free_minishell_double_aux(sh->tmp3);
 //    printf("Dentro da valide_lexcal_cmd | fim\n");
 }
 
@@ -229,6 +233,9 @@ void ft_parse(t_minishell *sh)
             return ;
         ft_print_list(sh);
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
+        ft_valid_lexcal_cmd(sh);
+        if (sh->ret < 0)
+            return ;
     }
     else
         sh->ret = -1;
