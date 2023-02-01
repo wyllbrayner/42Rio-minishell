@@ -60,16 +60,20 @@ typedef struct  s_minishell
     char    *tmp1;
     char    *tmp2;
     char    **tmp3;
+    char    **tmp4;
 }           t_minishell;
 
 void    ft_builtin_exit(t_minishell *sh);
+void    ft_builtin_env(t_minishell *sh);
+void	ft_builtin_cd(t_minishell *cmd);
 void    ft_minishell_error(t_minishell *sh);
+int     ft_builtin_echo(char *echo);
+void    ft_builtin_pwd(t_minishell *sh);
 
 void    ft_free_minishell_single_aux(char *str);
 void    ft_free_minishell_double_aux(char **str_double);
 void    ft_free_minishell(t_minishell *sh, int status);
 
-void    ft_builtin_env(t_minishell *sh);
 
 void	ft_start_command(t_minishell *sh, int *rato);
 void    ft_parse(t_minishell *sh);
@@ -83,5 +87,6 @@ void    ft_list_destroy(t_node **head);
 void    ft_list_add_last(t_node **head, t_node *node);
 t_node	*ft_node_create(char **cmd);
 void    ft_print_list(const t_minishell *sh);
+void    ft_print_rev_list(const t_minishell *sh);
 
 #endif

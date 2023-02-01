@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_main.c                                          :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jodiniz <jodiniz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/09 15:23:54 by woliveir          #+#    #+#             */
-/*   Updated: 2022/05/09 15:09:49 by coder            ###   ########.fr       */
+/*   Created: 2023/01/24 16:06:38 by jodiniz           #+#    #+#             */
+/*   Updated: 2023/01/24 16:06:38 by jodiniz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/ft_minishell.h"
 
-void ft_builtin_env(t_minishell *sh)
+void	ft_builtin_cd(t_minishell *cmd)
 {
-    long    j;
+	char	*str;
+	int 	i;
+	char	string[1024];
+	int		j;
 
-    j = 0;
-    while (sh->env[j] && (sh->s_int == 0))
-    {
-        printf("%s\n", sh->env[j]);
-        j++;
-    }
-	printf("\033[0m");
+	j = 0;
+	i = 3;
+	str = cmd->line;
+	while (str[i] == ' ')
+		i++;
+	while(str[i])
+	{
+		string[j] = str[i];
+		j++;
+		i++; 
+	}
+	chdir(string);
 }

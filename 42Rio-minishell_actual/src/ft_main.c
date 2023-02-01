@@ -43,6 +43,7 @@ void    ft_init_var(t_minishell *sh, char **envp)
         sh->tmp1 = NULL;
         sh->tmp2 = NULL;
         sh->tmp3 = NULL;
+        sh->tmp4 = NULL;
         while (envp[i])
             i++;
         sh->env = (char **)malloc(sizeof(char *) * (++i));
@@ -75,22 +76,21 @@ void    ft_init_var(t_minishell *sh, char **envp)
 
 void ft_minishell(t_minishell *sh)
 {
-    int tmp = 0;
-    while (sh->running && (sh->ret == 0) && tmp != 1)
+    while (sh->running && (sh->ret == 0))
     {
 //        printf("Dentro da minishell | dentro do loop\n");
 //        sh->cwd = getcwd(sh->buff, 1024);
 //        ft_strlcat(sh->cwd, ":> ", ft_strlen(sh->cwd) + 4);
-//        sh->line = readline("(Minishell - 42Rio): ");
+        sh->line = readline("(Minishell - 42Rio): ");
 //        sh->line = readline(sh->cwd);
 //        sh->line = "ls -la Makefile src/ft_main.c | grep main | cat src/ft_parse.c";
 //        sh->line = "ls -la Makefile src/ft_main.c | grep main | | src/ft_parse.c";
-        sh->line = "ls -la Makefile src/ft_main.c | grep main | src/ft_parse.c";
+//        sh->line = "ls -la Makefile src/ft_main.c | grep main | src/ft_parse.c";
         if (!sh->line)
             sh->ret = -3;
         else
         {
-//            add_history(sh->line);
+            add_history(sh->line);
             ft_parse(sh);
             if (sh->ret < 0)
            		ft_minishell_error(sh);
@@ -98,7 +98,6 @@ void ft_minishell(t_minishell *sh)
                 ft_select_way(sh);
             ft_free_minishell(sh, 1);
         }
-        tmp++;
     }
     if (sh->ret < 0)
         ft_minishell_error(sh);

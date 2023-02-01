@@ -106,6 +106,27 @@ void ft_print_list(const t_minishell *sh)
 //	printf("Dentro da ft_print_list | fim\n");
 }
 
+void ft_print_rev_list(const t_minishell *sh)
+{
+//	printf("Dentro da ft_print_rev_list | inicio\n");
+    t_node *p;
+
+    p = sh->head;
+    if (p)
+    {
+        while (p->next)
+            p = p->next;
+        printf("NULL -> ");
+		while (p)
+		{
+            printf("%s -> ", p->cmd[0]);
+			p = p->prev;
+		}	
+        printf("HEAD\n");
+    }
+//	printf("Dentro da ft_print_rev_list | fim\n");
+}
+
 /*
 void	ft_list_add_last(t_list *l, char **cmd)
 {

@@ -77,6 +77,7 @@ void ft_free_minishell(t_minishell *sh, int status)
     {
 //    	printf("Dentro da ft_free_minishell | dentro do if\n");
         tmp = sh->head;
+        ft_free_minishell_single_aux(sh->line);
 // NÃO APAGAR!! retirar o comentário a partir de recolocar a readline ft_free_minishell_single_aux(sh->line); // NÂO APAGAR
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para parse_str\n");
         ft_free_minishell_double_aux(sh->parse_str);

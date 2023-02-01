@@ -121,30 +121,23 @@ int ft_valid_file(t_minishell *sh, long i)
 //  0   1        2             3 4 5    6        7 8 9      10      11 
 // ls -la Makefile src/ft_main.c | | grep Makefile > > test1.c test2.c
 
+/*
 void ft_valid_lexcal_cmd(t_minishell *sh)
 {
-    long    i;
     t_node  *tmp;
 
-    i = 0;
     tmp = sh->head;
     while (tmp)
     {
-        if ((i == 0) && (tmp->cmd[0][0] == '|'))
+        if ((!tmp->prev) && (tmp->cmd[0][0] == '|'))
         {
             sh->ret = -6;
-//            ft_free_minishell_single_aux(sh->tmp1);
-//            sh->tmp1 = ft_strdup("|");
-//            sh->erro = sh->tmp1;
             sh->erro ="|"; 
             return ;
         }
-        else if (tmp->cmd[0][0] == '|' && ((tmp->next) && (tmp->next->cmd[0][0] == '|')))
+        else if ((tmp->cmd[0][0] == '|') && (tmp->next) && (tmp->next->cmd[0][0] == '|'))
         {
             sh->ret = -6;
-//            ft_free_minishell_single_aux(sh->tmp1);
-//            sh->tmp1 = ft_strdup("|");
-//            sh->erro = sh->tmp1;
             sh->erro = "|";
             return ;
         }
@@ -152,6 +145,70 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
         i++;
     }
 }
+*/
+
+void ft_valid_lexcal_cmd(t_minishell *sh)
+{
+    t_node  *tmp;
+
+    tmp = sh->head;
+    while (tmp)
+    {
+//        printf("cmd[0] de tmp: %s\n", tmp->cmd[0]);
+//        if (tmp->prev)
+//        {
+//            if (tmp->prev->cmd[0][0] != '|')
+//            {
+//                printf("Entrou no 2º if do prev\n");
+//                sh->tmp3 = ft_split(tmp->prev->cmd[0], ' ');
+//            }
+//            printf("cmd[0] de tmp->prev: %s\n", tmp->prev->cmd[0]);
+//        }
+//        if (tmp->next)
+//        {
+//            if (tmp->next->cmd[0][0] != '|')
+//            {
+//                printf("Entrou no 2º if do next\n");
+//                sh->tmp4 = ft_split(tmp->next->cmd[0], ' ');
+//            }
+//            printf("cmd[0] de tmp->next: %s\n", tmp->next->cmd[0]);
+//        }
+//        sh->tmp3 = ft_split(tmp->prev->cmd[0], ' ');
+//        sh->tmp4 = ft_split(tmp->next->cmd[0], ' ');
+        if ((!tmp->prev) && (tmp->cmd[0][0] == '|'))
+        {
+            sh->ret = -6;
+            sh->erro ="|"; 
+            return ;
+        }
+        else if ((tmp->cmd[0][0] == '|') && (tmp->next) && (tmp->next->cmd[0][0] == '|'))
+        {
+            sh->ret = -6;
+            sh->erro = "|";
+            return ;
+        }
+//        else if ((tmp->cmd[0][0] == '|') && (sh->tmp3 && sh->tmp4))
+//        {
+//            if ((!ft_access_command(sh->tmp3[0], sh->path)))
+//            {
+//                sh->ret = -7;
+//                sh->erro = sh->tmp3[0];
+//                return ;           
+//            }
+//            else if ((!ft_access_command(sh->tmp4[0], sh->path)))
+//            {
+//                sh->ret = -7;
+//                sh->erro = sh->tmp4[0];
+//                return ;           
+//            }
+//        }
+//        ft_free_minishell_double_aux(sh->tmp3);
+//        ft_free_minishell_double_aux(sh->tmp4);
+        tmp = tmp->next;
+    }
+}
+
+
 
 //void ft_valid_lexcal_cmd(t_minishell *sh)
 void ft_put_cmd_in_lst(t_minishell *sh)
@@ -231,7 +288,8 @@ void ft_parse(t_minishell *sh)
         ft_put_cmd_in_lst(sh);
         if (sh->ret < 0)
             return ;
-        ft_print_list(sh);
+//        ft_print_list(sh);
+//        ft_print_rev_list(sh);
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)

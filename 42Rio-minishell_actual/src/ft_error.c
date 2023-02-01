@@ -47,11 +47,11 @@ void    ft_select_way(t_minishell *sh)
     if (sh->parse_str)
     {
         if (ft_strncmp(sh->parse_str[0], "echo", 5) == 0)
-            printf("Chamar a função builtin echo\n");
+            ft_builtin_echo(sh->line);
         else if (ft_strncmp(sh->parse_str[0], "cd", 3) == 0)
-            printf("Chamar a função builtin cd\n");
+            ft_builtin_cd(sh);
         else if (ft_strncmp(sh->parse_str[0], "pwd", 4) == 0)
-            printf("Chamar a função builtin pwd\n");
+            ft_builtin_pwd(sh);
         else if (ft_strncmp(sh->parse_str[0], "export", 7) == 0)
             printf("Chamar a função builtin export\n");
         else if (ft_strncmp(sh->parse_str[0], "unset", 6) == 0)
