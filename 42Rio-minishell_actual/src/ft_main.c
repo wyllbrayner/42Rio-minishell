@@ -74,34 +74,35 @@ void    ft_init_var(t_minishell *sh, char **envp)
         sh->ret = -1;
 }
 
-void ft_minishell(t_minishell *sh)
-{
-    while (sh->running && (sh->ret == 0))
-    {
-//        printf("Dentro da minishell | dentro do loop\n");
-//        sh->cwd = getcwd(sh->buff, 1024);
-//        ft_strlcat(sh->cwd, ":> ", ft_strlen(sh->cwd) + 4);
-        sh->line = readline("(Minishell - 42Rio): ");
-//        sh->line = readline(sh->cwd);
 //        sh->line = "ls -la Makefile src/ft_main.c | grep main | cat src/ft_parse.c";
 //        sh->line = "ls -la Makefile src/ft_main.c | grep main | | src/ft_parse.c";
 //        sh->line = "ls -la Makefile src/ft_main.c | grep main | src/ft_parse.c";
-        if (!sh->line)
-            sh->ret = -3;
+
+void ft_minishell(void)
+{
+    while (sh.running && (sh.ret == 0))
+    {
+//        printf("Dentro da minishell | dentro do loop\n");
+//        sh.cwd = getcwd(sh.buff, 1024);
+//        ft_strlcat(sh.cwd, ":> ", ft_strlen(sh.cwd) + 4);
+        sh.line = readline("(Minishell - 42Rio): ");
+//        sh.line = readline(sh.cwd);
+        if (!sh.line)
+            sh.ret = -3;
         else
         {
-            add_history(sh->line);
-            ft_parse(sh);
-            if (sh->ret < 0)
-           		ft_minishell_error(sh);
+            add_history(sh.line);
+            ft_parse(&sh);
+            if (sh.ret < 0)
+           		ft_minishell_error(&sh);
             else
-                ft_select_way(sh);
-            ft_free_minishell(sh, 1);
+                ft_select_way(&sh);
+            ft_free_minishell(&sh, 1);
         }
     }
-    if (sh->ret < 0)
-        ft_minishell_error(sh);
-    ft_free_minishell(sh, 2);
+    if (sh.ret < 0)
+        ft_minishell_error(&sh);
+    ft_free_minishell(&sh, 2);
 }
 
 int main(int argc, char **argv, char **envp)
@@ -121,7 +122,7 @@ int main(int argc, char **argv, char **envp)
             ft_free_minishell(&sh, 2);
         }
         else
-            ft_minishell(&sh);
+            ft_minishell();
     }
     return (0);
 }
