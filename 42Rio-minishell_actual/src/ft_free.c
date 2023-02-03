@@ -91,16 +91,18 @@ void ft_free_minishell(t_minishell *sh, int status)
         ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a list_destroy para tmp = sh->head\n");
         ft_list_destroy(&tmp);
-        sh->head = NULL;
-        sh->out_redirect = 0;
-        sh->in_redirect = 0;
-        sh->s_int = 0;
+//        sh->head = NULL;
+//        sh->out_redirect = 0;
+//        sh->in_redirect = 0;
+//        sh->s_int = 0;
+        ft_init_var_aux_one(sh);
     }
     if (sh && (status == 2))
     {
 //    	printf("Dentro da ft_free_minishell | dentro do else | inicio\n");
         ft_free_minishell_double_aux(sh->env);
         ft_free_minishell_double_aux(sh->path);
+        ft_init_var_aux_two(sh);
     }
 //	printf("Dentro da ft_free_minishell | fim\n");
 }

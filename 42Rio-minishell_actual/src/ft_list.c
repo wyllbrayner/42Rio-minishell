@@ -126,26 +126,3 @@ void ft_print_rev_list(const t_minishell *sh)
     }
 //	printf("Dentro da ft_print_rev_list | fim\n");
 }
-
-/*
-void	ft_list_add_last(t_list *l, char **cmd)
-{
-	t_node	*p;
-
-	p = ft_node_create(cmd);
-	if (!p)
-		exit(-1);
-	if (ft_list_is_empty(l))
-	{
-		l->begin = p;
-		l->end = p;
-	}
-	else
-	{
-		l->end->next = p;
-		p->prev = l->end;
-		l->end = p;
-	}
-	l->size++;
-}
-*/

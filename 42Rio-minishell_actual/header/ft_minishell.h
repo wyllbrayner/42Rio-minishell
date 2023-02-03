@@ -74,6 +74,9 @@ void    ft_free_minishell_single_aux(char *str);
 void    ft_free_minishell_double_aux(char **str_double);
 void    ft_free_minishell(t_minishell *sh, int status);
 
+void    ft_init_var(t_minishell *sh, char **envp);
+void    ft_init_var_aux_one(t_minishell *sh);
+void    ft_init_var_aux_two(t_minishell *sh);
 
 void	ft_start_command(t_minishell *sh, int *rato);
 void    ft_parse(t_minishell *sh);
@@ -86,7 +89,8 @@ void    ft_parse_comand_is_valid(t_minishell *sh);
 void    ft_list_destroy(t_node **head);
 void    ft_list_add_last(t_node **head, t_node *node);
 t_node	*ft_node_create(char **cmd);
-void    ft_print_list(const t_minishell *sh);
-void    ft_print_rev_list(const t_minishell *sh);
+
+void    ft_print_list(const t_minishell *sh); // retirar antes de entregar!
+void    ft_print_rev_list(const t_minishell *sh); // retirar antes de entregar!
 
 #endif

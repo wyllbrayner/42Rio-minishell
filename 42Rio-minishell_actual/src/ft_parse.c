@@ -96,8 +96,6 @@ int ft_pipe_or_redirect(t_minishell *sh, long i)
 }
 */
 
-
-
 int ft_pipe_or_redirect(char *cmd)
 {
     return (cmd[0] == '|');
