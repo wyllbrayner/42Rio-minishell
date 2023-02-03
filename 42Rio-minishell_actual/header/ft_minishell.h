@@ -32,6 +32,7 @@
 typedef struct doubly_node
 {
 	char                **cmd;
+	char                *first_cmd; //verificar se vale incluir.
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
 }	t_node;
@@ -69,6 +70,7 @@ void	ft_builtin_cd(t_minishell *cmd);
 void    ft_minishell_error(t_minishell *sh);
 int     ft_builtin_echo(char *echo);
 void    ft_builtin_pwd(t_minishell *sh);
+void    ft_builtin_export(t_minishell *sh);
 
 void    ft_free_minishell_single_aux(char *str);
 void    ft_free_minishell_double_aux(char **str_double);
@@ -89,6 +91,8 @@ void    ft_parse_comand_is_valid(t_minishell *sh);
 void    ft_list_destroy(t_node **head);
 void    ft_list_add_last(t_node **head, t_node *node);
 t_node	*ft_node_create(char **cmd);
+
+size_t  ft_strchr_i(const char *str, int c);
 
 void    ft_print_list(const t_minishell *sh); // retirar antes de entregar!
 void    ft_print_rev_list(const t_minishell *sh); // retirar antes de entregar!

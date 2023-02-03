@@ -18,14 +18,27 @@ t_minishell sh;
 //        sh->line = "ls -la Makefile src/ft_main.c | grep main | | src/ft_parse.c";
 //        sh->line = "ls -la Makefile src/ft_main.c | grep main | src/ft_parse.c";
 
+/*
 void ft_sigint_handler(int sig)
 {
     sh.s_int = 1;
     printf("(Minishell - 42Rio): ^C\n");
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	replace_line("", 0);
 	rl_redisplay();
 }
+*/
+
+/*
+void ft_sigquit_handler(int sig)
+{
+    printf("(Minishell - 42Rio): ^C+'\'\n");
+//    printf("(Minishell - 42Rio): ^C\n");
+	rl_on_new_line();
+//	rl_replace_line("", 0);
+	rl_redisplay();
+}
+*/
 
 void ft_minishell(void)
 {
@@ -34,7 +47,8 @@ void ft_minishell(void)
 //        printf("Dentro da minishell | dentro do loop\n");
 //        sh.cwd = getcwd(sh.buff, 1024);
 //        ft_strlcat(sh.cwd, ":> ", ft_strlen(sh.cwd) + 4);
-        signal(SIGINT, &ft_sigint_handler);
+//        signal(SIGINT, &ft_sigint_handler);
+//        signal(SIGQUIT, &ft_sigquit_handler);
         sh.line = readline("(Minishell - 42Rio): ");
 //        sh.line = readline(sh.cwd);
         if (!sh.line)

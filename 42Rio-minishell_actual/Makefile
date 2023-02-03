@@ -14,7 +14,8 @@ COMP		= cc
 all:	$(NAME)
 
 $(NAME):	$(LB) $(LOCLHEADER)/ft_$(NAME).h
-	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline
+	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline 
+##	-L .brew/Cellar/readline/lib -I .brew/Cellar/readline/include -I /usr/local/Cellar/readline/6.3.8/include/
 ##	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline -ltinfo
 
 $(LB):	$(LOCLIBFT)/libft.a $(OBJS) $(LOCLHEADER)/ft_$(NAME).h

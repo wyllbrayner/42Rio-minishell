@@ -52,8 +52,11 @@ void    ft_select_way(t_minishell *sh)
             ft_builtin_cd(sh);
         else if (ft_strncmp(sh->parse_str[0], "pwd", 4) == 0)
             ft_builtin_pwd(sh);
-        else if (ft_strncmp(sh->parse_str[0], "export", 7) == 0)
+        else if (ft_strncmp(sh->parse_str[0], "export", 7) == 0) //depois retornar para 7
+        {
             printf("Chamar a função builtin export\n");
+            ft_builtin_export(sh);
+        }
         else if (ft_strncmp(sh->parse_str[0], "unset", 6) == 0)
             printf("Chamar a função builtin unset\n");
         else if (ft_strncmp(sh->parse_str[0], "env", 4) == 0)
