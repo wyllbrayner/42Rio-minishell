@@ -262,6 +262,25 @@ void ft_put_cmd_in_lst(t_minishell *sh)
 //    printf("Dentro da valide_lexcal_cmd | fim\n");
 }
 
+void ft_variable_expansion(t_minishell *sh)
+{
+    t_node *tmp;
+    printf("Dentro da expanção de variáveis - Início\n");
+    tmp = sh->head;
+    while (tmp)
+    {
+        printf("Dentro do loop | tmp->cmd[0]: %s\n", tmp->cmd[0]);
+/*
+        if (ft_strchr_i(tmp->cmd[0], '$') != 0)
+        {
+
+        }
+*/
+        tmp = tmp->next;
+    }    
+    printf("Dentro da expanção de variáveis - Fim\n");
+}
+
 void ft_parse(t_minishell *sh)
 {
 //    printf("Dentro da parse | inicio\n");
@@ -292,6 +311,7 @@ void ft_parse(t_minishell *sh)
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
             return ;
+        ft_variable_expansion(sh);
     }
     else
         sh->ret = -1;

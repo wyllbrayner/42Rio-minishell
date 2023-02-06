@@ -1,0 +1,121 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_main.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/09 15:23:54 by woliveir          #+#    #+#             */
+/*   Updated: 2022/05/09 15:09:49 by coder            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../header/ft_minishell.h"
+
+
+/*
+void ft_builtin_unset(t_minishell *sh)
+{
+    long    start;
+    long    end;
+    long    i;
+    long    status;
+
+    start = ft_strchr_i(sh->head->cmd[0], ' ');
+    if (start != 0)
+    {
+        end = ft_strlen(sh->head->cmd[0]);
+        sh->tmp1 = ft_substr(sh->head->cmd[0], (start + 1), (end - start - 1));
+        sh->tmp2 = ft_strjoin(sh->tmp1, "=");
+        ft_free_minishell_single_aux(sh->tmp1);
+        sh->tmp1 = NULL;
+        sh->tmp1 = sh->tmp2;
+        sh->tmp2 = NULL;
+        status = FALSE;
+        ft_unset_aux_1(sh, &i, start, end, &status);
+        if (status)
+        {
+            ft_unset_aux_2(sh, i);
+            if (sh->ret < 0)
+                return ; 
+        }
+        ft_free_minishell_single_aux(sh->tmp1);
+        sh->tmp1 = NULL;
+    }
+}
+*/
+
+void ft_builtin_unset(t_minishell *sh)
+{
+    long    start;
+    long    end;
+    long    i;
+    long    j;
+    long    k;
+    long    len;
+    int     status;
+
+    start = ft_strchr_i(sh->head->cmd[0], ' ');
+    if (start != 0)
+    {
+        end = ft_strlen(sh->head->cmd[0]);
+        sh->tmp1 = ft_substr(sh->head->cmd[0], (start + 1), (end - start - 1));
+        sh->tmp2 = ft_strjoin(sh->tmp1, "=");
+        ft_free_minishell_single_aux(sh->tmp1);
+        sh->tmp1 = NULL;
+        sh->tmp1 = sh->tmp2;
+        sh->tmp2 = NULL;
+        i = 0;
+        status = FALSE;
+        while (sh->env[i])
+        {
+            if (ft_strncmp(sh->env[i], sh->tmp1, ((end) - start)) == 0)
+            {
+                status = TRUE;
+                break ;
+            }
+            i++;
+        }
+        if (status)
+        {
+            len = 0;
+            while (sh->env[len])
+                len++;
+            sh->tmp3 = (char **)malloc(sizeof(char *) * len);
+            if (!sh->tmp3)
+            {
+                ft_free_minishell_single_aux(sh->tmp1);
+                sh->tmp1 = NULL;
+                sh->ret = -3;
+                return ;
+            }
+            sh->tmp3[--len] = NULL;
+            j = 0;
+            k = 0;
+            while (sh->env[j])
+            {
+                if (j != i)
+                {
+                    sh->tmp3[k] = sh->env[j];
+                    sh->env[j] = NULL;
+                    k++;
+                    j++;
+                }
+                else
+                {
+                    ft_free_minishell_single_aux(sh->env[j]);
+                    sh->env[j] = NULL;
+                    j++;
+                }
+            }
+            ft_free_minishell_double_aux(sh->env);
+            sh->env = NULL;
+            sh->env = sh->tmp3;
+            sh->tmp3 = NULL;
+            ft_free_minishell_double_aux(sh->tmp3);
+            sh->tmp3 = NULL;
+        }
+        ft_free_minishell_single_aux(sh->tmp1);
+        sh->tmp1 = NULL;
+    }
+}
