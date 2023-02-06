@@ -71,6 +71,7 @@ void    ft_minishell_error(t_minishell *sh);
 int     ft_builtin_echo(char *echo);
 void    ft_builtin_pwd(t_minishell *sh);
 void    ft_builtin_export(t_minishell *sh);
+void    ft_builtin_unset(t_minishell *sh);
 
 void    ft_free_minishell_single_aux(char *str);
 void    ft_free_minishell_double_aux(char **str_double);

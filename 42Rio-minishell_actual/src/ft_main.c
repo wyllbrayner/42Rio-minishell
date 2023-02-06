@@ -24,7 +24,7 @@ void ft_sigint_handler(int sig)
     sh.s_int = 1;
     printf("(Minishell - 42Rio): ^C\n");
 	rl_on_new_line();
-	replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 */
@@ -35,7 +35,7 @@ void ft_sigquit_handler(int sig)
     printf("(Minishell - 42Rio): ^C+'\'\n");
 //    printf("(Minishell - 42Rio): ^C\n");
 	rl_on_new_line();
-//	rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 */

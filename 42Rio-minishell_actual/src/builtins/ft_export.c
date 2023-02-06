@@ -44,7 +44,7 @@ void ft_builtin_export(t_minishell *sh)
             printf("    Achei a variável de ambiente: %s em env[%ld]: %s\n", sh->tmp1, i, sh->env[i]);
             ft_free_minishell_single_aux(sh->env[i]);
             sh->env[i] = NULL;
-            sh->env[i] = ft_substr(sh->head->cmd[0], (start + 1), (ft_strlen(sh->head->cmd[0]) - end + 4));
+            sh->env[i] = ft_substr(sh->head->cmd[0], (start + 1), (ft_strlen(sh->head->cmd[0]) - start));
         }
         else
         {
@@ -59,7 +59,7 @@ void ft_builtin_export(t_minishell *sh)
                 return ;
             }
             sh->tmp3[--i] = NULL;
-            sh->tmp3[--i] = ft_substr(sh->head->cmd[0], (start + 1), (ft_strlen(sh->head->cmd[0]) - end + 4));
+            sh->tmp3[--i] = ft_substr(sh->head->cmd[0], (start + 1), (ft_strlen(sh->head->cmd[0]) - start));
             while(--i >= 0)
             {
                 sh->tmp3[i] = sh->env[i];
