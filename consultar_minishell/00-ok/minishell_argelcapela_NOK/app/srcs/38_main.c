@@ -54,8 +54,8 @@ int	main(int argc, char **argv, char **envp)
 		while (1)
 			minishell(ms);
 		ms_finish(ms);
+//		rl_clear_history();
 		clear_history();
-		rl_clear_history();
 		get_next_line(-1);
 	}
 	return (0);

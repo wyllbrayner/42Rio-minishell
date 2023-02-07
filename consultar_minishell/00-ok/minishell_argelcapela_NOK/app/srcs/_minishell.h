@@ -20,6 +20,7 @@
 // libft
 # include           "1_libft/srcs/libft.h"
 # include           <errno.h>
+# include           <signal.h>
 
 /**************************************************************************** #
 #                                DESIGN                                       #
@@ -497,5 +498,9 @@ void		free_ssub(t_ssub *ssub);
 /* ms */
 void		ms_subshell(t_ms *ms);
 void		minishell(t_ms *ms);
+
+
+
+void    rl_replace_line (const char *text, int clear_undo);
 
 #endif

@@ -14,7 +14,7 @@
 
 char	*ms_print_sh_name(void)
 {
-	char	cwd[PATH_MAX];
+	char	cwd[4096];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		return (ft_printf_to_var("%s%s%s %s%s%s ", \

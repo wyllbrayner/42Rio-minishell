@@ -64,6 +64,8 @@ typedef struct  s_minishell
     char    **tmp4;
 }           t_minishell;
 
+void    rl_replace_line (const char *text, int clear_undo);
+
 void    ft_builtin_exit(t_minishell *sh);
 void    ft_builtin_env(t_minishell *sh);
 void	ft_builtin_cd(t_minishell *cmd);

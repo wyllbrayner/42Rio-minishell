@@ -14,7 +14,7 @@
 
 void	ms_pwd(t_ms *ms, t_cmd *curr_cmd, t_p *prompt)
 {
-	char	cwd[PATH_MAX];
+	char	cwd[4096];
 	int		aux;
 	int		clo;
 

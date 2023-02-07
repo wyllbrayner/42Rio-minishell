@@ -98,7 +98,7 @@ bonus:	all
 
 $(NAME):	$(OBJS_DIR) $(OBJS) $(HEADER)
 	make -C $(LIBFT_DIR)
-	$(CC) -I$(HEADER_DIR) $(RLFLAG) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT.A) $(RLFLAG)
+	$(CC) -I$(HEADER_DIR) $(RLFLAG) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT.A) $(RLFLAG)  -lreadline -L ~/.brew/opt/readline/lib -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include -I ~/.brew/opt/readline/include
 	@echo "\033[1;32mMANDATORY COMPILED SUCCESFULY!\033[0m"
 
 $(OBJS_DIR):
