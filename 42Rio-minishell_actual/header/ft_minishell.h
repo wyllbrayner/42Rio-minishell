@@ -86,6 +86,8 @@ void    ft_parse(t_minishell *sh);
 void    ft_select_way(t_minishell *sh);
 char	*ft_access_command(char *cmd, char **str);
 
+void ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status);
+
 void    ft_minishell_error(t_minishell *sh);
 void    ft_parse_comand_is_valid(t_minishell *sh);
 

@@ -262,6 +262,33 @@ void ft_put_cmd_in_lst(t_minishell *sh)
 //    printf("Dentro da valide_lexcal_cmd | fim\n");
 }
 
+void ft_variable_expansion_aux(t_minishell *sh, t_node *no)
+{
+    long    var[4];
+
+    var[0] = ft_strchr_i(no->cmd[0], '$');
+    if (var[0] != 0)
+    {
+        var[1] = ft_strlen(no->cmd[0]);
+        sh->tmp1 = ft_substr(no->cmd[0], (var[0] + 1), (var[1] - var[0] - 1));
+        sh->tmp2 = ft_strjoin(sh->tmp1, "=");
+        printf("sh->tmp2: %s\n", sh->tmp2);
+        ft_free_minishell_single_aux(sh->tmp1);
+        sh->tmp1 = NULL;
+        sh->tmp1 = sh->tmp2;
+        sh->tmp2 = NULL;
+        var[3] = FALSE;
+        ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
+        ft_free_minishell_single_aux(sh->tmp1);
+        sh->tmp1 = NULL;
+        if (var[3])
+        {
+            printf("var[3]: %ld | var[2](i): %ld | env: %s\n", var[3], var[2], sh->env[var[2]]);
+//            ft_variable_expansion_aux_1(sh, no);
+        }
+    }
+}
+
 void ft_variable_expansion(t_minishell *sh)
 {
     t_node *tmp;
@@ -269,13 +296,16 @@ void ft_variable_expansion(t_minishell *sh)
     tmp = sh->head;
     while (tmp)
     {
-        printf("Dentro do loop | tmp->cmd[0]: %s\n", tmp->cmd[0]);
-/*
         if (ft_strchr_i(tmp->cmd[0], '$') != 0)
         {
-
+            printf("Nó: %s     possui %c\n", tmp->cmd[0], '$');
+            ft_variable_expansion_aux(sh, tmp);
         }
-*/
+        else
+        {
+            printf("Nó: %s não possui %c\n", tmp->cmd[0], '$');
+        }
+
         tmp = tmp->next;
     }    
     printf("Dentro da expanção de variáveis - Fim\n");
