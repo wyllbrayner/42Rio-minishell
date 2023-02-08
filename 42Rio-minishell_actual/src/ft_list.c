@@ -98,7 +98,8 @@ void ft_print_list(const t_minishell *sh)
         printf("HEAD -> ");
         while (p)
         {
-            printf("%s -> ", p->cmd[0]);
+//            printf("cmd: %s -> ", p->cmd[0]);
+            printf("cmd: %s e first_cmd: %s -> \n", p->cmd[0], p->first_cmd);
             p = p->next;
         }
         printf("NULL\n");

@@ -35,7 +35,7 @@ typedef struct doubly_node
 	char                *first_cmd; //verificar se vale incluir.
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
-}	t_node;
+}	t_node; // aqui
 
 typedef struct  s_minishell
 {
@@ -53,11 +53,11 @@ typedef struct  s_minishell
 //    char    *cwd;
 //    char    *buff;
     char    **path;
-    char    *line;
+    char    *line; // aqui
     char    **env;
-    char    **parse_str;
+    char    **parse_str; // aqui
     char    *erro;
-    t_node  *head;
+    t_node  *head; // aqui
     char    *tmp1;
     char    *tmp2;
     char    **tmp3;

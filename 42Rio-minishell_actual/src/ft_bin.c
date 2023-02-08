@@ -37,10 +37,12 @@ void	ft_start_command(t_minishell *sh, int *rato)
 {
 	//int	pid;
 	char 	*tmp;
+//	char	*arg[] = {"ls", NULL};
 
 	if (sh && rato)
 	{
-		tmp = ft_access_command(sh->parse_str[0], sh->path);
+		tmp = ft_access_command(sh->head->first_cmd, sh->path);
+//		tmp = ft_access_command(sh->parse_str[0], sh->path);
 		if (!tmp)
 		{
 			sh->ret = -4;
@@ -53,7 +55,13 @@ void	ft_start_command(t_minishell *sh, int *rato)
 			*rato = fork();
 			if (*rato == 0)
 			{
-				execve(tmp, &sh->parse_str[0], sh->env);
+//				sh->tmp3 = ft_split(sh->head->cmd[0], ' ');
+				printf("%s\n", sh->head->first_cmd);
+				printf("%s\n", sh->head->cmd[0]);
+				printf("%s\n", sh->parse_str[0]);
+//				execve(tmp, sh->tmp3, sh->env);
+				execve(tmp, sh->head->cmd, sh->env);
+//				execve(tmp, &sh->parse_str[0], sh->env);
 			}
 			// waitpid(pid, NULL, 0);
 		}

@@ -590,6 +590,45 @@ void ft_variable_expansion(t_minishell *sh)
     printf("Dentro da expansão de variáveis - Fim\n");
 }
 
+void ft_first_cmd(t_minishell *sh)
+{
+    t_node *tmp;
+    long    i;
+    printf("Dentro da first cmd - Início\n");
+    tmp = sh->head;
+    while (tmp)
+    {
+        sh->tmp3 = ft_split(tmp->cmd[0], ' ');
+        if (!sh->tmp3)
+        {
+            sh->ret = -3;
+            return;            
+        }
+        tmp->first_cmd = ft_strdup(sh->tmp3[0]);
+        if (!tmp->first_cmd)
+        {
+            sh->ret = -3;
+            return;            
+        }
+        printf("Nó: %s     possui first_cmd: %s\n", tmp->cmd[0], tmp->first_cmd);
+        ft_free_minishell_double_aux(sh->tmp3);
+        sh->tmp3 = NULL;
+        sh->tmp3 = ft_split(tmp->cmd[0], ' ');
+        if (!sh->tmp3)
+        {
+            sh->ret = -3;
+            return;            
+        }
+        ft_free_minishell_double_aux(tmp->cmd);
+        tmp->cmd = NULL;
+        tmp->cmd = sh->tmp3;
+        sh->tmp3 = NULL;
+        tmp = tmp->next;
+    }
+    printf("Dentro da first cmd - Fim\n");
+}
+
+
 void ft_parse(t_minishell *sh)
 {
 //    printf("Dentro da parse | inicio\n");
@@ -620,6 +659,9 @@ void ft_parse(t_minishell *sh)
         ft_put_cmd_in_lst(sh);
         if (sh->ret < 0)
             return ;
+        ft_first_cmd(sh);
+        if (sh->ret < 0)
+            return ;
         ft_print_list(sh);
         ft_print_rev_list(sh);
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
@@ -627,6 +669,8 @@ void ft_parse(t_minishell *sh)
         if (sh->ret < 0)
             return ;
         ft_variable_expansion(sh);
+        if (sh->ret < 0)
+            return ;
     }
     else
         sh->ret = -1;
