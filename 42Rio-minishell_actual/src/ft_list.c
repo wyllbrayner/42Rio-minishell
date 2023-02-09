@@ -77,6 +77,8 @@ void ft_list_destroy(t_node **head)
 			head_int = head_int->next;
 //			printf("Dentro da ft_list_destroy | dentro do loop | vai liberar a tmp->cmd[0]: %s\n", tmp->cmd[0]);
 //			printf("Dentro da ft_list_destroy | dentro do loop | vai liberar a tmp->cmd[1]: %s\n", tmp->cmd[1]);
+			ft_free_minishell_single_aux(tmp->first_cmd);
+			tmp->first_cmd = NULL;
 			ft_free_minishell_double_aux(tmp->cmd);
 //			printf("Dentro da ft_list_destroy | dentro do loop | vai liberar a tmp->cmd\n");
 			free(tmp);
@@ -99,7 +101,7 @@ void ft_print_list(const t_minishell *sh)
         while (p)
         {
 //            printf("cmd: %s -> ", p->cmd[0]);
-            printf("cmd: %s e first_cmd: %s -> \n", p->cmd[0], p->first_cmd);
+            printf("cmd: %s e first_cmd: %s -> ", p->cmd[0], p->first_cmd);
             p = p->next;
         }
         printf("NULL\n");

@@ -12,6 +12,43 @@
 
 #include "../header/ft_minishell.h"
 
+static void ft_free_minishell_close_fd(int *file_fd, long amount_fd);
+
+void ft_free_minishell(t_minishell *sh, int status)
+{
+    t_node *tmp;
+
+//	printf("Dentro da ft_free_minishell | inicio\n");
+    if (sh && (status == 1))
+    {
+//    	printf("Dentro da ft_free_minishell | dentro do if\n");
+        tmp = sh->head;
+        ft_free_minishell_single_aux(sh->line);
+// NÃO APAGAR!! retirar o comentário a partir de recolocar a readline ft_free_minishell_single_aux(sh->line); // NÂO APAGAR
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para parse_str\n");
+        ft_free_minishell_double_aux(sh->parse_str);
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para out_redirect\n");
+        ft_free_minishell_double_aux(sh->out_redirect_file);
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para out_redirect_file_fd\n");
+        ft_free_minishell_close_fd(sh->out_redirect_file_fd, sh->out_redirect_file_fd_amount);
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para in_redirect\n");
+        ft_free_minishell_double_aux(sh->in_redirect_file);
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para in_redirect_file_fd\n");
+        ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a list_destroy para tmp = sh->head\n");
+        ft_list_destroy(&tmp);
+        ft_init_var_aux_one(sh);
+    }
+    if (sh && (status == 2))
+    {
+//    	printf("Dentro da ft_free_minishell | dentro do else | inicio\n");
+        ft_free_minishell_double_aux(sh->env);
+        ft_free_minishell_double_aux(sh->path);
+        ft_init_var_aux_two(sh);
+    }
+//	printf("Dentro da ft_free_minishell | fim\n");
+}
+
 void ft_free_minishell_single_aux(char *str)
 {
 //	printf("Dentro da ft_single_aux | inicio\n");
@@ -66,43 +103,4 @@ static void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
         free(file_fd);
         file_fd = NULL;
     }
-}
-
-void ft_free_minishell(t_minishell *sh, int status)
-{
-    t_node *tmp;
-
-//	printf("Dentro da ft_free_minishell | inicio\n");
-    if (sh && (status == 1))
-    {
-//    	printf("Dentro da ft_free_minishell | dentro do if\n");
-        tmp = sh->head;
-        ft_free_minishell_single_aux(sh->line);
-// NÃO APAGAR!! retirar o comentário a partir de recolocar a readline ft_free_minishell_single_aux(sh->line); // NÂO APAGAR
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para parse_str\n");
-        ft_free_minishell_double_aux(sh->parse_str);
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para out_redirect\n");
-        ft_free_minishell_double_aux(sh->out_redirect_file);
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para out_redirect_file_fd\n");
-        ft_free_minishell_close_fd(sh->out_redirect_file_fd, sh->out_redirect_file_fd_amount);
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para in_redirect\n");
-        ft_free_minishell_double_aux(sh->in_redirect_file);
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para in_redirect_file_fd\n");
-        ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a list_destroy para tmp = sh->head\n");
-        ft_list_destroy(&tmp);
-//        sh->head = NULL;
-//        sh->out_redirect = 0;
-//        sh->in_redirect = 0;
-//        sh->s_int = 0;
-        ft_init_var_aux_one(sh);
-    }
-    if (sh && (status == 2))
-    {
-//    	printf("Dentro da ft_free_minishell | dentro do else | inicio\n");
-        ft_free_minishell_double_aux(sh->env);
-        ft_free_minishell_double_aux(sh->path);
-        ft_init_var_aux_two(sh);
-    }
-//	printf("Dentro da ft_free_minishell | fim\n");
 }

@@ -53,11 +53,11 @@ typedef struct  s_minishell
 //    char    *cwd;
 //    char    *buff;
     char    **path;
-    char    *line; // aqui
+    char    *line;
     char    **env;
-    char    **parse_str; // aqui
+    char    **parse_str;
     char    *erro;
-    t_node  *head; // aqui
+    t_node  *head;
     char    *tmp1;
     char    *tmp2;
     char    **tmp3;
@@ -66,18 +66,27 @@ typedef struct  s_minishell
 
 void    rl_replace_line (const char *text, int clear_undo);
 
+void    ft_minishell_error(t_minishell *sh);
+
+void    ft_free_minishell(t_minishell *sh, int status);
+void    ft_free_minishell_single_aux(char *str);
+void    ft_free_minishell_double_aux(char **str_double);
+
+void    ft_valid_redirect_in(t_minishell *sh);
+void    ft_valid_redirect_out(t_minishell *sh);
+
+void    ft_variable_expansion(t_minishell *sh);
+
 void    ft_builtin_exit(t_minishell *sh);
 void    ft_builtin_env(t_minishell *sh);
 void	ft_builtin_cd(t_minishell *cmd);
-void    ft_minishell_error(t_minishell *sh);
 int     ft_builtin_echo(char *echo);
 void    ft_builtin_pwd(t_minishell *sh);
 void    ft_builtin_export(t_minishell *sh);
 void    ft_builtin_unset(t_minishell *sh);
 
-void    ft_free_minishell_single_aux(char *str);
-void    ft_free_minishell_double_aux(char **str_double);
-void    ft_free_minishell(t_minishell *sh, int status);
+
+
 
 void    ft_init_var(t_minishell *sh, char **envp);
 void    ft_init_var_aux_one(t_minishell *sh);

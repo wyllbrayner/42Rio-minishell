@@ -12,6 +12,29 @@
 
 #include "../header/ft_minishell.h"
 
+static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i);
+
+void    ft_init_var(t_minishell *sh, char **envp)
+{
+    long    i;
+
+    if (sh && envp)
+    {
+        ft_init_var_aux_one(sh);
+        ft_init_var_aux_two(sh);
+        i = 0;
+        while (envp[i])
+            i++;
+        sh->env = (char **)malloc(sizeof(char *) * (++i));
+        if (!sh->env)
+            sh->ret = -3;
+        else
+            ft_init_var_aux_env(sh, envp, i);
+    }
+    else
+        sh->ret = -1;
+}
+
 void    ft_init_var_aux_one(t_minishell *sh)
 {
 //    printf("Dentro da init_var_aux_one ret: %i \n", sh->ret);
@@ -40,7 +63,7 @@ void    ft_init_var_aux_two(t_minishell *sh)
 //        sh->cwd = NULL;
 //        sh->buff[1024];
         sh->running = TRUE;
-        sh->s_int = 0;
+        sh->s_int = TRUE;
         sh->env = NULL;
         sh->path = NULL;
 
@@ -67,23 +90,3 @@ static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
     }
 }
 
-void    ft_init_var(t_minishell *sh, char **envp)
-{
-    long    i;
-
-    if (sh && envp)
-    {
-        ft_init_var_aux_one(sh);
-        ft_init_var_aux_two(sh);
-        i = 0;
-        while (envp[i])
-            i++;
-        sh->env = (char **)malloc(sizeof(char *) * (++i));
-        if (!sh->env)
-            sh->ret = -3;
-        else
-            ft_init_var_aux_env(sh, envp, i);
-    }
-    else
-        sh->ret = -1;
-}
