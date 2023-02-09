@@ -12,6 +12,10 @@
 
 #include "../header/ft_minishell.h"
 
+
+//              0   1        2             3 4         5 6   7              8      
+// sh->line = "ls -la Makefile src/ft_main.c | grep main | cat src/ft_parse.c";
+
 void ft_valid_empty_cmd(t_minishell *sh)
 {
     sh->tmp1 = ft_strtrim(sh->line, " ");
@@ -137,6 +141,46 @@ void ft_valid_redirect_out(t_minishell *sh)
             sh->ret = -6;
     }
 }
+
+/*
+void ft_first_cmd(t_minishell *sh)
+{
+    t_node *tmp;
+    long    i;
+    printf("Dentro da first cmd - Início\n");
+    tmp = sh->head;
+    while (tmp)
+    {
+        sh->tmp3 = ft_split(tmp->cmd[0], ' ');
+        if (!sh->tmp3)
+        {
+            sh->ret = -3;
+            return;            
+        }
+        tmp->first_cmd = ft_strdup(sh->tmp3[0]);
+        if (!tmp->first_cmd)
+        {
+            sh->ret = -3;
+            return;            
+        }
+        printf("Nó: %s     possui first_cmd: %s\n", tmp->cmd[0], tmp->first_cmd);
+        ft_free_minishell_double_aux(sh->tmp3);
+        sh->tmp3 = NULL;
+        sh->tmp3 = ft_split(tmp->cmd[0], ' ');
+        if (!sh->tmp3)
+        {
+            sh->ret = -3;
+            return;            
+        }
+        ft_free_minishell_double_aux(tmp->cmd);
+        tmp->cmd = NULL;
+        tmp->cmd = sh->tmp3;
+        sh->tmp3 = NULL;
+        tmp = tmp->next;
+    }
+    printf("Dentro da first cmd - Fim\n");
+}
+*/
 
 void ft_valid_redirect_in(t_minishell *sh)
 {
@@ -375,6 +419,63 @@ void ft_parse(t_minishell *sh)
     else
         sh->ret = -1;
 }
+
+/*
+void ft_put_cmd_in_lst(t_minishell *sh)
+{
+    long    i;
+
+//    printf("Dentro da valide_lexcal_cmd | inicio\n");
+    i = 0;
+    sh->tmp3 = (char **)malloc(sizeof(char *) * 2);
+    if (!sh->tmp3)
+    {
+        sh->ret = -3;
+        return ;
+    }
+    sh->tmp3[0] = NULL;
+    sh->tmp3[1] = NULL;
+    while (sh->parse_str[i])
+    {
+        sh->tmp3[0] = ft_strdup(sh->parse_str[i]);
+        i++;
+        while (sh->parse_str[i] && !ft_pipe_or_redirect(sh->parse_str[i]))
+        {
+            sh->tmp1 = ft_strjoin(sh->tmp3[0], " ");
+            sh->tmp2 = ft_strjoin(sh->tmp1, sh->parse_str[i]);
+            if (!sh->tmp1 || !sh->tmp2)
+            {
+                ft_free_minishell_single_aux(sh->tmp1);
+                sh->tmp1 = NULL;
+                ft_free_minishell_single_aux(sh->tmp2);
+                sh->tmp2 = NULL;
+                ft_free_minishell_double_aux(sh->tmp3);
+                sh->tmp3 = NULL;
+                sh->ret = -3;
+                return ;
+            }
+            ft_free_minishell_single_aux(sh->tmp3[0]);
+            sh->tmp3[0] = sh->tmp2;
+            ft_free_minishell_single_aux(sh->tmp1);
+            sh->tmp2 = NULL;
+            i++;
+        }
+        ft_list_add_last(&sh->head, ft_node_create(sh->tmp3));
+        sh->tmp3[0] = NULL;
+        if (sh->parse_str[i] && ft_pipe_or_redirect(sh->parse_str[i]))
+        {
+            sh->tmp3[0] = ft_strdup(sh->parse_str[i]);
+            ft_list_add_last(&sh->head, ft_node_create(sh->tmp3));
+            sh->tmp3[0] = NULL;
+        }
+        if (sh->parse_str[i])
+            i++;
+    }
+    ft_free_minishell_double_aux(sh->tmp3);
+//    printf("Dentro da valide_lexcal_cmd | fim\n");
+}
+*/
+
 
 /*
 char *ft_join_path(char const *path, char const *cmd)

@@ -12,23 +12,29 @@
 
 #include "../header/ft_minishell.h"
 
-t_node	*ft_node_create(char **cmd)
+t_node	*ft_node_create(char *cmd)
 {
 //	printf("Dentro da ft_node_create | inicio\n");
 	t_node	*node;
 
+	if (!cmd)
+		return (NULL);
 	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
-	node->cmd = (char **)malloc(sizeof(char *) * 2);
-	if (!node->cmd)
+	node->token = ft_strdup(cmd);
+	if (!node->token)
 		return (NULL);
-	node->cmd[0] = cmd[0];
-	node->cmd[1] = cmd[1];
+	node->cmd = ft_split(cmd, ' ');
+	if (!node->cmd)
+	{
+		ft_free_minishell_single_aux(node->token);
+		node->token = NULL;
+		return (NULL);
+	}
+	node->first_cmd = node->cmd[0]; // retirar depois
 	node->prev = NULL;
 	node->next = NULL;
-//	printf("Dentro da ft_node_create | cmd[0]: %s\n", node->cmd[0]);
-//	printf("Dentro da ft_node_create | cmd[1]: %s\n", node->cmd[1]);
 //	printf("Dentro da ft_node_create | fim\n");
 	return (node);
 }
@@ -75,14 +81,12 @@ void ft_list_destroy(t_node **head)
 		{
 			tmp = head_int;
 			head_int = head_int->next;
-//			printf("Dentro da ft_list_destroy | dentro do loop | vai liberar a tmp->cmd[0]: %s\n", tmp->cmd[0]);
-//			printf("Dentro da ft_list_destroy | dentro do loop | vai liberar a tmp->cmd[1]: %s\n", tmp->cmd[1]);
-			ft_free_minishell_single_aux(tmp->first_cmd);
 			tmp->first_cmd = NULL;
+			ft_free_minishell_single_aux(tmp->token);
+			tmp->token = NULL;
 			ft_free_minishell_double_aux(tmp->cmd);
-//			printf("Dentro da ft_list_destroy | dentro do loop | vai liberar a tmp->cmd\n");
+			tmp->cmd = NULL;
 			free(tmp);
-//			printf("Dentro da ft_list_destroy | dentro do loop | vai apontar tmp->cmd para NULL\n");
 			tmp = NULL;
 		}
 	}
@@ -100,8 +104,7 @@ void ft_print_list(const t_minishell *sh)
         printf("HEAD -> ");
         while (p)
         {
-//            printf("cmd: %s -> ", p->cmd[0]);
-            printf("cmd: %s e first_cmd: %s -> ", p->cmd[0], p->first_cmd);
+            printf("token: %s -> ", p->token);
             p = p->next;
         }
         printf("NULL\n");
@@ -122,7 +125,7 @@ void ft_print_rev_list(const t_minishell *sh)
         printf("NULL -> ");
 		while (p)
 		{
-            printf("%s -> ", p->cmd[0]);
+            printf("token: %s -> ", p->token);
 			p = p->prev;
 		}	
         printf("HEAD\n");

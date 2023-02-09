@@ -51,6 +51,7 @@ void    ft_init_var_aux_one(t_minishell *sh)
     sh->parse_str = NULL;
     sh->erro = NULL;
     sh->head = NULL;
+    sh->tmp0 = NULL;
     sh->tmp1 = NULL;
     sh->tmp2 = NULL;
     sh->tmp3 = NULL;

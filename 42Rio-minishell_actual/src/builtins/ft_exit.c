@@ -12,8 +12,8 @@
 
 #include "../../header/ft_minishell.h"
 
-void ft_builtin_exit(t_minishell *sh)
+void ft_builtin_exit(t_minishell *sh, t_node *node)
 {
-    printf("exit\n");
+    printf("%s\n", node->first_cmd);
     sh->running = 0;
 }

@@ -15,7 +15,6 @@
 void ft_valid_empty_cmd(t_minishell *sh);
 void ft_valid_amount_of_quotes(t_minishell *sh);
 void ft_put_cmd_in_lst(t_minishell *sh);
-void ft_first_cmd(t_minishell *sh);
 void ft_valid_lexcal_cmd(t_minishell *sh);
 
 void ft_parse(t_minishell *sh)
@@ -44,19 +43,15 @@ void ft_parse(t_minishell *sh)
             return ;
         }
 //        printf("Após a split ret: %d\n", sh->ret);
-//        ft_valid_lexcal_cmd(sh);
         ft_put_cmd_in_lst(sh);
         if (sh->ret < 0)
             return ;
-        ft_first_cmd(sh);
-        if (sh->ret < 0)
-            return ;
-//        ft_print_list(sh);
-//        ft_print_rev_list(sh);
-//        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
+        ft_print_list(sh);
+        ft_print_rev_list(sh);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
             return ;
+//        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
 /*
         ft_variable_expansion(sh);
         if (sh->ret < 0)
@@ -124,92 +119,49 @@ void ft_put_cmd_in_lst(t_minishell *sh)
 {
     long    i;
 
-//    printf("Dentro da valide_lexcal_cmd | inicio\n");
+//    printf("Dentro da put cmd in list | inicio\n");
     i = 0;
-    sh->tmp3 = (char **)malloc(sizeof(char *) * 2);
-    if (!sh->tmp3)
-    {
-        sh->ret = -3;
-        return ;
-    }
-    sh->tmp3[0] = NULL;
-    sh->tmp3[1] = NULL;
     while (sh->parse_str[i])
     {
-        sh->tmp3[0] = ft_strdup(sh->parse_str[i]);
+        sh->tmp0 = ft_strdup(sh->parse_str[i]);
+//      testar se sh->tmp0 é null
         i++;
         while (sh->parse_str[i] && !ft_pipe_or_redirect(sh->parse_str[i]))
         {
-            sh->tmp1 = ft_strjoin(sh->tmp3[0], " ");
+            sh->tmp1 = ft_strjoin(sh->tmp0, " ");
             sh->tmp2 = ft_strjoin(sh->tmp1, sh->parse_str[i]);
             if (!sh->tmp1 || !sh->tmp2)
             {
+                ft_free_minishell_single_aux(sh->tmp0);
+                sh->tmp0 = NULL;
                 ft_free_minishell_single_aux(sh->tmp1);
                 sh->tmp1 = NULL;
                 ft_free_minishell_single_aux(sh->tmp2);
                 sh->tmp2 = NULL;
-                ft_free_minishell_double_aux(sh->tmp3);
-                sh->tmp3 = NULL;
                 sh->ret = -3;
                 return ;
             }
-            ft_free_minishell_single_aux(sh->tmp3[0]);
-            sh->tmp3[0] = sh->tmp2;
-            ft_free_minishell_single_aux(sh->tmp1);
+            ft_free_minishell_single_aux(sh->tmp0);
+            sh->tmp0 = sh->tmp2;
             sh->tmp2 = NULL;
+            ft_free_minishell_single_aux(sh->tmp1);
+            sh->tmp1 = NULL;
             i++;
         }
-        ft_list_add_last(&sh->head, ft_node_create(sh->tmp3));
-        sh->tmp3[0] = NULL;
+        ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
+        ft_free_minishell_single_aux(sh->tmp0);
+        sh->tmp0 = NULL;
         if (sh->parse_str[i] && ft_pipe_or_redirect(sh->parse_str[i]))
         {
-            sh->tmp3[0] = ft_strdup(sh->parse_str[i]);
-            ft_list_add_last(&sh->head, ft_node_create(sh->tmp3));
-            sh->tmp3[0] = NULL;
+            sh->tmp0 = ft_strdup(sh->parse_str[i]);
+            ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
+            ft_free_minishell_single_aux(sh->tmp0);
+            sh->tmp0 = NULL;
         }
         if (sh->parse_str[i])
             i++;
     }
-    ft_free_minishell_double_aux(sh->tmp3);
-//    printf("Dentro da valide_lexcal_cmd | fim\n");
-}
-
-void ft_first_cmd(t_minishell *sh)
-{
-    t_node *tmp;
-    long    i;
-    printf("Dentro da first cmd - Início\n");
-    tmp = sh->head;
-    while (tmp)
-    {
-        sh->tmp3 = ft_split(tmp->cmd[0], ' ');
-        if (!sh->tmp3)
-        {
-            sh->ret = -3;
-            return;            
-        }
-        tmp->first_cmd = ft_strdup(sh->tmp3[0]);
-        if (!tmp->first_cmd)
-        {
-            sh->ret = -3;
-            return;            
-        }
-        printf("Nó: %s     possui first_cmd: %s\n", tmp->cmd[0], tmp->first_cmd);
-        ft_free_minishell_double_aux(sh->tmp3);
-        sh->tmp3 = NULL;
-        sh->tmp3 = ft_split(tmp->cmd[0], ' ');
-        if (!sh->tmp3)
-        {
-            sh->ret = -3;
-            return;            
-        }
-        ft_free_minishell_double_aux(tmp->cmd);
-        tmp->cmd = NULL;
-        tmp->cmd = sh->tmp3;
-        sh->tmp3 = NULL;
-        tmp = tmp->next;
-    }
-    printf("Dentro da first cmd - Fim\n");
+//    printf("Dentro da put cmd in list | fim\n");
 }
 
 void ft_valid_lexcal_cmd(t_minishell *sh)

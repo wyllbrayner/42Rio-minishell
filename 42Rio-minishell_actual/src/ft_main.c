@@ -16,6 +16,8 @@ t_minishell sh;
 
 void ft_minishell(void);
 
+void    ft_exec_token(t_minishell *sh);
+
 int main(int argc, char **argv, char **envp)
 {
     if (argc != 1)
@@ -56,13 +58,116 @@ void ft_minishell(void)
         if (sh.ret < 0)
        		ft_minishell_error(&sh);
         else
-            ft_select_way(&sh);
+        {
+            ft_exec_token(&sh);
+//            ft_select_way(&sh);
+        }
         ft_free_minishell(&sh, 1);
     }
     if (sh.ret < 0)
         ft_minishell_error(&sh);
     ft_free_minishell(&sh, 2);
 }
+
+void    ft_exec_token(t_minishell *sh)
+{
+    t_node *head;
+    t_node *prev;
+
+    head = sh->head;
+    while (head)
+    {
+        if (head->first_cmd[0] != '|')
+        {
+            printf("nó [token    ]: %s\n", head->token);
+            printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
+            printf("nó [first cmd]: %s\n", head->first_cmd);
+            ft_select_way(sh, head);
+        }
+        head = head->next;
+    }
+}
+
+void    ft_select_way(t_minishell *sh, t_node *node)
+{
+    if (sh && node)
+    {
+        if (ft_strncmp(sh->parse_str[0], "echo", 5) == 0)
+        {
+            printf("Chama a echo\n");
+            ft_builtin_echo(sh->line);
+        }
+//        if (ft_strncmp(sh->parse_str[0], "echo", 5) == 0)
+//            ft_builtin_echo(sh->line);
+        else if (ft_strncmp(sh->parse_str[0], "cd", 3) == 0)
+            ft_builtin_cd(sh);
+        else if (ft_strncmp(sh->parse_str[0], "pwd", 4) == 0)
+            ft_builtin_pwd(sh);
+        else if (ft_strncmp(sh->parse_str[0], "export", 7) == 0)
+        {
+            printf("Chamar a função builtin export\n");
+            ft_builtin_export(sh);
+        }
+        else if (ft_strncmp(node->first_cmd, "unset", 6) == 0)
+        {
+            printf("Chamar a função builtin unset\n");
+            ft_builtin_unset(sh);
+        }
+        else if (ft_strncmp(node->first_cmd, "env", 4) == 0)
+            ft_builtin_env(sh);
+        else if (ft_strncmp(node->first_cmd, "exit", 5) == 0)
+            ft_builtin_exit(sh, node);
+        else
+        {
+            int rato;
+            rato = 0;
+            ft_start_command(sh, &rato);
+            wait(NULL);
+        }
+    }
+    else
+        printf("sh->parse não inicializado\n");     
+}
+
+/*
+void    ft_select_way(t_minishell *sh)
+{
+    if (sh->parse_str)
+    {
+        if (ft_strncmp(sh->parse_str[0], "echo", 5) == 0)
+            ft_builtin_echo(sh->line);
+        else if (ft_strncmp(sh->parse_str[0], "cd", 3) == 0)
+            ft_builtin_cd(sh);
+        else if (ft_strncmp(sh->parse_str[0], "pwd", 4) == 0)
+            ft_builtin_pwd(sh);
+        else if (ft_strncmp(sh->parse_str[0], "export", 7) == 0) //depois retornar para 7
+        {
+            printf("Chamar a função builtin export\n");
+            ft_builtin_export(sh);
+        }
+        else if (ft_strncmp(sh->parse_str[0], "unset", 6) == 0)
+        {
+            printf("Chamar a função builtin unset\n");
+            ft_builtin_unset(sh);
+        }
+        else if (ft_strncmp(sh->parse_str[0], "env", 4) == 0)
+            ft_builtin_env(sh);
+        else if (ft_strncmp(sh->parse_str[0], "exit", 5) == 0)
+            ft_builtin_exit(sh);
+        else
+        {
+            int rato;
+            rato = 0;
+            ft_start_command(sh, &rato);
+            wait(NULL);
+        }
+    }
+    else
+        printf("sh->parse não inicializado\n");     
+}
+*/
+
+
 
 /*
 void ft_sigint_handler(int sig)
