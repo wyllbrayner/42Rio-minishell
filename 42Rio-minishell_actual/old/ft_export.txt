@@ -12,21 +12,20 @@
 
 #include "../../header/ft_minishell.h"
 
-void ft_builtin_export(t_minishell *sh, t_node *node)
+void ft_builtin_export(t_minishell *sh)
 {
     long    start;
     long    end;
     long    i;
-    long    status;
+    int     status;
 
     printf("Dentro da export\n");
 
-    start = ft_strchr_i(node->token, ' ');
-    end = ft_strchr_i(node->token, '=');
-    printf("node->token: %s | start %ld | end: %ld\n", node->token, start, end);
+    start = ft_strchr_i(sh->head->cmd[0], ' ');
+    end = ft_strchr_i(sh->head->cmd[0], '=');
     if (end > start)
     {
-        sh->tmp1 = ft_substr(node->token, (start + 1), end - start);
+        sh->tmp1 = ft_substr(sh->head->cmd[0], (start + 1), end - start);
         printf("Dentro da export | start: %ld | end: %ld | sub_str: %s\n", start, end, sh->tmp1);
         i = 0;
         status = FALSE;
@@ -39,12 +38,13 @@ void ft_builtin_export(t_minishell *sh, t_node *node)
             }
             i++;
         }
+//      if (status == 1)
         if (status)
         {
             printf("    Achei a variável de ambiente: %s em env[%ld]: %s\n", sh->tmp1, i, sh->env[i]);
             ft_free_minishell_single_aux(sh->env[i]);
             sh->env[i] = NULL;
-            sh->env[i] = ft_substr(node->token, (start + 1), (ft_strlen(node->token) - start));
+            sh->env[i] = ft_substr(sh->head->cmd[0], (start + 1), (ft_strlen(sh->head->cmd[0]) - start));
         }
         else
         {
@@ -59,7 +59,7 @@ void ft_builtin_export(t_minishell *sh, t_node *node)
                 return ;
             }
             sh->tmp3[--i] = NULL;
-            sh->tmp3[--i] = ft_substr(node->token, (start + 1), (ft_strlen(node->token) - start));
+            sh->tmp3[--i] = ft_substr(sh->head->cmd[0], (start + 1), (ft_strlen(sh->head->cmd[0]) - start));
             while(--i >= 0)
             {
                 sh->tmp3[i] = sh->env[i];
@@ -71,7 +71,15 @@ void ft_builtin_export(t_minishell *sh, t_node *node)
         }
         ft_free_minishell_single_aux(sh->tmp1);
         sh->tmp1 = NULL;
-        sh->tmp3 = NULL; // colocar após a linha 70!!!!
+        sh->tmp3 = NULL;
+        /*
+        i = 0;
+        while (sh->env[i])
+        {
+            printf("sh->env[%ld]: %s\n", i, sh->env[i]);
+            i++;
+        }
+        */
     }
     else
     {

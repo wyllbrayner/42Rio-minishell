@@ -49,13 +49,17 @@ void    ft_init_var_aux_one(t_minishell *sh)
     sh->in_redirect_file_fd_amount = 0;
     sh->line = NULL;
     sh->parse_str = NULL;
+    sh->errno = 0;
     sh->erro = NULL;
     sh->head = NULL;
+    sh->head = NULL;
+    sh->node_tmp = NULL;
     sh->tmp0 = NULL;
     sh->tmp1 = NULL;
     sh->tmp2 = NULL;
     sh->tmp3 = NULL;
     sh->tmp4 = NULL;
+    sh->tmp5 = NULL;
 }
 
 void    ft_init_var_aux_two(t_minishell *sh)

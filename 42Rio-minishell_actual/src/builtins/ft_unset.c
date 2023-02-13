@@ -16,15 +16,15 @@ void ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status
 void ft_unset_aux_2(t_minishell *sh, long i);
 void ft_unset_aux_3(t_minishell *sh, long i);
 
-void ft_builtin_unset(t_minishell *sh)
+void ft_builtin_unset(t_minishell *sh, t_node *node)
 {
     long    var[4];
 
-    var[0] = ft_strchr_i(sh->head->cmd[0], ' ');
+    var[0] = ft_strchr_i(node->token, ' ');
     if (var[0] != 0)
     {
-        var[1] = ft_strlen(sh->head->cmd[0]);
-        sh->tmp1 = ft_substr(sh->head->cmd[0], (var[0] + 1), (var[1] - var[0] - 1));
+        var[1] = ft_strlen(node->token);
+        sh->tmp1 = ft_substr(node->token, (var[0] + 1), (var[1] - var[0] - 1));
         sh->tmp2 = ft_strjoin(sh->tmp1, "=");
         ft_free_minishell_single_aux(sh->tmp1);
         sh->tmp1 = NULL;

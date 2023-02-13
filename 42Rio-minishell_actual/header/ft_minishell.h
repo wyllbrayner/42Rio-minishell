@@ -15,23 +15,23 @@
 
 # include "../libft/libft.h"
 # include <stdio.h>
-
-//# include <linux/limits.h>
-//# include <limits.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
-# include <stdbool.h>
 
 # define TRUE 1;
 # define FALSE 0;
+
 //# define PATH_MAX 1024;
+//# include <linux/limits.h>
+//# include <limits.h>
+//# include <stdbool.h>
 
 typedef struct doubly_node
 {
-	char                **cmd;
+	char                **cmd; 
 	char                *token;
 	char                *first_cmd;
 	struct doubly_node	*prev;
@@ -51,6 +51,7 @@ typedef struct  s_minishell
     long    in_redirect_file_fd_amount;
     int     running;
     int     s_int;
+    int     errno;
 //    char    *cwd;
 //    char    *buff;
     char    **path;
@@ -59,9 +60,11 @@ typedef struct  s_minishell
     char    **parse_str;
     char    *erro;
     t_node  *head;
+    t_node  *node_tmp;
     char    *tmp0;
     char    *tmp1;
     char    *tmp2;
+    char    *tmp5;
     char    **tmp3;
     char    **tmp4;
 }           t_minishell;
@@ -80,16 +83,16 @@ void    ft_valid_redirect_out(t_minishell *sh);
 void    ft_variable_expansion(t_minishell *sh);
 
 void    ft_builtin_exit(t_minishell *sh, t_node *node);
-void    ft_builtin_env(t_minishell *sh);
-void	ft_builtin_cd(t_minishell *cmd);
+void    ft_builtin_env(t_minishell *sh, t_node *node);
+void	ft_builtin_cd(t_minishell *cmd, t_node *node);
 int     ft_builtin_echo(char *echo);
 void    ft_builtin_pwd(t_minishell *sh);
-void    ft_builtin_export(t_minishell *sh);
-void    ft_builtin_unset(t_minishell *sh);
+void    ft_builtin_export(t_minishell *sh, t_node *node);
+void    ft_builtin_unset(t_minishell *sh, t_node *node);
 
-
-
-
+void    ft_variable_expansion_aux(t_minishell *sh, t_node *no);
+void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, int *status);
+void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node);
 void    ft_init_var(t_minishell *sh, char **envp);
 void    ft_init_var_aux_one(t_minishell *sh);
 void    ft_init_var_aux_two(t_minishell *sh);

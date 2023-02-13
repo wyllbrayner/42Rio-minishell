@@ -17,7 +17,7 @@ void    ft_minishell_error(t_minishell *sh)
     if (sh)
     {
         if (sh->ret == -1)
-            printf("Erro inesperado!\n");
+            printf("(Minishell): Erro inesperado!\n");
         else if (sh->ret == -2)
             printf("(Minishell): %s: No such file or directory\n", sh->erro);
         else if (sh->ret == -3)
@@ -37,6 +37,8 @@ void    ft_minishell_error(t_minishell *sh)
             printf("(Minishell): %s: No such file or directory\n", sh->erro);
         else if (sh->ret == -8)
             ;
+        else if (sh->ret == -9)
+            printf("(Minishell): %s: too many arguments\n", sh->erro);
         sh->ret = 0;
         sh->erro = NULL;
     }
