@@ -24,17 +24,23 @@ void ft_free_minishell(t_minishell *sh, int status)
 //    	printf("Dentro da ft_free_minishell | dentro do if\n");
         tmp = sh->head;
         ft_free_minishell_single_aux(sh->line);
+        sh->line = NULL;
 // NÃO APAGAR!! retirar o comentário a partir de recolocar a readline ft_free_minishell_single_aux(sh->line); // NÂO APAGAR
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para parse_str\n");
         ft_free_minishell_double_aux(sh->parse_str);
+        sh->parse_str = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para out_redirect\n");
         ft_free_minishell_double_aux(sh->out_redirect_file);
+        sh->out_redirect_file = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para out_redirect_file_fd\n");
         ft_free_minishell_close_fd(sh->out_redirect_file_fd, sh->out_redirect_file_fd_amount);
+        sh->out_redirect_file_fd = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para in_redirect\n");
         ft_free_minishell_double_aux(sh->in_redirect_file);
+        sh->in_redirect_file = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para in_redirect_file_fd\n");
         ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
+        sh->in_redirect_file_fd = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a list_destroy para tmp = sh->head\n");
         ft_list_destroy(&tmp);
         ft_init_var_aux_one(sh);
@@ -43,7 +49,9 @@ void ft_free_minishell(t_minishell *sh, int status)
     {
 //    	printf("Dentro da ft_free_minishell | dentro do else | inicio\n");
         ft_free_minishell_double_aux(sh->env);
+        sh->env = NULL;
         ft_free_minishell_double_aux(sh->path);
+        sh->path = NULL;
         ft_init_var_aux_two(sh);
     }
 //	printf("Dentro da ft_free_minishell | fim\n");
@@ -78,6 +86,7 @@ void ft_free_minishell_double_aux(char **str_double)
         {
 //        	printf("Dentro da ft_double_aux | dentro do if | dentro do loop | chama a single aux para %s\n", str_double[i]);
             ft_free_minishell_single_aux(str_double[i]);
+            str_double[i] = NULL;
             i++;
         }
 //     	printf("Dentro da ft_double_aux | dentro do if | libera str_double\n");

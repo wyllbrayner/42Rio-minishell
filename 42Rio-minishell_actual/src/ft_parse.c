@@ -42,6 +42,12 @@ void ft_parse(t_minishell *sh)
             sh->ret = -3;
             return ;
         }
+        int i = 0;
+        while (sh->parse_str[i])
+        {
+            printf("%s\n", sh->parse_str[i]);
+            i++;
+        }
 //        printf("Após a split ret: %d\n", sh->ret);
         ft_put_cmd_in_lst(sh);
         if (sh->ret < 0)
@@ -115,6 +121,77 @@ static int ft_pipe_or_redirect(char *cmd)
 //    return (cmd[0] == '|' || cmd[0] == '<' || cmd[0] == '>');
 }
 
+static void ft_count_quotes(char *cmd, long *sq, long *dq)
+{
+    long    i;
+
+    i = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '\'')
+            *sq = *sq + 1;
+        else if (cmd[i] == '\"')
+            *dq = *dq + 1;
+        i++;
+    }
+}
+
+void ft_put_cmd_in_lst(t_minishell *sh)
+{
+    long    i;
+    long    sq;
+    long    dq;
+
+//    printf("Dentro da put cmd in list | inicio\n");
+    i = 0;
+    sq = 0;
+    dq = 0;
+    while (sh->parse_str[i])
+    {
+        sh->tmp0 = ft_strdup(sh->parse_str[i]);
+        ft_count_quotes(sh->parse_str[i], &sq, &dq);
+
+//      testar se sh->tmp0 é null
+        i++;
+        while (sh->parse_str[i] && !ft_pipe_or_redirect(sh->parse_str[i]))
+        {
+            sh->tmp1 = ft_strjoin(sh->tmp0, " ");
+            sh->tmp2 = ft_strjoin(sh->tmp1, sh->parse_str[i]);
+            if (!sh->tmp1 || !sh->tmp2)
+            {
+                ft_free_minishell_single_aux(sh->tmp0);
+                sh->tmp0 = NULL;
+                ft_free_minishell_single_aux(sh->tmp1);
+                sh->tmp1 = NULL;
+                ft_free_minishell_single_aux(sh->tmp2);
+                sh->tmp2 = NULL;
+                sh->ret = -3;
+                return ;
+            }
+            ft_free_minishell_single_aux(sh->tmp0);
+            sh->tmp0 = sh->tmp2;
+            sh->tmp2 = NULL;
+            ft_free_minishell_single_aux(sh->tmp1);
+            sh->tmp1 = NULL;
+            i++;
+        }
+        ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
+        ft_free_minishell_single_aux(sh->tmp0);
+        sh->tmp0 = NULL;
+        if (sh->parse_str[i] && ft_pipe_or_redirect(sh->parse_str[i]))
+        {
+            sh->tmp0 = ft_strdup(sh->parse_str[i]);
+            ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
+            ft_free_minishell_single_aux(sh->tmp0);
+            sh->tmp0 = NULL;
+        }
+        if (sh->parse_str[i])
+            i++;
+    }
+//    printf("Dentro da put cmd in list | fim\n");
+}
+
+/*
 void ft_put_cmd_in_lst(t_minishell *sh)
 {
     long    i;
@@ -163,6 +240,7 @@ void ft_put_cmd_in_lst(t_minishell *sh)
     }
 //    printf("Dentro da put cmd in list | fim\n");
 }
+*/
 
 void ft_valid_lexcal_cmd(t_minishell *sh)
 {

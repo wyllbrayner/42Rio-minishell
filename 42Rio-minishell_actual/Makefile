@@ -8,7 +8,9 @@ UTIL		= ar
 OPT			= rc
 SUMM		= ranlib
 RM			= rm -f
-FLAG		= -g -Wall -Wextra -Werror
+##FLAG		= -g -Wall -Wextra -Werror -fsanitize=address
+##FLAG		= -g -Wall -Wextra -Werror
+FLAG		= -Wall -Wextra -Werror
 COMP		= cc
 
 all:	$(NAME)

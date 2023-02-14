@@ -62,12 +62,12 @@ static void	print_echo(char *str, int n)
 	j = 0;
 	i = n + 2;
 	j = filter_space(str);
-	printf("int j%d\n", j);
+//	printf("int j%d\n", j);
 	while (str[i] == ' ')
 		i++;
 	while(i <= j)
 	{
-		if (str[i] == 34 || str[i] == 39 )
+		if (str[i] == 39)
 			i++;
 		else
 		{
@@ -79,11 +79,16 @@ static void	print_echo(char *str, int n)
 
 int ft_builtin_echo(char *echo)
 {
+	printf("Dentro da ft_builtin_echo - Inicio\n");
 	int flag;
 	
 	flag = 0;
+	printf("echo: %s \n", echo);
 	if(ft_strlen(echo) == 4)
+	{
+//		printf("Dentro do if\n");
 		return(printf("\n"));
+	}
 	if (echo)
 		flag = filter_echo(echo);
 	if(flag)
@@ -95,12 +100,13 @@ int ft_builtin_echo(char *echo)
 				flag++;
 		while (echo[flag])
 		{
-			while (echo[flag] == 34 || echo[flag] == 39 )
+			while (echo[flag] == 39)
 				flag++;
 			printf("%c", echo[flag]);
 			flag++;
 		}
 		printf("\n");
 	}
+	printf("Dentro da ft_builtin_echo - Fim\n");
 	return (EXIT_SUCCESS);
 }

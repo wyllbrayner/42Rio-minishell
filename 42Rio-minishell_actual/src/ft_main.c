@@ -98,7 +98,8 @@ void    ft_select_way(t_minishell *sh, t_node *node)
         if (ft_strncmp(node->first_cmd, "echo", 5) == 0)
         {
             printf("Chama a builtin echo\n");
-            ft_builtin_echo(sh->line);
+            ft_builtin_echo(node->token);
+//            ft_builtin_echo(sh->line);
         }
         else if (ft_strncmp(node->first_cmd, "cd", 3) == 0)
         {
