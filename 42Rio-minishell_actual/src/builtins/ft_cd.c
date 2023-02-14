@@ -12,6 +12,7 @@
 
 #include "../../header/ft_minishell.h"
 
+static void	ft_builtin_cd_aux_0(t_minishell *sh, t_node *node, char *str);
 static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node);
 
 void	ft_builtin_cd(t_minishell *sh, t_node *node)
@@ -33,140 +34,110 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 	}
 	else
 	{
-		ft_single_and_double_quotes(sh, node, "cd ", &status);
-		printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s | status: %i!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2], status);
-/*
-//		printf("Dentro da ft_builtin_cd | i: %ld apenas um parâmetro\n", i);
-		sh->tmp0 = getcwd(NULL, 0);
-//		printf("Dentro da ft_builtin_cd | Apenas um parâmetro | passou da getcwd\n");
-		if (!sh->tmp0)
+		if (i == 2)
 		{
-			printf("Dentro da ft_builtin_cd | Apenas um parâmetro | getcwd retornou NULL (%s)\n", sh->tmp0);
-			sh->ret = -3;
-			return ;
+			ft_single_and_double_quotes(sh, node, "cd ", &status);
+			printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s | status: %i!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2], status);
 		}
-		else
+		if (status)
 		{
-//			printf("Dentro da ft_builtin_cd | Apenas um parâmetro | getcwd retornou ponteiro (%s)\n", sh->tmp0);
 			if (i == 1)
-			{			
-					printf("Apenas ''!!!!\n");
-					sh->tmp1 = ft_strdup("cd $HOME");
-					if (!sh->tmp1)
-					{
-						ft_free_minishell_single_aux(sh->tmp0);
-						sh->tmp0 = NULL;					
-						sh->ret = -3;
-						return ;
-					}
-					ft_builtin_cd_aux_1(sh, node);
-					if (sh->ret < 0)
-					{
-						ft_free_minishell_single_aux(sh->tmp0);
-						sh->tmp0 = NULL;					
-						return ;
-					}
-					printf("Apenas '' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
-
-				ft_free_minishell_single_aux(sh->tmp0); //temporário até colocar a expansão das variáveis
-				sh->tmp0 = NULL; //temporário até colocar a expansão das variáveis
-//				printf("Dentro da ft_builtin_cd | sem parametro | getcwd retornou ponteiro\n");
-				return ; //temporário até colocar a expansão das variáveis
-				////expandir variável para HOME mallocando mais uma posição e colocando NULL na última posição!!!!!
+			{	
+				printf("Apenas ''!!!!\n");
+				ft_builtin_cd_aux_0(sh, node, "cd $HOME");
+				if (sh->ret < 0)
+					return ;
+				printf("Apenas '' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
 			}
 			else if (node->cmd[1][0] == '~')
 			{
 				if (ft_strlen(node->cmd[1]) == 1)
 				{
 					printf("Apenas '~'!!!!\n");
-					sh->tmp1 = ft_strdup("cd $HOME");
-					if (!sh->tmp1)
-					{
-						ft_free_minishell_single_aux(sh->tmp0);
-						sh->tmp0 = NULL;					
-						sh->ret = -3;
-						return ;
-					}
-					ft_builtin_cd_aux_1(sh, node);
+					ft_builtin_cd_aux_0(sh, node, "cd $HOME");
 					if (sh->ret < 0)
-					{
-						ft_free_minishell_single_aux(sh->tmp0);
-						sh->tmp0 = NULL;
 						return ;
-					}
 					printf("Apenas '~' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
 				}
 				else
 				{
-//					printf("len(node->cmd[1]): %zu\n", ft_strlen(node->cmd[1]));
 					sh->tmp5 = ft_substr(node->cmd[1], 1, (ft_strlen(node->cmd[1]) - 1));
 					printf("substr de node->cmd[1]: %s\n", sh->tmp5);
-
-					sh->tmp1 = ft_strdup("cd $HOME");
-					if (!sh->tmp1)
-					{
-						ft_free_minishell_single_aux(sh->tmp0);
-						sh->tmp0 = NULL;					
-						sh->ret = -3;
-						return ;
-					}
-					ft_builtin_cd_aux_1(sh, node);
+					ft_builtin_cd_aux_0(sh, node, "cd $HOME");
 					if (sh->ret < 0)
-					{
-						ft_free_minishell_single_aux(sh->tmp0);
-						sh->tmp0 = NULL;					
 						return ;
-					}
-
-//					printf("Apenas '~' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
-
 					sh->tmp1 = ft_strjoin(node->token, sh->tmp5);
 					ft_free_minishell_single_aux(sh->tmp5);
 					sh->tmp5 = NULL;
-
-					printf("Apenas '~' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s | join (token + tmp5): %s!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2], sh->tmp1);
-
 					ft_builtin_cd_aux_2(sh, node);
 					printf("'~ + alguma coisa' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
-
-					printf("'~' + alguma coisa!!!!\n");
-				}		
-				printf("Dentro da ft_builtin_cd | parâmetro = '~' | getcwd retornou ponteiro\n");
-				ft_free_minishell_single_aux(sh->tmp0);  //temporário até colocar a expansão das variáveis
-				sh->tmp0 = NULL;  //temporário até colocar a expansão das variáveis
-				return ; //temporário até colocar a expansão das variáveis
-				////expandir variável para HOME mallocando mais uma posição e colocando NULL na última posição!!!!!
+				}
 			}
-			else if ((node->cmd[1][0] == '\'') || (node->cmd[1][0] == '\"'))
+			else if (node->cmd[1][0] == '$')
 			{
-				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | getcwd retornou ponteiro | node->cmd[1][0] é '\'' ou '\"'\n");
+				sh->tmp0 = ft_substr(node->token, 0, ft_strchr_i(node->token, '/'));
+				sh->tmp5 = ft_substr(node->cmd[1], ft_strchr_i(node->cmd[1], '/'), (ft_strlen(node->cmd[1]) - ft_strchr_i(node->cmd[1], '/')));
+				if (!sh->tmp5 || !sh->tmp5)
+				{
+					ft_free_minishell_single_aux(sh->tmp0);
+					sh->tmp0 = NULL;
+					ft_free_minishell_single_aux(sh->tmp5);
+					sh->tmp5 = NULL;
+					return;
+				}
+				if (ft_strchr_i(node->cmd[1], '/') == 0)
+				{
+					printf("Apenas '$var'!!!!\n");
+					ft_builtin_cd_aux_0(sh, node, node->token);
+					if (sh->ret < 0)
+						return ;
+					printf("Apenas '$var' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
+				}
+				else
+				{
+					printf("Apenas '$var'!!!!\n");
+					ft_builtin_cd_aux_0(sh, node, sh->tmp0);
+					if (sh->ret < 0)
+						return ;
+					sh->tmp1 = ft_strjoin(node->token, sh->tmp5);
+					ft_builtin_cd_aux_2(sh, node);
+					printf("Apenas '$var' + alguma coisa token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
+				}
+				ft_free_minishell_single_aux(sh->tmp5);
+				sh->tmp5 = NULL;
 				ft_free_minishell_single_aux(sh->tmp0);
 				sh->tmp0 = NULL;
-				return ; ///temporário até colocar a função para retirar aspas simples e/ou duplas!!!!!
 			}
-			if (ft_strchr_i(node->token, '$') != 0)
-			{
-				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | getcwd retornou ponteiro | node->cmd[1][0] é '$'\n");
-				ft_free_minishell_single_aux(sh->tmp0);
-				sh->tmp0 = NULL;
-				return ;
-				// se $OLDPWD, $PWD ou $HOME -> expandir para a variável correspondente!!!
-				// else
-				// sh->ret = -7;
-				// sh->erro = variável correspondente já expandida!!!!!
-			}
+			printf("tmp0: %s\n", sh->tmp0);
+			printf("tmp1: %s\n", sh->tmp1);
+			printf("tmp2: %s\n", sh->tmp2);
+			printf("tmp5: %s\n", sh->tmp5);
+		}
+		else
+		{
+			sh->ret = -7;
+			sh->erro = node->cmd[1];
+			sh->errno = 1;
+		}
+		sh->tmp0 = getcwd(NULL, 0);
+		if (!sh->tmp0)
+		{
+			printf("Dentro da ft_builtin_cd | getcwd retornou NULL (%s)\n", sh->tmp0);
+			sh->ret = -3;
+			return ;
+		}
+		else
+		{
+			printf("Dentro da ft_builtin_cd | getcwd retornou ponteiro (%s)\n", sh->tmp0);
 			if (chdir(node->cmd[1]) == -1)
 			{
 				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | chdir retornou -1\n");
 				sh->ret = -7;
 				sh->erro = node->cmd[1];
 				sh->errno = 1;
-				ft_free_minishell_single_aux(sh->tmp0);
-				sh->tmp0 = NULL;
 			}
 			else
 			{
-				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | getcwd retornou ponteiro | else final\n");
 				sh->tmp1 = ft_strjoin("export OLDPWD=", sh->tmp0);
 				if (!sh->tmp1)
 				{
@@ -229,9 +200,23 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 				tmp = NULL;
 			}
 		}
-*/
 	}
 	printf("Dentro da ft_builtin_cd | Fim\n");
+}
+
+static void	ft_builtin_cd_aux_0(t_minishell *sh, t_node *node, char *str)
+{
+	sh->tmp1 = ft_strdup(str);
+	printf("Dentro da ft_builtin_cd_aux_0 | inicio\n");
+	if (!sh->tmp1)
+	{
+		sh->ret = -3;
+		return ;
+	}
+	ft_builtin_cd_aux_1(sh, node);
+	if (sh->ret < 0)
+		return ;
+	printf("Dentro da ft_builtin_cd_aux_0 | Fim\n");
 }
 
 static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node)
@@ -241,14 +226,11 @@ static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node)
 	if (sh->ret < 0)
 		return ;
 	printf("Apenas '' token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s !!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
-
 	ft_variable_expansion_aux(sh, node);
 	if (sh->ret < 0)
 		return ;				
 	printf("Apenas '' %s após expansão de var!!!!\n", node->cmd[1]);
 	ft_builtin_cd_aux_2(sh, node);
-	if (sh->ret < 0)
-		return ;
 	printf("Dentro da ft_builtin_cd_aux_1 | Fim\n");
 }
 

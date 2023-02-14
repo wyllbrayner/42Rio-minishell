@@ -59,7 +59,7 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *node)
         sh->tmp1 = NULL;
         if (var[3])
         {
-            printf("var[3]: %ld | var[2](i): %ld | env: %s\n", var[3], var[2], sh->env[var[2]]);
+//            printf("var[3]: %ld | var[2](i): %ld | env: %s\n", var[3], var[2], sh->env[var[2]]);
             len = ((var[0] + (ft_strlen(sh->env[var[2]]) - ft_strchr_i(sh->env[var[2]], '='))));
             sh->tmp1 = (char *)malloc(sizeof(char) * len);
             if (!sh->tmp1)
