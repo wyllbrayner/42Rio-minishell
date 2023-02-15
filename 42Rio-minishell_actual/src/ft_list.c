@@ -32,7 +32,7 @@ t_node	*ft_node_create(char *cmd)
 		node->token = NULL;
 		return (NULL);
 	}
-	node->first_cmd = ft_strdup(node->cmd[0]); // retirar depois
+	node->first_cmd = ft_strdup(node->cmd[0]);
 	if (!node->first_cmd)
 	{
 		ft_free_minishell_single_aux(node->token);

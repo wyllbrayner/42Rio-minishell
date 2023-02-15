@@ -53,12 +53,12 @@ void ft_minishell(void)
         sh.line = readline("(Minishell - 42Rio): ");
         if (!sh.line)
             sh.line = ft_strdup("exit");
-        add_history(sh.line);
         ft_parse(&sh);
         if (sh.ret < 0)
        		ft_minishell_error(&sh);
         else
         {
+            add_history(sh.line);
             ft_exec_token(&sh);
        		ft_minishell_error(&sh);
         }

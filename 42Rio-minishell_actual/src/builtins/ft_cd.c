@@ -14,7 +14,8 @@
 
 static void	ft_builtin_cd_aux_0(t_minishell *sh, t_node *node, char *str);
 static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node);
-static void	ft_builtin_cd_aux_3(t_minishell *sh, t_node *node, char *str);
+static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str);
+//static void	ft_builtin_cd_aux_3(t_minishell *sh, t_node *node, char *str);
 
 void	ft_builtin_cd(t_minishell *sh, t_node *node)
 {
@@ -141,7 +142,8 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 			}
 			else
 			{
-				ft_builtin_cd_aux_3(sh, node, "export OLDPWD=");
+//				ft_builtin_cd_aux_3(sh, node, "export OLDPWD=");
+				ft_builtin_cd_aux_3(sh, "export OLDPWD=");
 				if (sh->ret < 0)
 					return ;
 ///////////////////////////////////////////////////////////////////
@@ -153,7 +155,8 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 					return ;
 				}
 				printf("sh->tmp0 %s\n", sh->tmp0);
-				ft_builtin_cd_aux_3(sh, node, "export PWD=");
+//				ft_builtin_cd_aux_3(sh, node, "export PWD=");
+				ft_builtin_cd_aux_3(sh, "export PWD=");
 				if (sh->ret < 0)
 					return ;
 			}
@@ -211,7 +214,8 @@ void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node)
 	printf("Dentro da ft_builtin_cd_aux_2 | Fim\n");
 }
 
-static void	ft_builtin_cd_aux_3(t_minishell *sh, t_node *node, char *str)
+//static void	ft_builtin_cd_aux_3(t_minishell *sh, t_node *node, char *str)
+static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str)
 {
 				sh->tmp1 = ft_strjoin(str, sh->tmp0);
 				if (!sh->tmp1)

@@ -1,26 +1,29 @@
-LB			= lib$(NAME).a
-LOCLIBFT	= ./libft
-LOCLHEADER	= ./header
-SRCS		= $(wildcard src/ft_*.c) $(wildcard src/builtins/ft_*.c)
-OBJS		= $(SRCS:.c=.o)
-NAME		= minishell
-UTIL		= ar
-OPT			= rc
-SUMM		= ranlib
-RM			= rm -f
-##FLAG		= -g -Wall -Wextra -Werror -fsanitize=address
-##FLAG		= -g -Wall -Wextra -Werror
-FLAG		= -Wall -Wextra -Werror
-COMP		= cc
+LB            = lib$(NAME).a
+LOCLIBFT    = ./libft
+LOCLHEADER    = ./header
+SRCDIR        = ./src
+OBJDIR        = ./obj
+SRCS        = $(wildcard $(SRCDIR)/ft_*.c) $(wildcard $(SRCDIR)/builtins/ft_*.c)
+OBJS        = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
+NAME        = minishell
+UTIL        = ar
+OPT            = rc
+SUMM        = ranlib
+RM            = rm -f
+FLAG        = -g -Wall -Wextra -Werror
+COMP        = cc
+IN            = -I ./includes/
 
-all:	$(NAME)
+all:    $(NAME)
 
-$(NAME):	$(LB) $(LOCLHEADER)/ft_$(NAME).h
-	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline -L ~/.brew/opt/readline/lib -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include -I ~/.brew/opt/readline/include
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(dir $@)
+	$(COMP) $(FLAG) $(IN) -c $< -o $@
 
-##	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline -ltinfo
+$(NAME):    $(LB) $(LOCLHEADER)/ft_$(NAME).h
+	$(COMP) $(FLAG) -o $(NAME) -L. -l$(NAME) -lreadline
 
-$(LB):	$(LOCLIBFT)/libft.a $(OBJS) $(LOCLHEADER)/ft_$(NAME).h
+$(LB):    $(LOCLIBFT)/libft.a $(OBJS) $(LOCLHEADER)/ft_$(NAME).h
 	cp $(LOCLIBFT)/libft.a $(LB)
 	$(UTIL) $(OPT) $(LB) $(OBJS)
 	$(SUMM) $(LB)
@@ -47,4 +50,4 @@ norminette:
 norminetteh:
 	norminette -R CheckDefine
 
-.PRONH: all $(NAME) $(LB) $(LOCLIBFT)/libft.a clean fclean re list norminette norminetteh
+.PHONY: all clean fclean re list norminette norminetteh

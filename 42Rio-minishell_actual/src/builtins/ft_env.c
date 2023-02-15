@@ -16,7 +16,7 @@ void ft_builtin_env(t_minishell *sh, t_node *node)
 {
     long    j;
 
-    printf("node->cmd[0]: %s | node->cmd[1]: %s\n", node->cmd[0], node->cmd[1]);
+//    printf("node->cmd[0]: %s | node->cmd[1]: %s\n", node->cmd[0], node->cmd[1]);
     if (node->cmd[1])
     {
         sh->ret = -7;

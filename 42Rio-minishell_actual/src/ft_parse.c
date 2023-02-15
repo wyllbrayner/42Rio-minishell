@@ -42,18 +42,19 @@ void ft_parse(t_minishell *sh)
             sh->ret = -3;
             return ;
         }
+/*
         int i = 0;
         while (sh->parse_str[i])
         {
             printf("%s\n", sh->parse_str[i]);
             i++;
         }
-//        printf("Após a split ret: %d\n", sh->ret);
+*/
         ft_put_cmd_in_lst(sh);
         if (sh->ret < 0)
             return ;
-        ft_print_list(sh);
-        ft_print_rev_list(sh);
+//        ft_print_list(sh);
+//        ft_print_rev_list(sh);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
             return ;
@@ -115,45 +116,59 @@ void ft_valid_amount_of_quotes(t_minishell *sh)
 //    printf("Dentro da ft_valid_quotes | fim\n");
 }
 
-static int ft_pipe_or_redirect(char *cmd)
-{
-    return (cmd[0] == '|');
-//    return (cmd[0] == '|' || cmd[0] == '<' || cmd[0] == '>');
-}
-
-static void ft_count_quotes(char *cmd, long *sq, long *dq)
+static void ft_count_quotes(char *cmd, long *dq)
 {
     long    i;
 
     i = 0;
     while (cmd[i])
     {
-        if (cmd[i] == '\'')
-            *sq = *sq + 1;
-        else if (cmd[i] == '\"')
+        if (cmd[i] == '\"')
             *dq = *dq + 1;
         i++;
     }
 }
 
+static int ft_pipe_or_redirect(char *cmd, long *dq)
+{
+    long i;
+
+//    printf("Dentro da ft_pipe_or_redirect cmd: %s ; *dq: %ld - Início\n", cmd, *dq);
+    i = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '|' && ((*dq % 2) == 0))
+        {
+//            printf("para cmd: %s ; cmd[%li]: %c ; *dq: %ld ; resto: %ld = Retorno 1\n", cmd, i, cmd[i], *dq, (*dq % 2));
+            return (1);
+        }
+        i++;
+    }
+//    printf("Dentro da ft_pipe_or_redirect cmd: %s ; *dq: %ld - Fim\n", cmd, *dq);
+    return (0);
+//    return (cmd[0] == '|');
+//    return (cmd[0] == '|' || cmd[0] == '<' || cmd[0] == '>');
+}
+
 void ft_put_cmd_in_lst(t_minishell *sh)
 {
     long    i;
-    long    sq;
     long    dq;
 
 //    printf("Dentro da put cmd in list | inicio\n");
+//     0 1   2  3        4 5    6    7     8 9  10 11    12"
+//    cd | cat -e Makefile | echo "cat |o|.c | cat  > |o|.c"
     i = 0;
-    sq = 0;
     dq = 0;
     while (sh->parse_str[i])
     {
         sh->tmp0 = ft_strdup(sh->parse_str[i]);
-        ft_count_quotes(sh->parse_str[i], &sq, &dq);
-
+        ft_count_quotes(sh->parse_str[i], &dq);
 //      testar se sh->tmp0 é null
         i++;
-        while (sh->parse_str[i] && !ft_pipe_or_redirect(sh->parse_str[i]))
+        if (sh->parse_str[i])
+            ft_count_quotes(sh->parse_str[i], &dq);
+        while (sh->parse_str[i] && !ft_pipe_or_redirect(sh->parse_str[i], &dq))
         {
             sh->tmp1 = ft_strjoin(sh->tmp0, " ");
             sh->tmp2 = ft_strjoin(sh->tmp1, sh->parse_str[i]);
@@ -174,11 +189,13 @@ void ft_put_cmd_in_lst(t_minishell *sh)
             ft_free_minishell_single_aux(sh->tmp1);
             sh->tmp1 = NULL;
             i++;
+//            if (sh->parse_str[i])
+//                ft_count_quotes(sh->parse_str[i], &dq);
         }
         ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
         ft_free_minishell_single_aux(sh->tmp0);
         sh->tmp0 = NULL;
-        if (sh->parse_str[i] && ft_pipe_or_redirect(sh->parse_str[i]))
+        if (sh->parse_str[i] && ft_pipe_or_redirect(sh->parse_str[i], &dq))
         {
             sh->tmp0 = ft_strdup(sh->parse_str[i]);
             ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
