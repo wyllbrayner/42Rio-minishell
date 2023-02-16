@@ -80,7 +80,8 @@ void    ft_free_minishell_double_aux(char **str_double);
 void    ft_valid_redirect_in(t_minishell *sh);
 void    ft_valid_redirect_out(t_minishell *sh);
 
-void    ft_variable_expansion(t_minishell *sh);
+//void    ft_variable_expansion(t_minishell *sh);
+void    ft_variable_expansion_aux(t_minishell *sh, t_node *no);
 
 void    ft_builtin_exit(t_minishell *sh, t_node *node);
 void    ft_builtin_env(t_minishell *sh, t_node *node);
@@ -90,14 +91,13 @@ void    ft_builtin_pwd(t_minishell *sh);
 void    ft_builtin_export(t_minishell *sh, t_node *node);
 void    ft_builtin_unset(t_minishell *sh, t_node *node);
 
-void    ft_variable_expansion_aux(t_minishell *sh, t_node *no);
-void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, int *status);
+void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, long *status);
 void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node);
 void    ft_init_var(t_minishell *sh, char **envp);
 void    ft_init_var_aux_one(t_minishell *sh);
 void    ft_init_var_aux_two(t_minishell *sh);
 
-void	ft_start_command(t_minishell *sh, int *rato);
+void	ft_start_command(t_minishell *sh, int *rato, t_node *node);
 void    ft_parse(t_minishell *sh);
 void    ft_select_way(t_minishell *sh, t_node *no);
 char	*ft_access_command(char *cmd, char **str);

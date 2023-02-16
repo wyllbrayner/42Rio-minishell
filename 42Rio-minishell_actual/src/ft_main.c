@@ -84,6 +84,8 @@ void    ft_exec_token(t_minishell *sh)
         {
 //            printf("Chama a função correspondente para %s\n", head->first_cmd);
             ft_select_way(sh, head);
+            if (sh->ret <= -4)
+           		ft_minishell_error(sh);
         }
 //        else
 //            printf("Pula o '|' \n");
@@ -136,7 +138,7 @@ void    ft_select_way(t_minishell *sh, t_node *node)
             printf("Builtin NÃO IDENTIFICADA | procurar dentre as bin\n");
             int rato;
             rato = 0;
-            ft_start_command(sh, &rato);
+            ft_start_command(sh, &rato, node);
             wait(NULL);
         }
     }

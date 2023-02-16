@@ -20,7 +20,7 @@ static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str);
 void	ft_builtin_cd(t_minishell *sh, t_node *node)
 {
 	long	i;
-	int status;
+	long	status;
 	printf("Dentro da ft_builtin_cd | Início\n");
 
 	i = 0;
@@ -79,7 +79,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 			{
 				sh->tmp0 = ft_substr(node->token, 0, ft_strchr_i(node->token, '/'));
 				sh->tmp5 = ft_substr(node->cmd[1], ft_strchr_i(node->cmd[1], '/'), (ft_strlen(node->cmd[1]) - ft_strchr_i(node->cmd[1], '/')));
-				if (!sh->tmp5 || !sh->tmp5)
+				if (!sh->tmp0 || !sh->tmp5)
 				{
 					ft_free_minishell_single_aux(sh->tmp0);
 					sh->tmp0 = NULL;

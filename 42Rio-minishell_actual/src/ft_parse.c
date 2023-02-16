@@ -53,8 +53,8 @@ void ft_parse(t_minishell *sh)
         ft_put_cmd_in_lst(sh);
         if (sh->ret < 0)
             return ;
-//        ft_print_list(sh);
-//        ft_print_rev_list(sh);
+        ft_print_list(sh);
+        ft_print_rev_list(sh);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
             return ;

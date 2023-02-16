@@ -41,6 +41,8 @@ void    ft_minishell_error(t_minishell *sh)
             printf("(Minishell): %s: too many arguments\n", sh->erro);
         else if (sh->ret == -10)
             printf("(Minishell): \'%s\': not a valid identifier\n", sh->erro);
+        else if (sh->ret == -11)
+            printf("(Minishell): %s: numeric argument required\n", sh->erro);
         sh->ret = 0;
         sh->erro = NULL;
     }

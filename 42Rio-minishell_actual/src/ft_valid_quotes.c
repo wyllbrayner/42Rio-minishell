@@ -12,10 +12,10 @@
 
 #include "../header/ft_minishell.h"
 
-static void	ft_valid_quotes(t_minishell *sh, t_node *node, int *status, int c);
-static void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char *first, int *status, int c);
+static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *status, int c);
+static void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char *first, long *status, int c);
 
-void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, int *status)
+void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, long *status)
 {
 	printf("Dentro da single_and_double_quotes | Início %s\n", first);
 //	printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
@@ -30,10 +30,10 @@ void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, int
 	printf("Dentro da single_and_double_quotes | Fim\n");
 }
 
-void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char *first, int *status, int c)
+void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char *first, long *status, int c)
 {
 	printf("Dentro da single_and_double_quotes_aux | Início %s\n", first);
-	ft_valid_quotes(sh, node, status, c);
+	ft_valid_quotes(sh, node, first, status, c);
 	if (sh->ret < 0 || !sh->tmp1)
 		return ;
 //	printf("Dentro da single_and_double_quotes | Após valid quotes para %c tmp1: %s\n", c, sh->tmp1);
@@ -50,7 +50,7 @@ void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char *first,
 	printf("Dentro da single_and_double_quotes_aux | fim %s\n", first);
 }
 
-static void	ft_valid_quotes(t_minishell *sh, t_node *node, int *status, int c)
+static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *status, int c)
 {
 	printf("Dentro da quotes | Início\n");
 	long	i;
@@ -128,7 +128,7 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, int *status, int c)
 		}
 		else
 		{
-			if (first)
+			if (first && (ft_strncmp(first_c, "cd ", 4) == 0))
 				sh->tmp1 = ft_strdup(".");
 		}
 	}

@@ -33,18 +33,18 @@ char	*ft_access_command(char *cmd, char **path)
 	return(0);
 }
 
-void	ft_start_command(t_minishell *sh, int *rato)
+void	ft_start_command(t_minishell *sh, int *rato, t_node *node)
 {
 	//int	pid;
 	char 	*tmp;
 
 	if (sh && rato)
 	{
-		tmp = ft_access_command(sh->parse_str[0], sh->path);
+		tmp = ft_access_command(node->first_cmd, sh->path);
 		if (!tmp)
 		{
 			sh->ret = -4;
-			sh->erro = sh->parse_str[0];
+			sh->erro = node->first_cmd;
 			ft_minishell_error(sh);
 			return ;
 		}
@@ -53,7 +53,7 @@ void	ft_start_command(t_minishell *sh, int *rato)
 			*rato = fork();
 			if (*rato == 0)
 			{
-				execve(tmp, sh->head->cmd, sh->env);
+				execve(tmp, node->cmd, sh->env);
 			}
 			// waitpid(pid, NULL, 0);
 		}
