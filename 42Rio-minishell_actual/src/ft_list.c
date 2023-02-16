@@ -107,7 +107,7 @@ void ft_print_list(const t_minishell *sh)
 {
 //	printf("Dentro da ft_print_list | inicio\n");
     t_node *p;
-
+//	long	i;  /// retirar
     p = sh->head;
     if (p)
     {
@@ -115,6 +115,15 @@ void ft_print_list(const t_minishell *sh)
         while (p)
         {
             printf("token: %s -> ", p->token);
+//            i = 0;
+//			printf("token: %s -> \n", p->token);
+/*
+			while (p->cmd[i])
+			{
+				printf("nó => token: %s -> first: %s -> cmd[%ld]: %s\n", p->token, p->first_cmd, i, p->cmd[i]);
+				i++;
+			}
+*/
             p = p->next;
         }
         printf("NULL\n");

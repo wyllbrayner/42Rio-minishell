@@ -71,6 +71,8 @@ typedef struct  s_minishell
 
 void    rl_replace_line (const char *text, int clear_undo);
 
+void    ft_init_cmd(t_minishell *sh);
+
 void    ft_minishell_error(t_minishell *sh);
 
 void    ft_free_minishell(t_minishell *sh, int status);
@@ -86,6 +88,7 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *no);
 void    ft_builtin_exit(t_minishell *sh, t_node *node);
 void    ft_builtin_env(t_minishell *sh, t_node *node);
 void	ft_builtin_cd(t_minishell *cmd, t_node *node);
+///void    ft_builtin_echo(t_minishell *cmd, t_node *node);
 int     ft_builtin_echo(char *echo);
 void    ft_builtin_pwd(t_minishell *sh);
 void    ft_builtin_export(t_minishell *sh, t_node *node);

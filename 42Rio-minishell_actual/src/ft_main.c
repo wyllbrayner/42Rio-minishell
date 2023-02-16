@@ -53,12 +53,15 @@ void ft_minishell(void)
         sh.line = readline("(Minishell - 42Rio): ");
         if (!sh.line)
             sh.line = ft_strdup("exit");
+        add_history(sh.line); /// alterar a posição do histpry para após da validação do comando para enter/espaço.
+
+        ft_init_cmd(&sh);
+
         ft_parse(&sh);
         if (sh.ret < 0)
        		ft_minishell_error(&sh);
         else
         {
-            add_history(sh.line);
             ft_exec_token(&sh);
        		ft_minishell_error(&sh);
         }
@@ -100,6 +103,7 @@ void    ft_select_way(t_minishell *sh, t_node *node)
         if (ft_strncmp(node->first_cmd, "echo", 5) == 0)
         {
             printf("Chama a builtin echo\n");
+//            ft_builtin_echo(sh, node);
             ft_builtin_echo(node->token);
 //            ft_builtin_echo(sh->line);
         }
