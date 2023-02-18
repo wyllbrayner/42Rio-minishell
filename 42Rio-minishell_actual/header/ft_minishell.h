@@ -72,7 +72,7 @@ typedef struct  s_minishell
 void    rl_replace_line (const char *text, int clear_undo);
 
 void    ft_init_cmd(t_minishell *sh);
-
+int     ft_valid_quote(long squote, long dquote);
 void    ft_minishell_error(t_minishell *sh);
 
 void    ft_free_minishell(t_minishell *sh, int status);

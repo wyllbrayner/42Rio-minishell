@@ -22,7 +22,7 @@ int main(int argc, char **argv, char **envp)
 {
     if (argc != 1)
     {
-        sh.ret = -2;
+        sh.ret = -7;
         sh.erro = argv[1];
         ft_minishell_error(&sh);
     }
@@ -40,23 +40,21 @@ int main(int argc, char **argv, char **envp)
     return (0);
 }
 
+//        printf("Dentro da minishell | dentro do loop\n");
+//        sh.cwd = getcwd(NULL, 0);
+//        ft_strlcat(sh.cwd, ":> ", ft_strlen(sh.cwd) + 4);
+//        sh.line = readline(sh.cwd);
+
 void ft_minishell(void)
 {
     while (sh.running && (sh.ret == 0))
     {
-//        printf("Dentro da minishell | dentro do loop\n");
-//        sh.cwd = getcwd(sh.buff, 1024);
-//        ft_strlcat(sh.cwd, ":> ", ft_strlen(sh.cwd) + 4);
 //        signal(SIGINT, &ft_sigint_handler);
 //        signal(SIGQUIT, &ft_sigquit_handler);
-//        sh.line = readline(sh.cwd);
         sh.line = readline("(Minishell - 42Rio): ");
         if (!sh.line)
             sh.line = ft_strdup("exit");
-        add_history(sh.line); /// alterar a posição do histpry para após da validação do comando para enter/espaço.
-
-        ft_init_cmd(&sh);
-
+        add_history(sh.line); /// alterar a posição do history para após da validação do comando para enter/espaço.
         ft_parse(&sh);
         if (sh.ret < 0)
        		ft_minishell_error(&sh);

@@ -25,3 +25,11 @@ size_t  ft_strchr_i(const char *str, int c)
         }
         return (i);
 }
+
+int ft_valid_quote(long squote, long dquote)
+{
+    if (!(squote % 2) && !(dquote % 2))
+        return (1);
+    else
+        return (0);
+}

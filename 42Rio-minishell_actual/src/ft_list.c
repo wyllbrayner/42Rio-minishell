@@ -14,22 +14,28 @@
 
 t_node	*ft_node_create(char *cmd)
 {
-//	printf("Dentro da ft_node_create | inicio\n");
+//	printf("Dentro da ft_node_create | inicio cmd: #%s#\n", cmd);
 	t_node	*node;
 
 	if (!cmd)
 		return (NULL);
-	node = (t_node *)malloc(sizeof(t_node)); //incluir este malloc nas liberaçoes referentes a erro desta função!!!
+	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
 	node->token = ft_strdup(cmd);
 	if (!node->token)
+	{
+		free(node);
+		node = NULL;
 		return (NULL);
+	}
 	node->cmd = ft_split(cmd, ' ');
 	if (!node->cmd)
 	{
 		ft_free_minishell_single_aux(node->token);
 		node->token = NULL;
+		free(node);
+		node = NULL;
 		return (NULL);
 	}
 	node->first_cmd = ft_strdup(node->cmd[0]);
@@ -39,6 +45,8 @@ t_node	*ft_node_create(char *cmd)
 		node->token = NULL;
 		ft_free_minishell_double_aux(node->cmd);
 		node->cmd = NULL;
+		free(node);
+		node = NULL;
 		return (NULL);
 	}
 	node->prev = NULL;
