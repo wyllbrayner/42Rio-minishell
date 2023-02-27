@@ -17,22 +17,22 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *node);
 void ft_variable_expansion(t_minishell *sh)
 {
     t_node *tmp;
-    printf("Dentro da expansão de variáveis - Início\n");
+//    printf("Dentro da expansão de variáveis - Início\n");
     tmp = sh->head;
     while (tmp)
     {
         if (ft_strchr_i(tmp->cmd[0], '$') != 0)
         {
-            printf("Nó: %s     possui %c\n", tmp->cmd[0], '$');
+//            printf("Nó: %s     possui %c\n", tmp->cmd[0], '$');
             ft_variable_expansion_aux(sh, tmp);
         }
         else
         {
-            printf("Nó: %s não possui %c\n", tmp->cmd[0], '$');
+//            printf("Nó: %s não possui %c\n", tmp->cmd[0], '$');
         }
         tmp = tmp->next;
     }
-    printf("Dentro da expansão de variáveis - Fim\n");
+//    printf("Dentro da expansão de variáveis - Fim\n");
 }
 
 void    ft_variable_expansion_aux(t_minishell *sh, t_node *node)
@@ -41,7 +41,7 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *node)
     long    len;
     long    caract;
 
-    printf("Dentro da expansão de variáveis_aux - Início\n");
+//    printf("Dentro da expansão de variáveis_aux - Início\n");
     var[0] = ft_strchr_i(node->token, '$');
     if (var[0])
     {
@@ -64,7 +64,7 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *node)
             sh->tmp1 = (char *)malloc(sizeof(char) * len);
             if (!sh->tmp1)
             {
-                printf("Não Mallocou\n");
+//                printf("Não Mallocou\n");
                 sh->ret = -3;
                 return;
             }
@@ -73,16 +73,16 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *node)
 //                printf("Mallocou %ld posições\n", len);
                 sh->tmp1[--len] = '\0';
                 ft_strlcpy(sh->tmp1, node->token, (var[0] + 1));
-                printf("sh->tmp1 ( antes): %s#\n", sh->tmp1);
+//                printf("sh->tmp1 ( antes): %s#\n", sh->tmp1);
                 caract = ft_strchr_i(sh->env[var[2]], '=');
 //                printf("sh->env[%ld]: %s | caract: %ld\n", var[2], sh->env[var[2]], caract);
                 ft_strlcpy(sh->tmp1+(var[0]), sh->env[var[2]]+(caract + 1), ft_strlen(sh->env[var[2]]) - caract);
-                printf("sh->tmp1 (depois): %s\n", sh->tmp1);
+//                printf("sh->tmp1 (depois): %s\n", sh->tmp1);
             }
         }
         else
             printf("Faça alguma coisa\n");
-        printf("Dentro da expansão de variáveis_aux - Fim\n");
+//        printf("Dentro da expansão de variáveis_aux - Fim\n");
     }
 }
 

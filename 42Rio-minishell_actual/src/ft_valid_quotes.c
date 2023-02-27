@@ -17,7 +17,7 @@ static void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char 
 
 void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, long *status)
 {
-	printf("Dentro da single_and_double_quotes | Início %s\n", first);
+//	printf("Dentro da single_and_double_quotes | Início %s\n", first);
 //	printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2]);
 	ft_single_and_double_quotes_aux(sh, node, first, status, '\"');
 	if (sh->ret < 0)
@@ -27,12 +27,12 @@ void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, lon
 		return;
 
 //	printf("Dentro da single_and_double_quotes | Após cd_aux_2 tmp1: %s\n", sh->tmp1);
-	printf("Dentro da single_and_double_quotes | Fim\n");
+//	printf("Dentro da single_and_double_quotes | Fim\n");
 }
 
 void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char *first, long *status, int c)
 {
-	printf("Dentro da single_and_double_quotes_aux | Início %s\n", first);
+//	printf("Dentro da single_and_double_quotes_aux | Início %s\n", first);
 	ft_valid_quotes(sh, node, first, status, c);
 	if (sh->ret < 0 || !sh->tmp1)
 		return ;
@@ -47,12 +47,12 @@ void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, char *first,
 	ft_builtin_cd_aux_2(sh, node);
 	if (sh->ret < 0)
 		return ;
-	printf("Dentro da single_and_double_quotes_aux | fim %s\n", first);
+//	printf("Dentro da single_and_double_quotes_aux | fim %s\n", first);
 }
 
 static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *status, int c)
 {
-	printf("Dentro da quotes | Início\n");
+//	printf("Dentro da quotes | Início\n");
 	long	i;
 	long	start;
 	long	end;
@@ -132,7 +132,7 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 				sh->tmp1 = ft_strdup(".");
 		}
 	}
-	printf("Dentro da quotes | Fim\n");
+//	printf("Dentro da quotes | Fim\n");
 }
 
 // cd '"'''$HOME''"''

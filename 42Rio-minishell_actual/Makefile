@@ -1,19 +1,19 @@
-LB            = lib$(NAME).a
+LB          = lib$(NAME).a
 LOCLIBFT    = ./libft
-LOCLHEADER    = ./header
-SRCDIR        = ./src
-OBJDIR        = ./obj
+LOCLHEADER  = ./header
+SRCDIR      = ./src
+OBJDIR      = ./obj
 SRCS        = $(wildcard $(SRCDIR)/ft_*.c) $(wildcard $(SRCDIR)/builtins/ft_*.c)
 OBJS        = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
 NAME        = minishell
 UTIL        = ar
-OPT            = rc
+OPT         = rc
 SUMM        = ranlib
-RM            = rm -f
-#FLAG        = -g -Wall -Wextra -Werror
+RM          = rm -f
+#FLAG        = -g -Wall -Wextra -Werror -fsanitize=address
 FLAG        = -Wall -Wextra -Werror
 COMP        = cc
-IN            = -I ./includes/
+IN          = -I ./includes/
 
 all:    $(NAME)
 

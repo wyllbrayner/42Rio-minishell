@@ -12,6 +12,7 @@
 
 #include "../../header/ft_minishell.h"
 
+/*
 static int	filter_echo(char *str)
 {
 	int i;
@@ -77,6 +78,7 @@ static void	print_echo(char *str, int n)
 	}
 }
 
+
 int ft_builtin_echo(char *echo)
 {
 	printf("Dentro da ft_builtin_echo - Inicio\n");
@@ -107,6 +109,15 @@ int ft_builtin_echo(char *echo)
 		}
 		printf("\n");
 	}
+	printf("Dentro da ft_builtin_echo - Fim\n");
+	return (EXIT_SUCCESS);
+}
+*/
+
+int ft_builtin_echo(char *echo)
+{
+	printf("Dentro da ft_builtin_echo - Inicio\n");
+	printf("%s\n", echo);
 	printf("Dentro da ft_builtin_echo - Fim\n");
 	return (EXIT_SUCCESS);
 }

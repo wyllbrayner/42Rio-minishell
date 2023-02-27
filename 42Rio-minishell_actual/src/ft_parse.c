@@ -25,11 +25,15 @@ void ft_parse(t_minishell *sh)
         ft_valid_empty_cmd(sh);
         if (sh->ret < 0)
             return ;
+        add_history(sh->line);
 //        printf("Após a emplty cmd ret: %d\n", sh->ret);
         ft_valid_amount_of_quotes(sh);
         if (sh->ret < 0)
             return ;
-        ft_init_cmd(sh);
+        ft_valid_redirect(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_cmd_builder(sh);
         if (sh->ret < 0)
             return ;
 //        printf("Após a valid quotes ret: %d\n", sh->ret);
@@ -49,13 +53,13 @@ void ft_parse(t_minishell *sh)
         if (sh->ret < 0)
             return ;
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
-/*
-        ft_variable_expansion(sh);
+        ft_print_list(sh);
+//        ft_print_rev_list(sh);
+        ft_interpreter(sh);
         if (sh->ret < 0)
             return ;
+/*
 */
-        ft_print_list(sh);
-        ft_print_rev_list(sh);
     }
     else
         sh->ret = -1;
@@ -87,83 +91,87 @@ void ft_valid_empty_cmd(t_minishell *sh)
 void ft_valid_amount_of_quotes(t_minishell *sh)
 {
     long    i;
-    long    count_s;
-    long    count_d;
+    long    squote;
+    long    dquote;
 
 //    printf("Dentro da ft_valid_quotes | inicio\n");
     i = 0;
-    count_s = 0;
-    count_d = 0;
+    squote = 0;
+    dquote = 0;
     while (sh->line[i])
     {
         if (sh->line[i] == '\'')
-            count_s++;
+            squote++;
         else if (sh->line[i] == '\"')
-            count_d++;
+            dquote++;
         i++;
     }
-    if (((count_s % 2) != 0) || ((count_d % 2) != 0))
+    if (!ft_valid_quote(squote, dquote))
         sh->ret = -5;
 //    printf("Dentro da ft_valid_quotes | fim\n");
 }
 
+void    ft_valid_redirect(t_minishell *sh)
+{
+//    printf("Dentro da valid_redirect -> Início\n");
+    long var[5];
+
+//  var[0] = 0;         //    i = 0;
+//  var[1] = 0;         //    start = 0;
+//  var[2] = 0;         //    dquote = 0;
+//  var[3] = 0;         //    squote = 0;
+    ft_cmd_builder_init_var(sh->caract, "><", var);
+    while (sh->line[var[0]])
+    {
+//        printf("Dentro da valid_redirect -> loop\n");
+        ft_cmd_builder_aux_0(sh, &var[0], &var[3], &var[2]);
+//        printf("Dentro da valid_redirect -> loop após aux_0 var[0]: %ld\n", var[0]);
+        if (ft_strchr("<>", sh->line[var[0]]) && (ft_strlen(sh->line) - var[0]) >= 3)
+        {
+            if (ft_strncmp(&sh->line[var[0]], ">>>", 3) == 0)
+            {
+//                printf("Dentro da valid_redirect -> 1° if\n");
+                sh->ret = -6;
+                sh->erro = ">>>";
+                return ;
+            }
+            else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
+            {
+//                printf("Dentro da valid_redirect -> 2° if\n");
+                sh->ret = -6;
+                sh->erro = "<<<";
+                return ;
+            }
+            var[0]++;
+        }
+    }
+//    printf("Dentro da valid_redirect -> Fim\n");
+}
+
 void ft_valid_lexcal_cmd(t_minishell *sh)
 {
+//    printf("Dentro da ft_valid_lexcal_cmd -> Início\n");
     t_node  *tmp;
 
     tmp = sh->head;
+    sh->ret = -6;
+    sh->erro ="|"; 
     while (tmp)
     {
-//        printf("cmd[0] de tmp: %s\n", tmp->cmd[0]);
-//        if (tmp->prev)
-//        {
-//            if (tmp->prev->cmd[0][0] != '|')
-//            {
-//                printf("Entrou no 2º if do prev\n");
-//                sh->tmp3 = ft_split(tmp->prev->cmd[0], ' ');
-//            }
-//            printf("cmd[0] de tmp->prev: %s\n", tmp->prev->cmd[0]);
-//        }
-//        if (tmp->next)
-//        {
-//            if (tmp->next->cmd[0][0] != '|')
-//            {
-//                printf("Entrou no 2º if do next\n");
-//                sh->tmp4 = ft_split(tmp->next->cmd[0], ' ');
-//            }
-//            printf("cmd[0] de tmp->next: %s\n", tmp->next->cmd[0]);
-//        }
-//        sh->tmp3 = ft_split(tmp->prev->cmd[0], ' ');
-//        sh->tmp4 = ft_split(tmp->next->cmd[0], ' ');
         if ((!tmp->prev) && (tmp->cmd[0][0] == '|'))
-        {
-            sh->ret = -6;
-            sh->erro ="|"; 
             return ;
-        }
-        else if ((tmp->cmd[0][0] == '|') && (tmp->next) && (tmp->next->cmd[0][0] == '|'))
-        {
-            sh->ret = -6;
-            sh->erro = "|";
+        if ((!tmp->next) && (tmp->cmd[0][0] == '|'))
             return ;
+        if ((tmp->cmd[0][0] == '|') && (tmp->next))
+        {
+            if (!tmp->next->cmd[0])
+                return ;
+            if (tmp->next->cmd[0][0] == '|')
+                return ;
         }
-//        else if ((tmp->cmd[0][0] == '|') && (sh->tmp3 && sh->tmp4))
-//        {
-//            if ((!ft_access_command(sh->tmp3[0], sh->path)))
-//            {
-//                sh->ret = -7;
-//                sh->erro = sh->tmp3[0];
-//                return ;           
-//            }
-//            else if ((!ft_access_command(sh->tmp4[0], sh->path)))
-//            {
-//                sh->ret = -7;
-//                sh->erro = sh->tmp4[0];
-//                return ;           
-//            }
-//        }
-//        ft_free_minishell_double_aux(sh->tmp3);
-//        ft_free_minishell_double_aux(sh->tmp4);
         tmp = tmp->next;
     }
+    sh->ret = 0;
+    sh->erro = NULL;
+//    printf("Dentro da ft_valid_lexcal_cmd -> Fim\n");
 }

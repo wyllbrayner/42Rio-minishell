@@ -12,6 +12,22 @@
 
 #include "../header/ft_minishell.h"
 
+/*
+        while (sh->line[i])
+        {
+            while (sh->line[i] && (!((sh->line[i] == '|') && !(squote % 2) && !(dquote % 2))))
+            {
+                if (sh->line[i] == '\'')
+                    squote++;
+                else if (sh->line[i] == '\"')
+                    dquote++;
+                else if (sh->line[i] == '|' && !(squote % 2) && !(dquote % 2))
+                    break ;
+                i++;
+            }
+        }
+*/
+
 static void ft_count_quotes(char *cmd, long *dq)
 {
     long    i;

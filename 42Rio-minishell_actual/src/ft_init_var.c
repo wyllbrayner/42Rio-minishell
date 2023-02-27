@@ -49,11 +49,13 @@ void    ft_init_var_aux_one(t_minishell *sh)
     sh->in_redirect_file_fd_amount = 0;
     sh->line = NULL;
     sh->parse_str = NULL;
-    sh->errno = 0;
+//    sh->errno = 0;
+    sh->errno = -42;
     sh->erro = NULL;
     sh->head = NULL;
     sh->head = NULL;
     sh->node_tmp = NULL;
+    ft_bzero(sh->caract, (sizeof(char) * 4));
     sh->tmp0 = NULL;
     sh->tmp1 = NULL;
     sh->tmp2 = NULL;
@@ -82,16 +84,21 @@ static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
     {
         sh->env[i] = ft_strdup(envp[i]);
         if (!sh->env[i])
+        {
             sh->ret = -3;
+            return ;
+        }
         else
         {
             if (ft_strncmp(sh->env[i], "PATH", 4) == 0)
             {
                 sh->path = ft_split(sh->env[i] + 5, ':');
                 if (!sh->path)
+                {
                     sh->ret = -3;
+                    return ;
+                }
             }
         }
     }
 }
-

@@ -20,13 +20,13 @@ void ft_builtin_export(t_minishell *sh, t_node *node)
     long    status;
     long    status_q;
 
-    printf("Dentro da export\n");
-    printf("node->token: %s\n", node->token);
+//    printf("Dentro da export\n");
+//    printf("node->token: %s\n", node->token);
     count = 0;
     status_q = 0;
     while (node->cmd[count])
     {
-        printf("node->cmd[%ld]: %s\n", count, node->cmd[count]);
+//        printf("node->cmd[%ld]: %s\n", count, node->cmd[count]);
         count++;
     }
     if (count >= 3)
@@ -40,11 +40,11 @@ void ft_builtin_export(t_minishell *sh, t_node *node)
         status_q = TRUE;
     	ft_single_and_double_quotes(sh, node, "export ", &status_q);
         end = ft_strchr_i(node->cmd[1], '=');
-        printf("node->cmd[1]: %s | start %d | end: %ld\n", node->cmd[1], 0, end);
+//        printf("node->cmd[1]: %s | start %d | end: %ld\n", node->cmd[1], 0, end);
         if (end)
         {
             sh->tmp1 = ft_substr(node->cmd[1], 0, end);
-            printf("Dentro da export | start: %d | end: %ld | sub_str: %s\n", 0, end, sh->tmp1);
+//            printf("Dentro da export | start: %d | end: %ld | sub_str: %s\n", 0, end, sh->tmp1);
             i = 0;
             status = FALSE;
             while (sh->env[i])
@@ -58,7 +58,7 @@ void ft_builtin_export(t_minishell *sh, t_node *node)
             }
             if (status)
             {
-                printf("    Achei a variável de ambiente: %s em env[%ld]: %s\n", sh->tmp1, i, sh->env[i]);
+//                printf("    Achei a variável de ambiente: %s em env[%ld]: %s\n", sh->tmp1, i, sh->env[i]);
                 ft_free_minishell_single_aux(sh->env[i]);
                 sh->env[i] = NULL;
                 sh->env[i] = ft_substr(node->cmd[1], 0, ft_strlen(node->cmd[1])); //
@@ -66,8 +66,8 @@ void ft_builtin_export(t_minishell *sh, t_node *node)
             }
             else
             {
-                printf("Não achei a variável de ambiente: %s em env[%ld]: %s\n", sh->tmp1, i, sh->env[i]);
-                printf("Total de variáveis de ambiente: %ld\n", i);
+//                printf("Não achei a variável de ambiente: %s em env[%ld]: %s\n", sh->tmp1, i, sh->env[i]);
+//                printf("Total de variáveis de ambiente: %ld\n", i);
                 i++;
                 sh->tmp3 = (char **)malloc(sizeof(char *) * (++i));
                 if (!sh->tmp3)
