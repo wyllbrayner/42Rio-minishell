@@ -31,9 +31,11 @@
 
 typedef struct doubly_node
 {
-	char                **cmd; 
 	char                *token;
+	char                **cmd;
 	char                *first_cmd;
+    int                 is_exec;
+	char                *path;
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
 }	t_node;
@@ -72,6 +74,7 @@ typedef struct  s_minishell
 
 void    rl_replace_line (const char *text, int clear_undo);
 
+void    ft_isexec(t_minishell *sh, t_node *node);
 void    ft_valid_redirect(t_minishell *sh);
 void    ft_cmd_builder_init_var(char *caract, char *str, long *var);
 void    ft_cmd_builder_aux_0(t_minishell *sh, long *i, long *squote, 
@@ -85,7 +88,6 @@ void    ft_interpreter(t_minishell *sh);
 void    ft_free_minishell(t_minishell *sh, int status);
 void    ft_free_minishell_single_aux(char *str);
 void    ft_free_minishell_double_aux(char **str_double);
-
 void    ft_valid_redirect_in(t_minishell *sh);
 void    ft_valid_redirect_out(t_minishell *sh);
 
@@ -110,7 +112,9 @@ void    ft_init_var_aux_two(t_minishell *sh);
 void	ft_start_command(t_minishell *sh, int *rato, t_node *node);
 void    ft_parse(t_minishell *sh);
 void    ft_select_way(t_minishell *sh, t_node *no);
-char	*ft_access_command(char *cmd, char **str);
+char	*ft_access_command(t_minishell *sh, t_node *node);
+//char	*ft_access_command(t_minishell *sh, char *cmd);
+//char	*ft_access_command(char *cmd, char **str);
 
 void    ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status);
 
@@ -122,6 +126,7 @@ void    ft_list_add_last(t_node **head, t_node *node);
 t_node	*ft_node_create(char *cmd);
 
 size_t  ft_strchr_i(const char *str, int c);
+size_t  ft_strrchr_i(const char *str, int c);
 
 void    ft_print_list(const t_minishell *sh); // retirar antes de entregar!
 void    ft_print_rev_list(const t_minishell *sh); // retirar antes de entregar!

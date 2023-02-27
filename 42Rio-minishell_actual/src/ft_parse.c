@@ -58,8 +58,6 @@ void ft_parse(t_minishell *sh)
         ft_interpreter(sh);
         if (sh->ret < 0)
             return ;
-/*
-*/
     }
     else
         sh->ret = -1;

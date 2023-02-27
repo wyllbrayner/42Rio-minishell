@@ -49,8 +49,6 @@ void    ft_init_var_aux_one(t_minishell *sh)
     sh->in_redirect_file_fd_amount = 0;
     sh->line = NULL;
     sh->parse_str = NULL;
-//    sh->errno = 0;
-    sh->errno = -42;
     sh->erro = NULL;
     sh->head = NULL;
     sh->head = NULL;
@@ -73,7 +71,8 @@ void    ft_init_var_aux_two(t_minishell *sh)
         sh->s_int = TRUE;
         sh->env = NULL;
         sh->path = NULL;
-
+        sh->errno = 0;
+        sh->errno = -42; /// retirar antes de entragar ou após de mapear os códigos e saída
 }
 
 static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
@@ -88,6 +87,24 @@ static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
             sh->ret = -3;
             return ;
         }
+//        printf("Dentro da init_var_aux_env: env[%ld]: %s\n", i, sh->env[i]);
+    }
+}
+
+/*
+static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
+{
+    --i;
+    sh->env[i] = NULL;
+    while ((--i >= 0) && (sh->ret == 0))
+    {
+        sh->env[i] = ft_strdup(envp[i]);
+        if (!sh->env[i])
+        {
+            sh->ret = -3;
+            return ;
+        }
+        /// realocar essa parte para a função acesse
         else
         {
             if (ft_strncmp(sh->env[i], "PATH", 4) == 0)
@@ -102,3 +119,4 @@ static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
         }
     }
 }
+*/

@@ -82,7 +82,7 @@ void    ft_exec_token(t_minishell *sh)
 //            printf("nó [first cmd]: %s\n", head->first_cmd);
         if (head->first_cmd[0] != '|')
         {
-//            printf("Chama a função correspondente para %s\n", head->first_cmd);
+            printf("Chama a função correspondente para %s\n", head->first_cmd);
             ft_select_way(sh, head);
             if (sh->ret <= -4)
            		ft_minishell_error(sh);
@@ -146,44 +146,6 @@ void    ft_select_way(t_minishell *sh, t_node *node)
     else
         printf("sh->parse não inicializado\n");     
 }
-
-/*
-void    ft_select_way(t_minishell *sh)
-{
-    if (sh->parse_str)
-    {
-        if (ft_strncmp(sh->parse_str[0], "echo", 5) == 0)
-            ft_builtin_echo(sh->line);
-        else if (ft_strncmp(sh->parse_str[0], "cd", 3) == 0)
-            ft_builtin_cd(sh);
-        else if (ft_strncmp(sh->parse_str[0], "pwd", 4) == 0)
-            ft_builtin_pwd(sh);
-        else if (ft_strncmp(sh->parse_str[0], "export", 7) == 0) //depois retornar para 7
-        {
-            printf("Chamar a função builtin export\n");
-            ft_builtin_export(sh);
-        }
-        else if (ft_strncmp(sh->parse_str[0], "unset", 6) == 0)
-        {
-            printf("Chamar a função builtin unset\n");
-            ft_builtin_unset(sh);
-        }
-        else if (ft_strncmp(sh->parse_str[0], "env", 4) == 0)
-            ft_builtin_env(sh);
-        else if (ft_strncmp(sh->parse_str[0], "exit", 5) == 0)
-            ft_builtin_exit(sh);
-        else
-        {
-            int rato;
-            rato = 0;
-            ft_start_command(sh, &rato);
-            wait(NULL);
-        }
-    }
-    else
-        printf("sh->parse não inicializado\n");     
-}
-*/
 
 
 

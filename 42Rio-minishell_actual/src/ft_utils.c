@@ -26,6 +26,20 @@ size_t  ft_strchr_i(const char *str, int c)
         return (i);
 }
 
+size_t  ft_strrchr_i(const char *str, int c)
+{
+        size_t len;
+
+        len = ft_strlen(str);
+        while (len >= 0)
+        {
+                if (str[len] == (unsigned char )c)
+                        return (len);
+                len--;
+        }
+        return (-1);
+}
+
 int ft_valid_quote(long squote, long dquote)
 {
     if (!(squote % 2) && !(dquote % 2))
