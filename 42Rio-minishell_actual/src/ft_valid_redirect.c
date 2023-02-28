@@ -209,11 +209,11 @@ static void ft_valid_redirect_flow_aux(t_minishell *sh, int c)
             if ((count == 2) && (sh->line[i - 1] != c))
             {
                 sh->ret = -6;
-                return ;
+//                return ;
             }
         }
         i++;
     }
-    if (count > 2)
-        sh->ret = -6;
+//    if (count > 2)
+//        sh->ret = -6;
 }

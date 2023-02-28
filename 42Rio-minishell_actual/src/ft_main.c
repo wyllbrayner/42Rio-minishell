@@ -73,22 +73,42 @@ void    ft_exec_token(t_minishell *sh)
 {
     t_node *head;
 //    t_node *prev;
+    int i = 0;
 
     head = sh->head;
     while (head && (sh->ret == 0))
     {
-//            printf("nó [token    ]: %s\n", head->token);
-//            printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
-//            printf("nó [first cmd]: %s\n", head->first_cmd);
-        if (head->first_cmd[0] != '|')
+            printf("nó [token    ]: %s\n", head->token);
+            printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
+            printf("nó [first cmd]: %s\n", head->first_cmd);
+//        if (head->prev)
+//            printf("nó [first cmd]: %s\n", head->prev->first_cmd);
+        if (i == 0)
         {
-            printf("Chama a função correspondente para %s\n", head->first_cmd);
-            ft_select_way(sh, head);
-            if (sh->ret <= -4)
-           		ft_minishell_error(sh);
+            if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
+            {
+                printf("Chama a função correspondente para %s\n", head->first_cmd);
+                ft_select_way(sh, head);
+                if (sh->ret <= -4)
+               		ft_minishell_error(sh);
+            }
+        }
+        if (i != 0)
+        {
+            if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
+            {
+                if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
+                {
+                    printf("Chama a função correspondente para %s\n", head->first_cmd);
+                    ft_select_way(sh, head);
+                    if (sh->ret <= -4)
+               		    ft_minishell_error(sh);
+                }
+            }
         }
 //        else
 //            printf("Pula o '|' \n");
+        i++;
         head = head->next;
     }
 }
