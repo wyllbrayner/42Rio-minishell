@@ -28,7 +28,7 @@ size_t  ft_strchr_i(const char *str, int c)
 
 size_t  ft_strrchr_i(const char *str, int c)
 {
-        size_t len;
+        long len;
 
         len = ft_strlen(str);
         while (len >= 0)

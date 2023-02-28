@@ -22,6 +22,7 @@ t_node	*ft_node_create(char *cmd)
 	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
+	node->path = NULL;
 	node->token = ft_strdup(cmd);
 	if (!node->token)
 	{
@@ -102,6 +103,8 @@ void ft_list_destroy(t_node **head)
 			tmp->token = NULL;
 			ft_free_minishell_single_aux(tmp->first_cmd);
 			tmp->first_cmd = NULL;
+			ft_free_minishell_single_aux(tmp->path);
+			tmp->path = NULL;
 			ft_free_minishell_double_aux(tmp->cmd);
 			tmp->cmd = NULL;
 			free(tmp);

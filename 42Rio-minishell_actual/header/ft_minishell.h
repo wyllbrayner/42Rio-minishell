@@ -34,7 +34,6 @@ typedef struct doubly_node
 	char                *token;
 	char                **cmd;
 	char                *first_cmd;
-    int                 is_exec;
 	char                *path;
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
