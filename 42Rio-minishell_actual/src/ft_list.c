@@ -23,7 +23,7 @@ t_node	*ft_node_create(char *cmd)
 	if (!node)
 		return (NULL);
 	node->path = NULL;
-	node->read_heredoc = NULL;
+//	node->read_heredoc = NULL;
 	node->token = ft_strdup(cmd);
 	if (!node->token)
 	{
@@ -106,8 +106,8 @@ void ft_list_destroy(t_node **head)
 			tmp->first_cmd = NULL;
 			ft_free_minishell_single_aux(tmp->path);
 			tmp->path = NULL;
-			ft_free_minishell_single_aux(tmp->read_heredoc);
-			tmp->read_heredoc = NULL;
+//			ft_free_minishell_single_aux(tmp->read_heredoc);
+//			tmp->read_heredoc = NULL;
 			ft_free_minishell_double_aux(tmp->cmd);
 			tmp->cmd = NULL;
 			free(tmp);
@@ -117,12 +117,12 @@ void ft_list_destroy(t_node **head)
 //	printf("Dentro da ft_list_destroy | fim\n");
 }
 
-void ft_print_list(const t_minishell *sh)
+void ft_print_list(const t_node *node)
 {
 //	printf("Dentro da ft_print_list | inicio\n");
     t_node *p;
 //	long	i;  /// retirar
-    p = sh->head;
+    p = (t_node *)node;
     if (p)
     {
         printf("HEAD -> ");
@@ -144,6 +144,35 @@ void ft_print_list(const t_minishell *sh)
     }
 //	printf("Dentro da ft_print_list | fim\n");
 }
+
+/*
+void ft_print_list(const t_minishell *sh)
+{
+//	printf("Dentro da ft_print_list | inicio\n");
+    t_node *p;
+//	long	i;  /// retirar
+    p = sh->head;
+    if (p)
+    {
+        printf("HEAD -> ");
+        while (p)
+        {
+            printf("token: %s -> ", p->token);
+//            i = 0;
+//			printf("token: %s -> \n", p->token);
+
+//			while (p->cmd[i])
+//			{
+//				printf("nó => token: %s -> first: %s -> cmd[%ld]: %s\n", p->token, p->first_cmd, i, p->cmd[i]);
+//				i++;
+//			}
+            p = p->next;
+        }
+        printf("NULL\n");
+    }
+//	printf("Dentro da ft_print_list | fim\n");
+}
+*/
 
 void ft_print_rev_list(const t_minishell *sh)
 {

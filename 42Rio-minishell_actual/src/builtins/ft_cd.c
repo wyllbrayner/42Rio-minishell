@@ -309,7 +309,7 @@ static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str)
 /*
 				printf("sh->tmp1 %s\n", sh->tmp1);
 */
-				sh->node_tmp = ft_node_create(sh->tmp1);
+				sh->head_tmp = ft_node_create(sh->tmp1);
 /*
 				printf("token:     %s\n", sh->node_tmp->token);
 				printf("first_cmd: %s\n", sh->node_tmp->first_cmd);
@@ -324,9 +324,9 @@ static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str)
 				sh->tmp0 = NULL;
 				ft_free_minishell_single_aux(sh->tmp1);
 				sh->tmp1 = NULL;
-				ft_builtin_export(sh, sh->node_tmp);
-				ft_list_destroy(&sh->node_tmp);
-				sh->node_tmp = NULL;
+				ft_builtin_export(sh, sh->head_tmp);
+				ft_list_destroy(&sh->head_tmp);
+				sh->head_tmp = NULL;
 }
 
 

@@ -35,7 +35,7 @@ typedef struct doubly_node
 	char                **cmd;
 	char                *first_cmd;
 	char                *path;
-	char                *read_heredoc;
+//	char                *read_heredoc;
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
 }	t_node;
@@ -62,7 +62,7 @@ typedef struct  s_minishell
     char    **parse_str;
     char    *erro;
     t_node  *head;
-    t_node  *node_tmp;
+    t_node  *head_tmp;
     char    caract[4];
     char    *tmp0;
     char    *tmp1;
@@ -83,6 +83,7 @@ void    ft_cmd_builder(t_minishell *sh);
 int     ft_valid_quote(long squote, long dquote);
 void    ft_minishell_error(t_minishell *sh);
 
+void    ft_heredoc_builder(t_minishell *sh, t_node *node);
 void    ft_interpreter(t_minishell *sh);
 
 void    ft_free_minishell(t_minishell *sh, int status);
@@ -93,6 +94,7 @@ void    ft_valid_redirect_out(t_minishell *sh);
 
 void    ft_variable_expansion(t_minishell *sh);
 void    ft_variable_expansion_aux(t_minishell *sh, t_node *no);
+void    ft_expand_variable(t_minishell *sh, t_node *node);
 
 void    ft_builtin_exit(t_minishell *sh, t_node *node);
 void    ft_builtin_env(t_minishell *sh, t_node *node);
@@ -128,7 +130,8 @@ t_node	*ft_node_create(char *cmd);
 size_t  ft_strchr_i(const char *str, int c);
 size_t  ft_strrchr_i(const char *str, int c);
 
-void    ft_print_list(const t_minishell *sh); // retirar antes de entregar!
+void    ft_print_list(const t_node *node);
+//void    ft_print_list(const t_minishell *sh); // retirar antes de entregar!
 void    ft_print_rev_list(const t_minishell *sh); // retirar antes de entregar!
 
 #endif

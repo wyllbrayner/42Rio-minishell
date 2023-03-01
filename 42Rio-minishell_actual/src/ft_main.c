@@ -69,29 +69,6 @@ void ft_minishell(void)
     ft_free_minishell(&sh, 2);
 }
 
-void    ft_heredoc_builder(t_minishell *sh, t_node *node)
-{
-    printf("ft_heredoc - Inicio\n");
-    node->read_heredoc = readline("heredoc (42Rio): ");
-    if (ft_strncmp(node->read_heredoc, node->token, ft_strlen(node->token)) != 0)
-    {
-        printf("leitura diferente do EOF\n");
-        write(1, node->read_heredoc, ft_strlen(node->read_heredoc));
-        write(1, "\n", 1);
-        sh->ret = -20; // mudar para algo melhor depois dos testes.
-    }
-    else
-    {
-        printf("leitura igual     ao EOF\n");
-        write(1, node->read_heredoc, ft_strlen(node->read_heredoc));
-        write(1, "\n", 1);
-        sh->ret = 0; // mudar para algo melhor depois dos testes.
-    }
-    ft_free_minishell_single_aux(node->read_heredoc);    
-    node->read_heredoc = NULL;
-    printf("ft_heredoc - Fim\n");
-}
-
 void    ft_exec_token(t_minishell *sh)
 {
     t_node *head;

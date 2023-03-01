@@ -263,7 +263,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 
 void    ft_expand_variable(t_minishell *sh, t_node *node)
 {
-//    printf("Dentro da ft_expand_variable - Início\n");
+//    printf("Dentro da ft_expand_variable - Início (token: %s)\n", node->token);
     long    var[7] = {0};
 
     var[0] = 0;
@@ -323,7 +323,7 @@ void    ft_expand_variable(t_minishell *sh, t_node *node)
             }
         }
     }
-//    printf("Dentro da ft_expand_variable - Fim\n");
+//    printf("Dentro da ft_expand_variable - Fim (token: %s)\n", node->token);
 }
 
 void    ft_expand_variable_cd(t_minishell *sh, t_node *node)

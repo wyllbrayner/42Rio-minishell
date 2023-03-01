@@ -52,7 +52,7 @@ void    ft_init_var_aux_one(t_minishell *sh)
     sh->erro = NULL;
     sh->head = NULL;
     sh->head = NULL;
-    sh->node_tmp = NULL;
+    sh->head_tmp = NULL;
     ft_bzero(sh->caract, (sizeof(char) * 4));
     sh->tmp0 = NULL;
     sh->tmp1 = NULL;

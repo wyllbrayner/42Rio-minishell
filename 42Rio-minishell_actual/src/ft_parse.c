@@ -53,7 +53,7 @@ void ft_parse(t_minishell *sh)
         if (sh->ret < 0)
             return ;
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
-        ft_print_list(sh);
+        ft_print_list(sh->head);
 //        ft_print_rev_list(sh);
         ft_interpreter(sh);
         if (sh->ret < 0)
