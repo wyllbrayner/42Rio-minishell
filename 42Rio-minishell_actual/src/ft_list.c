@@ -23,6 +23,7 @@ t_node	*ft_node_create(char *cmd)
 	if (!node)
 		return (NULL);
 	node->path = NULL;
+	node->read_heredoc = NULL;
 	node->token = ft_strdup(cmd);
 	if (!node->token)
 	{
@@ -105,6 +106,8 @@ void ft_list_destroy(t_node **head)
 			tmp->first_cmd = NULL;
 			ft_free_minishell_single_aux(tmp->path);
 			tmp->path = NULL;
+			ft_free_minishell_single_aux(tmp->read_heredoc);
+			tmp->read_heredoc = NULL;
 			ft_free_minishell_double_aux(tmp->cmd);
 			tmp->cmd = NULL;
 			free(tmp);

@@ -131,4 +131,5 @@ void	ft_start_command(t_minishell *sh, int *rato, t_node *node)
 		ft_free_minishell_single_aux(tmp);
 	}
 }
+
 */

@@ -35,6 +35,7 @@ typedef struct doubly_node
 	char                **cmd;
 	char                *first_cmd;
 	char                *path;
+	char                *read_heredoc;
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
 }	t_node;

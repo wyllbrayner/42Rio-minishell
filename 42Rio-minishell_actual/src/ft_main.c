@@ -69,46 +69,66 @@ void ft_minishell(void)
     ft_free_minishell(&sh, 2);
 }
 
+void    ft_heredoc_builder(t_minishell *sh, t_node *node)
+{
+    printf("ft_heredoc - Inicio\n");
+    node->read_heredoc = readline("heredoc (42Rio): ");
+    if (ft_strncmp(node->read_heredoc, node->token, ft_strlen(node->token)) != 0)
+    {
+        printf("leitura diferente do EOF\n");
+        write(1, node->read_heredoc, ft_strlen(node->read_heredoc));
+        write(1, "\n", 1);
+        sh->ret = -20; // mudar para algo melhor depois dos testes.
+    }
+    else
+    {
+        printf("leitura igual     ao EOF\n");
+        write(1, node->read_heredoc, ft_strlen(node->read_heredoc));
+        write(1, "\n", 1);
+        sh->ret = 0; // mudar para algo melhor depois dos testes.
+    }
+    ft_free_minishell_single_aux(node->read_heredoc);    
+    node->read_heredoc = NULL;
+    printf("ft_heredoc - Fim\n");
+}
+
 void    ft_exec_token(t_minishell *sh)
 {
     t_node *head;
 //    t_node *prev;
-    int i = 0;
 
     head = sh->head;
     while (head && (sh->ret == 0))
     {
-            printf("nó [token    ]: %s\n", head->token);
-            printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
-            printf("nó [first cmd]: %s\n", head->first_cmd);
-//        if (head->prev)
-//            printf("nó [first cmd]: %s\n", head->prev->first_cmd);
-        if (i == 0)
+        printf("nó [token    ]: %s\n", head->token);
+        printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
+        printf("nó [first cmd]: %s\n", head->first_cmd);
+        if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
         {
-            if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
+            if (!head->prev)
             {
                 printf("Chama a função correspondente para %s\n", head->first_cmd);
                 ft_select_way(sh, head);
                 if (sh->ret <= -4)
-               		ft_minishell_error(sh);
+           	    	ft_minishell_error(sh);
             }
-        }
-        if (i != 0)
-        {
-            if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
+            if (head->prev)
             {
-                if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
+                if (ft_strncmp(head->prev->first_cmd, "<<", 2) == 0)
+                    ft_heredoc_builder(sh, head);
+                else if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
+                    printf("pula nó\n");
+                else
                 {
                     printf("Chama a função correspondente para %s\n", head->first_cmd);
                     ft_select_way(sh, head);
                     if (sh->ret <= -4)
-               		    ft_minishell_error(sh);
-                }
+           	        	ft_minishell_error(sh);
+                }                
             }
         }
 //        else
 //            printf("Pula o '|' \n");
-        i++;
         head = head->next;
     }
 }
