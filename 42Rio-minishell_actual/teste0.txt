@@ -1,0 +1,6 @@
+vou
+sair
+rayner,AA oliveira,02 wyll brayner,BB oliveira c,
+03 wyll brayner,CC oliveira ca,04 wyll brayner,DD oliveira car,
+05 wyll brayner,EE oliveira carn,06 wyll brayner,FF oliveira carne,
+

@@ -13,9 +13,11 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+//# include <stdlib.h>
+
 # include "../libft/libft.h"
+# include "get_next_line.h"
 # include <stdio.h>
-# include <stdlib.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -35,7 +37,9 @@ typedef struct doubly_node
 	char                **cmd;
 	char                *first_cmd;
 	char                *path;
-//	char                *read_heredoc;
+    char                **redirect_file;
+    int                 *redirect_file_fd;
+    int                 redirect_file_fd_amount;
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
 }	t_node;
