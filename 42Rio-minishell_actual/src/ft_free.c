@@ -12,8 +12,6 @@
 
 #include "../header/ft_minishell.h"
 
-static void ft_free_minishell_close_fd(int *file_fd, long amount_fd);
-
 void ft_free_minishell(t_minishell *sh, int status)
 {
     t_node *tmp;
@@ -97,7 +95,7 @@ void ft_free_minishell_double_aux(char **str_double)
 //	printf("Dentro da ft_double_aux | fim\n");
 }
 
-static void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
+void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
 {
     long i;
 

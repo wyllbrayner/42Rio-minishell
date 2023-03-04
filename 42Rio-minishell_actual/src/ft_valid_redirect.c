@@ -19,7 +19,7 @@ void ft_valid_redirect_out(t_minishell *sh)
     long    i;
     long    j;
     long    start;
-
+    printf("Dentro da ft_valid_redirect_out -> início\n");
     i = 0;
     start = 0;
     ft_valid_redirect_flow_aux(sh, '>');
@@ -102,6 +102,7 @@ void ft_valid_redirect_out(t_minishell *sh)
         else
             sh->ret = -6;
     }
+    printf("Dentro da ft_valid_redirect_out -> Fim\n");
 }
 
 void ft_valid_redirect_in(t_minishell *sh)
@@ -109,7 +110,7 @@ void ft_valid_redirect_in(t_minishell *sh)
     long    i;
     long    j;
     long    start;
-
+    printf("Dentro da ft_valid_redirect_in -> início\n");
     i = 0;
     start = 0;
     ft_valid_redirect_flow_aux(sh, '<');
@@ -192,13 +193,14 @@ void ft_valid_redirect_in(t_minishell *sh)
         else
             sh->ret = -6;
     }
+    printf("Dentro da ft_valid_redirect_in -> Fim\n");
 }
 
 static void ft_valid_redirect_flow_aux(t_minishell *sh, int c)
 {
     long    i;
     long    count;
-
+    printf("Dentro da ft_valid_redirect_flow_aux -> início\n");
     i = 0;
     count = 0;
     while (sh->line[i])
@@ -216,4 +218,5 @@ static void ft_valid_redirect_flow_aux(t_minishell *sh, int c)
     }
 //    if (count > 2)
 //        sh->ret = -6;
+    printf("Dentro da ft_valid_redirect_flow_aux -> Fim\n");
 }

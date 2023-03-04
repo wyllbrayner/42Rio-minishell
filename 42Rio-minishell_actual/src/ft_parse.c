@@ -16,10 +16,11 @@ void ft_valid_empty_cmd(t_minishell *sh);
 void ft_valid_amount_of_quotes(t_minishell *sh);
 void ft_put_cmd_in_lst(t_minishell *sh);
 void ft_valid_lexcal_cmd(t_minishell *sh);
+void ft_heredoc(t_minishell *sh);
 
 void ft_parse(t_minishell *sh)
 {
-//    printf("Dentro da parse | inicio\n");
+    printf("Dentro da parse | inicio\n");
     if (sh)
     {
         ft_valid_empty_cmd(sh);
@@ -30,6 +31,8 @@ void ft_parse(t_minishell *sh)
         ft_valid_amount_of_quotes(sh);
         if (sh->ret < 0)
             return ;
+/*
+*/
         ft_valid_redirect(sh);
         if (sh->ret < 0)
             return ;
@@ -37,12 +40,14 @@ void ft_parse(t_minishell *sh)
         if (sh->ret < 0)
             return ;
 //        printf("Após a valid quotes ret: %d\n", sh->ret);
+/*
         ft_valid_redirect_out(sh);
         if (sh->ret < 0)
             return ;
         ft_valid_redirect_in(sh);
         if (sh->ret < 0)
             return ;
+*/
         sh->parse_str = ft_split(sh->line, ' ');
         if (!sh->parse_str)
         {
@@ -54,19 +59,22 @@ void ft_parse(t_minishell *sh)
             return ;
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
         ft_print_list(sh->head);
-//        ft_print_rev_list(sh);
+//        ft_print_rev_list(sh->head);
         ft_interpreter(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_heredoc(sh);
         if (sh->ret < 0)
             return ;
     }
     else
         sh->ret = -1;
-//    printf("Dentro da parse | fim\n");
+    printf("Dentro da parse | fim\n");
 }
 
 void ft_valid_empty_cmd(t_minishell *sh)
 {
-//    printf("Dentro da ft_valid_empty_cmd | inicio\n");
+    printf("Dentro da ft_valid_empty_cmd | inicio\n");
     sh->tmp0 = ft_strtrim(sh->line, " ");
     if (!sh->tmp0)
     {
@@ -83,7 +91,7 @@ void ft_valid_empty_cmd(t_minishell *sh)
     sh->tmp0 = NULL;
 //    ft_free_minishell_single_aux(sh->tmp1);
 //    sh->tmp1 = NULL;
-//    printf("Dentro da ft_valid_empty_cmd | fim\n");
+    printf("Dentro da ft_valid_empty_cmd | fim\n");
 }
 
 void ft_valid_amount_of_quotes(t_minishell *sh)
@@ -92,7 +100,7 @@ void ft_valid_amount_of_quotes(t_minishell *sh)
     long    squote;
     long    dquote;
 
-//    printf("Dentro da ft_valid_quotes | inicio\n");
+    printf("Dentro da ft_valid_quotes | inicio\n");
     i = 0;
     squote = 0;
     dquote = 0;
@@ -106,12 +114,12 @@ void ft_valid_amount_of_quotes(t_minishell *sh)
     }
     if (!ft_valid_quote(squote, dquote))
         sh->ret = -5;
-//    printf("Dentro da ft_valid_quotes | fim\n");
+    printf("Dentro da ft_valid_quotes | fim\n");
 }
 
 void    ft_valid_redirect(t_minishell *sh)
 {
-//    printf("Dentro da valid_redirect -> Início\n");
+    printf("Dentro da valid_redirect -> Início\n");
     long var[5];
 
 //  var[0] = 0;         //    i = 0;
@@ -143,12 +151,12 @@ void    ft_valid_redirect(t_minishell *sh)
             var[0]++;
         }
     }
-//    printf("Dentro da valid_redirect -> Fim\n");
+    printf("Dentro da valid_redirect -> Fim\n");
 }
 
 void ft_valid_lexcal_cmd(t_minishell *sh)
 {
-//    printf("Dentro da ft_valid_lexcal_cmd -> Início\n");
+    printf("Dentro da ft_valid_lexcal_cmd -> Início\n");
     t_node  *tmp;
 
     tmp = sh->head;
@@ -171,5 +179,33 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
     }
     sh->ret = 0;
     sh->erro = NULL;
-//    printf("Dentro da ft_valid_lexcal_cmd -> Fim\n");
+    printf("Dentro da ft_valid_lexcal_cmd -> Fim\n");
+}
+
+void    ft_heredoc(t_minishell *sh)
+{
+    printf("Dentro da ft_heredoc -> Início\n");
+    t_node *head;
+
+    head = sh->head;
+    while (head && (sh->ret == 0))
+    {
+//        printf("nó [token    ]: %s\n", head->token);
+//        printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
+//        printf("nó [first cmd]: %s\n", head->first_cmd);
+        if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
+        {
+            if (head->prev)
+            {
+                if (ft_strncmp(head->prev->first_cmd, "<<", 2) == 0)
+                {
+                    ft_heredoc_builder(sh, head);
+                    if (sh->ret < 0)
+                        break ;
+                }
+            }
+        }
+        head = head->next;
+    }
+    printf("Dentro da ft_heredoc -> Fim\n");
 }

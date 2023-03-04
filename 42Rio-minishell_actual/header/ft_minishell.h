@@ -93,6 +93,7 @@ void    ft_interpreter(t_minishell *sh);
 void    ft_free_minishell(t_minishell *sh, int status);
 void    ft_free_minishell_single_aux(char *str);
 void    ft_free_minishell_double_aux(char **str_double);
+void    ft_free_minishell_close_fd(int *file_fd, long amount_fd);
 void    ft_valid_redirect_in(t_minishell *sh);
 void    ft_valid_redirect_out(t_minishell *sh);
 
@@ -134,8 +135,8 @@ t_node	*ft_node_create(char *cmd);
 size_t  ft_strchr_i(const char *str, int c);
 size_t  ft_strrchr_i(const char *str, int c);
 
-void    ft_print_list(const t_node *node);
-//void    ft_print_list(const t_minishell *sh); // retirar antes de entregar!
-void    ft_print_rev_list(const t_minishell *sh); // retirar antes de entregar!
+void    ft_print_list(const t_node *node); // retirar antes de entregar!
+void    ft_print_rev_list(const t_node *node); // retirar antes de entregar!
+//void    ft_print_rev_list(const t_minishell *sh); // retirar antes de entregar!
 
 #endif

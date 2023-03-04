@@ -71,15 +71,15 @@ void ft_minishell(void)
 
 void    ft_exec_token(t_minishell *sh)
 {
+    printf("ft_exec_token  - Início\n");
     t_node *head;
-//    t_node *prev;
 
     head = sh->head;
     while (head && (sh->ret == 0))
     {
-        printf("nó [token    ]: %s\n", head->token);
-        printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
-        printf("nó [first cmd]: %s\n", head->first_cmd);
+//        printf("nó [token    ]: %s\n", head->token);
+//        printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
+//        printf("nó [first cmd]: %s\n", head->first_cmd);
         if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
         {
             if (!head->prev)
@@ -91,9 +91,12 @@ void    ft_exec_token(t_minishell *sh)
             }
             if (head->prev)
             {
+/*
                 if (ft_strncmp(head->prev->first_cmd, "<<", 2) == 0)
                     ft_heredoc_builder(sh, head);
                 else if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
+*/
+                if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
                     printf("pula nó\n");
                 else
                 {
@@ -108,6 +111,7 @@ void    ft_exec_token(t_minishell *sh)
 //            printf("Pula o '|' \n");
         head = head->next;
     }
+    printf("ft_exec_token  - Fim\n");
 }
 
 void    ft_select_way(t_minishell *sh, t_node *node)
@@ -119,7 +123,6 @@ void    ft_select_way(t_minishell *sh, t_node *node)
             printf("Chama a builtin echo\n");
 //            ft_builtin_echo(sh, node);
             ft_builtin_echo(node->token);
-//            ft_builtin_echo(sh->line);
         }
         else if (ft_strncmp(node->first_cmd, "cd", 3) == 0)
         {

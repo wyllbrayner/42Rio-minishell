@@ -21,7 +21,7 @@ int	main(void)
 	int		fd;
 	char	*retgnl;
 
-	fd = open("teste0.txt", O_RDWR);
+	fd = open("teste2.txt", O_RDWR);
 	if (fd < 0)
 	{
 		close(fd);
