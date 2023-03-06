@@ -91,14 +91,15 @@ void ft_list_destroy(t_node **head)
 {
 	t_node *head_int;
 	t_node *tmp;
-
-//	printf("Dentro da ft_list_destroy | inicio\n");
+	printf("Dentro da ft_list_destroy | inicio\n");
 	head_int = *head;
+    ft_print_list(head_int);
 	if (head_int)
 	{
 		tmp = NULL;
 		while (head_int)
 		{
+			printf("Vamos apagar o token: %s\n", head_int->token);
 			tmp = head_int;
 			head_int = head_int->next;
 			ft_free_minishell_single_aux(tmp->token);
@@ -111,14 +112,16 @@ void ft_list_destroy(t_node **head)
 			tmp->path = NULL;
 			ft_free_minishell_double_aux(tmp->redirect_file);
 			tmp->redirect_file = NULL;
-			ft_free_minishell_close_fd(tmp->redirect_file_fd, tmp->redirect_file_fd_amount);
+			if (tmp->redirect_file_fd)
+				ft_free_minishell_close_fd(tmp->redirect_file_fd, tmp->redirect_file_fd_amount);
 			tmp->redirect_file_fd = NULL;
 			tmp->redirect_file_fd_amount = 0;
+			printf("token: %s Apagado\n", tmp->token);
 			free(tmp);
 			tmp = NULL;
 		}
 	}
-//	printf("Dentro da ft_list_destroy | fim\n");
+	printf("Dentro da ft_list_destroy | fim\n");
 }
 
 void ft_print_list(const t_node *node)

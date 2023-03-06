@@ -25,7 +25,7 @@ static  void    ft_cmd_builder_aux_1(t_minishell *sh, char *cmd);
 
 void ft_cmd_builder(t_minishell *sh)
 {
-    printf("Dentro da cmd builder-> Início\n");
+//    printf("Dentro da cmd builder-> Início\n");
 //    printf("line->: %s\n", sh->line);
     long var[5];
 
@@ -84,7 +84,7 @@ void ft_cmd_builder(t_minishell *sh)
             var[0]++; // idem do anterior
     }
     ft_bzero(sh->caract, (sizeof(char) * 4));
-    printf("Dentro da cmd builder -> Fim (ret: sh->ret: %i)\n", sh->ret);
+//    printf("Dentro da cmd builder -> Fim (ret: sh->ret: %i)\n", sh->ret);
 }
 
 void ft_cmd_builder_init_var(char *caract, char *str, long *var)
@@ -110,7 +110,7 @@ void ft_cmd_builder_init_var(char *caract, char *str, long *var)
 void    ft_cmd_builder_aux_0(t_minishell *sh, long *i, long *squote, 
                                                                 long *dquote)
 {
-    printf("Dentro da init cmd aux_0 -> Início (i: %li, sq: %li, dq: %ld, caract: %s)\n", *i, *squote, *dquote, sh->caract);
+//    printf("Dentro da init cmd aux_0 -> Início (i: %li, sq: %li, dq: %ld, caract: %s)\n", *i, *squote, *dquote, sh->caract);
     while (sh->line[*i] && 
     (!((ft_strchr(sh->caract, sh->line[*i]) && ft_valid_quote(*squote, *dquote)))))
     {
@@ -120,14 +120,14 @@ void    ft_cmd_builder_aux_0(t_minishell *sh, long *i, long *squote,
             *dquote = *dquote + 1;
         *i = *i + 1;
     }
-    printf("Dentro da init cmd aux_0 -> Fim (i: %li, sq: %li, dq: %ld, caract: %s)\n", *i, *squote, *dquote, sh->caract);
+//    printf("Dentro da init cmd aux_0 -> Fim (i: %li, sq: %li, dq: %ld, caract: %s)\n", *i, *squote, *dquote, sh->caract);
 }
 
 
 //   | | ls NOK
 static void    ft_cmd_builder_aux_1(t_minishell *sh, char *cmd)
 {
-    printf("Dentro da init cmd aux_1 -> Início: cmd: #%s#\n", cmd);
+//    printf("Dentro da init cmd aux_1 -> Início: cmd: #%s#\n", cmd);
     if (!cmd)
     {
         sh->ret = -3;
@@ -141,12 +141,13 @@ static void    ft_cmd_builder_aux_1(t_minishell *sh, char *cmd)
     {
         ft_free_minishell_single_aux(sh->tmp0);
         sh->tmp0 = NULL;
-        sh->ret = -3;
+        sh->ret = -6;
+        sh->erro = "|";
         return ;
     }
     ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
     ft_free_minishell_single_aux(sh->tmp0);
     sh->tmp0 = NULL;
-    ft_print_list(sh->head);
-    printf("Dentro da init cmd aux_1 -> Fim\n");
+//    ft_print_list(sh->head);
+//    printf("Dentro da init cmd aux_1 -> Fim\n");
 }

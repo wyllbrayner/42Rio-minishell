@@ -31,14 +31,18 @@ void ft_free_minishell(t_minishell *sh, int status)
         ft_free_minishell_double_aux(sh->out_redirect_file);
         sh->out_redirect_file = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para out_redirect_file_fd\n");
+/*
         ft_free_minishell_close_fd(sh->out_redirect_file_fd, sh->out_redirect_file_fd_amount);
         sh->out_redirect_file_fd = NULL;
+*/
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para in_redirect\n");
         ft_free_minishell_double_aux(sh->in_redirect_file);
         sh->in_redirect_file = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para in_redirect_file_fd\n");
+/*
         ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
         sh->in_redirect_file_fd = NULL;
+*/
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a list_destroy para tmp = sh->head\n");
         ft_list_destroy(&tmp);
         ft_init_var_aux_one(sh);
@@ -97,17 +101,20 @@ void ft_free_minishell_double_aux(char **str_double)
 
 void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
 {
-    long i;
+        long i;
+        printf("Dentro da ft_free_minishell_close_fd amount_fd: %ld | início\n", amount_fd);
 
-    i = 0;
-    if (file_fd)
-    {
-        while (i < amount_fd)
+        i = 0;
+        if (file_fd && amount_fd != 0)
         {
-            close(file_fd[i]);
-            i++;
+                while (i < amount_fd)
+                {
+                        if (file_fd[i] != -1)
+                            close(file_fd[i]);
+                        i++;
+                }
+                free(file_fd);
+                file_fd = NULL;
         }
-        free(file_fd);
-        file_fd = NULL;
-    }
+	printf("Dentro da ft_free_minishell_close_fd | fim\n");
 }

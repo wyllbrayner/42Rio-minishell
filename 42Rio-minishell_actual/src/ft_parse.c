@@ -21,7 +21,7 @@ void ft_heredoc(t_minishell *sh);
 
 void ft_parse(t_minishell *sh)
 {
-    printf("Dentro da parse | inicio\n");
+//    printf("Dentro da parse | inicio\n");
     if (sh)
     {
         ft_valid_empty_cmd(sh);
@@ -42,13 +42,13 @@ void ft_parse(t_minishell *sh)
         if (sh->ret < 0)
             return ;
 /*
-//        printf("Após a valid quotes ret: %d\n", sh->ret);
-//        ft_valid_redirect_out(sh);
-//        if (sh->ret < 0)
-//            return ;
-//        ft_valid_redirect_in(sh);
-//        if (sh->ret < 0)
-//            return ;
+        printf("Após a valid quotes ret: %d\n", sh->ret);
+        ft_valid_redirect_out(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_valid_redirect_in(sh);
+        if (sh->ret < 0)
+            return ;
 */
         sh->parse_str = ft_split(sh->line, ' ');
         if (!sh->parse_str)
@@ -56,31 +56,33 @@ void ft_parse(t_minishell *sh)
             sh->ret = -3;
             return ;
         }
-        ft_print_list(sh->head);
+//        ft_print_list(sh->head);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
             return ;
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
         ft_print_list(sh->head);
-//        ft_print_rev_list(sh->head);
+        ft_print_rev_list(sh->head);
         ft_interpreter(sh);
         if (sh->ret < 0)
             return ;
         ft_redirect(sh);
         if (sh->ret < 0)
             return ;
+/*
+*/
         ft_heredoc(sh);
         if (sh->ret < 0)
             return ;
     }
     else
         sh->ret = -1;
-    printf("Dentro da parse | fim\n");
+//    printf("Dentro da parse | fim\n");
 }
 
 void ft_valid_empty_cmd(t_minishell *sh)
 {
-    printf("Dentro da ft_valid_empty_cmd | inicio\n");
+//    printf("Dentro da ft_valid_empty_cmd | inicio\n");
     sh->tmp0 = ft_strtrim(sh->line, " ");
     if (!sh->tmp0)
     {
@@ -97,7 +99,7 @@ void ft_valid_empty_cmd(t_minishell *sh)
     sh->tmp0 = NULL;
 //    ft_free_minishell_single_aux(sh->tmp1);
 //    sh->tmp1 = NULL;
-    printf("Dentro da ft_valid_empty_cmd | fim\n");
+//    printf("Dentro da ft_valid_empty_cmd | fim\n");
 }
 
 void ft_valid_amount_of_quotes(t_minishell *sh)
@@ -106,7 +108,7 @@ void ft_valid_amount_of_quotes(t_minishell *sh)
     long    squote;
     long    dquote;
 
-    printf("Dentro da ft_valid_quotes | inicio\n");
+//    printf("Dentro da ft_valid_quotes | inicio\n");
     i = 0;
     squote = 0;
     dquote = 0;
@@ -120,12 +122,12 @@ void ft_valid_amount_of_quotes(t_minishell *sh)
     }
     if (!ft_valid_quote(squote, dquote))
         sh->ret = -5;
-    printf("Dentro da ft_valid_quotes | fim\n");
+//    printf("Dentro da ft_valid_quotes | fim\n");
 }
 
 void    ft_valid_redirect_1(t_minishell *sh)
 {
-    printf("Dentro da valid_redirect_1 -> Início\n");
+//    printf("Dentro da valid_redirect_1 -> Início\n");
     long var[5];
 
 //  var[0] = 0;         //    i = 0;
@@ -135,7 +137,7 @@ void    ft_valid_redirect_1(t_minishell *sh)
     ft_cmd_builder_init_var(sh->caract, "><", var);
     while (sh->line[var[0]])
     {
-        printf("Dentro da valid_redirect_1 -> loop\n");
+//        printf("Dentro da valid_redirect_1 -> loop\n");
         ft_cmd_builder_aux_0(sh, &var[0], &var[3], &var[2]);
         if (sh->line[var[0]])
             var[0]++;
@@ -156,12 +158,12 @@ void    ft_valid_redirect_1(t_minishell *sh)
         }
         var[0]++;
     }
-    printf("Dentro da valid_redirect_1 -> Fim\n");
+//    printf("Dentro da valid_redirect_1 -> Fim\n");
 }
 
 void    ft_valid_redirect_0(t_minishell *sh)
 {
-    printf("Dentro da valid_redirect 0 -> Início\n");
+//    printf("Dentro da valid_redirect 0 -> Início\n");
     long var[5];
 
 //  var[0] = 0;         //    i = 0;
@@ -218,12 +220,12 @@ void    ft_valid_redirect_0(t_minishell *sh)
         else
             break ;
     }
-    printf("Dentro da valid_redirect 0 -> Fim\n");
+//    printf("Dentro da valid_redirect 0 -> Fim\n");
 }
 
 void ft_valid_lexcal_cmd(t_minishell *sh)
 {
-    printf("Dentro da ft_valid_lexcal_cmd -> Início\n");
+//    printf("Dentro da ft_valid_lexcal_cmd -> Início\n");
     t_node  *tmp;
 
     tmp = sh->head;
@@ -246,12 +248,12 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
     }
     sh->ret = 0;
     sh->erro = NULL;
-    printf("Dentro da ft_valid_lexcal_cmd -> Fim\n");
+//    printf("Dentro da ft_valid_lexcal_cmd -> Fim\n");
 }
 
 void    ft_heredoc(t_minishell *sh)
 {
-    printf("Dentro da ft_heredoc -> Início\n");
+//    printf("Dentro da ft_heredoc -> Início\n");
     t_node *head;
 
     head = sh->head;
@@ -274,7 +276,93 @@ void    ft_heredoc(t_minishell *sh)
         }
         head = head->next;
     }
-    printf("Dentro da ft_heredoc -> Fim\n");
+//    printf("Dentro da ft_heredoc -> Fim\n");
+}
+
+void    ft_redirect_aux_1(t_minishell *sh, t_node *node, int type)
+{
+    int j;
+    printf("Dentro da ft_redirect_aux_1 -> Início type: %d\n", type);
+    j = 0;
+    while (node->redirect_file[j])
+    {
+        printf("Dentro da ft_redirect_aux_1 | dentro do loop type: %d | j: %d | node->redirect_file[%d]: %s\n", type, j, j, node->redirect_file[j]);
+        if (j > 0)
+        {
+            printf("Dentro da ft_redirect_aux_1 | dentro do loop | dentro do 1ª if type: %d | j: %d | node->redirect_file[%d]: %s\n", type, j, j, node->redirect_file[j]);
+            sh->ret = -7;
+            sh->erro = node->redirect_file[j];
+            return ;
+        }
+        printf("Dentro da ft_redirect_aux_1 -> Início type: %d | j: %d | node->redirect_file[%d]: %s pré open\n", type, j, j, node->redirect_file[j]);
+        if (type == 1)
+            node->redirect_file_fd[j] = open(node->redirect_file[j], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+        else if (type == 2)
+            node->redirect_file_fd[j] = open(node->redirect_file[j], O_WRONLY | O_CREAT | O_APPEND, 0666);
+        else if (type == 3)
+            node->redirect_file_fd[j] = open(node->redirect_file[j], O_RDONLY);
+        if (node->redirect_file_fd[j] == -1)
+        {
+            printf("Dentro da ft_redirect_aux_1 | dentro do loop | dentro do 2ª if type: %d | j: %d | node->redirect_file[%d]: %s\n", type, j, j, node->redirect_file[j]);
+            sh->ret = -7;
+            sh->erro = node->redirect_file[j];
+            return ;
+        }
+        j++;
+        printf("Dentro da ft_redirect_aux_1 -> Início type: %d | j: %d | node->redirect_file[%d]: %s pós open\n", type, j, j, node->redirect_file[j]);
+    }
+    printf("Dentro da ft_redirect_aux_1 -> Fim\n");
+}
+
+void    ft_redirect_aux_0(t_minishell *sh, t_node *node)
+{
+    printf("Dentro da ft_redirect_aux_0 -> Início\n");
+    node->redirect_file = ft_split(node->token, ' ');
+    if (!node->redirect_file)
+    {
+        sh->ret = -3;
+        return;
+    }
+    int j = 0;
+    while (node->redirect_file[j])
+    {
+        printf("após split: node->redirect_file[%i]: %s\n", j, node->redirect_file[j]);
+        j++;
+    }
+    printf("após split: node->redirect_file[%i]: %s\n", j, node->redirect_file[j]);
+
+    while (node->redirect_file[node->redirect_file_fd_amount])
+    {
+        printf("split para o arquivo: %s\n", node->redirect_file[node->redirect_file_fd_amount]);
+        node->redirect_file_fd_amount++;
+    }
+    node->redirect_file_fd = (int *)malloc(sizeof(int) * node->redirect_file_fd_amount);
+    if (!node->redirect_file_fd)
+    {
+        sh->ret = -3;
+        return;
+    }
+    printf("Conseguiu mallocar %i fds\n", node->redirect_file_fd_amount);
+    printf("para node->token: %s o prev é: %s\n", node->token, node->prev->token);
+    if (node->prev)
+    {
+        if (ft_strncmp(node->prev->token, ">", 2) == 0)
+        {
+            printf("Arquivo de saida normal\n");
+            ft_redirect_aux_1(sh, node, 1);
+        }
+        else if (ft_strncmp(node->prev->token, ">>", 3) == 0)
+        {
+            printf("Arquivo de saida com append\n");
+            ft_redirect_aux_1(sh, node, 2);
+        }
+        else if (ft_strncmp(node->prev->token, "<", 2) == 0)
+        {
+            printf("Arquivo de entrada normal\n");
+            ft_redirect_aux_1(sh, node, 3);
+        }
+    }
+    printf("Dentro da ft_redirect_aux_0 -> Fim\n");
 }
 
 void    ft_redirect(t_minishell *sh)
@@ -294,7 +382,8 @@ void    ft_redirect(t_minishell *sh)
             {
                 if ((ft_strncmp(head->prev->first_cmd, "<", 2) == 0) || (ft_strncmp(head->prev->first_cmd, ">", 2) == 0) || (ft_strncmp(head->prev->first_cmd, ">>", 3) == 0))
                 {
-                    printf("Charmar a builder_redirect\n");
+                    printf("Charmar a builder_redirect head->token: %s\n", head->token);
+                    ft_redirect_aux_0(sh, head);
                     if (sh->ret < 0)
                         break ;
                 }
