@@ -16,6 +16,7 @@ void ft_valid_empty_cmd(t_minishell *sh);
 void ft_valid_amount_of_quotes(t_minishell *sh);
 void ft_put_cmd_in_lst(t_minishell *sh);
 void ft_valid_lexcal_cmd(t_minishell *sh);
+void ft_redirect(t_minishell *sh);
 void ft_heredoc(t_minishell *sh);
 
 void ft_parse(t_minishell *sh)
@@ -31,22 +32,23 @@ void ft_parse(t_minishell *sh)
         ft_valid_amount_of_quotes(sh);
         if (sh->ret < 0)
             return ;
-/*
-*/
-        ft_valid_redirect(sh);
+        ft_valid_redirect_0(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_valid_redirect_1(sh);
         if (sh->ret < 0)
             return ;
         ft_cmd_builder(sh);
         if (sh->ret < 0)
             return ;
-//        printf("Após a valid quotes ret: %d\n", sh->ret);
 /*
-        ft_valid_redirect_out(sh);
-        if (sh->ret < 0)
-            return ;
-        ft_valid_redirect_in(sh);
-        if (sh->ret < 0)
-            return ;
+//        printf("Após a valid quotes ret: %d\n", sh->ret);
+//        ft_valid_redirect_out(sh);
+//        if (sh->ret < 0)
+//            return ;
+//        ft_valid_redirect_in(sh);
+//        if (sh->ret < 0)
+//            return ;
 */
         sh->parse_str = ft_split(sh->line, ' ');
         if (!sh->parse_str)
@@ -54,6 +56,7 @@ void ft_parse(t_minishell *sh)
             sh->ret = -3;
             return ;
         }
+        ft_print_list(sh->head);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
             return ;
@@ -61,6 +64,9 @@ void ft_parse(t_minishell *sh)
         ft_print_list(sh->head);
 //        ft_print_rev_list(sh->head);
         ft_interpreter(sh);
+        if (sh->ret < 0)
+            return ;
+        ft_redirect(sh);
         if (sh->ret < 0)
             return ;
         ft_heredoc(sh);
@@ -117,9 +123,9 @@ void ft_valid_amount_of_quotes(t_minishell *sh)
     printf("Dentro da ft_valid_quotes | fim\n");
 }
 
-void    ft_valid_redirect(t_minishell *sh)
+void    ft_valid_redirect_1(t_minishell *sh)
 {
-    printf("Dentro da valid_redirect -> Início\n");
+    printf("Dentro da valid_redirect_1 -> Início\n");
     long var[5];
 
 //  var[0] = 0;         //    i = 0;
@@ -129,29 +135,90 @@ void    ft_valid_redirect(t_minishell *sh)
     ft_cmd_builder_init_var(sh->caract, "><", var);
     while (sh->line[var[0]])
     {
-//        printf("Dentro da valid_redirect -> loop\n");
+        printf("Dentro da valid_redirect_1 -> loop\n");
         ft_cmd_builder_aux_0(sh, &var[0], &var[3], &var[2]);
-//        printf("Dentro da valid_redirect -> loop após aux_0 var[0]: %ld\n", var[0]);
+        if (sh->line[var[0]])
+            var[0]++;
+        else
+            break ;
+        while (sh->line[var[0]])
+        {
+            if (ft_isspace(sh->line[var[0]]))
+                var[0]++;
+            else
+                break ;
+        }
+        if (sh->line[var[0]] == '|')
+        {
+            sh->ret = -6;
+            sh->erro ="|";
+            break ;
+        }
+        var[0]++;
+    }
+    printf("Dentro da valid_redirect_1 -> Fim\n");
+}
+
+void    ft_valid_redirect_0(t_minishell *sh)
+{
+    printf("Dentro da valid_redirect 0 -> Início\n");
+    long var[5];
+
+//  var[0] = 0;         //    i = 0;
+//  var[1] = 0;         //    start = 0;
+//  var[2] = 0;         //    dquote = 0;
+//  var[3] = 0;         //    squote = 0;
+    ft_cmd_builder_init_var(sh->caract, "><", var);
+    while (sh->line[var[0]])
+    {
+//        printf("Dentro da valid_redirect 0 -> loop\n");
+        ft_cmd_builder_aux_0(sh, &var[0], &var[3], &var[2]);
+//        printf("Dentro da valid_redirect 0 -> loop após aux_0 var[0]: %ld\n", var[0]);
         if (ft_strchr("<>", sh->line[var[0]]) && (ft_strlen(sh->line) - var[0]) >= 3)
         {
-            if (ft_strncmp(&sh->line[var[0]], ">>>", 3) == 0)
+            if (var[0] == 0)
             {
-//                printf("Dentro da valid_redirect -> 1° if\n");
-                sh->ret = -6;
-                sh->erro = ">>>";
-                return ;
+                if (ft_strncmp(&sh->line[var[0]], ">>>", 3) == 0)
+                {
+//                    printf("Dentro da valid_redirect 0 -> 1° if\n");
+                    sh->ret = -6;
+                    sh->erro = ">>>";
+                    return ;
+                }
+                else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
+                {
+//                    printf("Dentro da valid_redirect 0 -> 2° if\n");
+                    sh->ret = -6;
+                    sh->erro = "<<<";
+                    return ;
+                }
             }
-            else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
+            else
             {
-//                printf("Dentro da valid_redirect -> 2° if\n");
-                sh->ret = -6;
-                sh->erro = "<<<";
-                return ;
+                if (!ft_strchr("_-", sh->line[(var[0] - 1)]))
+                {
+                    if (ft_strncmp(&sh->line[var[0]], ">>>", 3) == 0)
+                    {
+//                        printf("Dentro da valid_redirect 0 -> 1° if\n");
+                        sh->ret = -6;
+                        sh->erro = ">>>";
+                        return ;
+                    }
+                    else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
+                    {
+//                        printf("Dentro da valid_redirect 0 -> 2° if\n");
+                        sh->ret = -6;
+                        sh->erro = "<<<";
+                        return ;
+                    }   
+                }
             }
             var[0]++;
         }
+        else
+            break ;
     }
-    printf("Dentro da valid_redirect -> Fim\n");
+    printf("Dentro da valid_redirect 0 -> Fim\n");
 }
 
 void ft_valid_lexcal_cmd(t_minishell *sh)
@@ -209,3 +276,74 @@ void    ft_heredoc(t_minishell *sh)
     }
     printf("Dentro da ft_heredoc -> Fim\n");
 }
+
+void    ft_redirect(t_minishell *sh)
+{
+    printf("Dentro da ft_redirect -> Início\n");
+    t_node *head;
+
+    head = sh->head;
+    while (head && (sh->ret == 0))
+    {
+        printf("nó [token    ]: %s\n", head->token);
+        printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
+        printf("nó [first cmd]: %s\n", head->first_cmd);
+        if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
+        {
+            if (head->prev)
+            {
+                if ((ft_strncmp(head->prev->first_cmd, "<", 2) == 0) || (ft_strncmp(head->prev->first_cmd, ">", 2) == 0) || (ft_strncmp(head->prev->first_cmd, ">>", 3) == 0))
+                {
+                    printf("Charmar a builder_redirect\n");
+                    if (sh->ret < 0)
+                        break ;
+                }
+            }
+        }
+        head = head->next;
+    }
+    printf("Dentro da ft_redirect -> Fim\n");
+}
+
+
+
+/*
+void    ft_valid_redirect(t_minishell *sh)
+{
+    printf("Dentro da valid_redirect -> Início\n");
+    long var[5];
+
+//  var[0] = 0;         //    i = 0;
+//  var[1] = 0;         //    start = 0;
+//  var[2] = 0;         //    dquote = 0;
+//  var[3] = 0;         //    squote = 0;
+    ft_cmd_builder_init_var(sh->caract, "><", var);
+    while (sh->line[var[0]])
+    {
+        printf("Dentro da valid_redirect -> loop\n");
+        ft_cmd_builder_aux_0(sh, &var[0], &var[3], &var[2]);
+        printf("Dentro da valid_redirect -> loop após aux_0 var[0]: %ld\n", var[0]);
+        if (ft_strchr("<>", sh->line[var[0]]) && (ft_strlen(sh->line) - var[0]) >= 3)
+        {
+            if (ft_strncmp(&sh->line[var[0]], ">>>", 3) == 0)
+            {
+                printf("Dentro da valid_redirect -> 1° if\n");
+                sh->ret = -6;
+                sh->erro = ">>>";
+                return ;
+            }
+            else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
+            {
+                printf("Dentro da valid_redirect -> 2° if\n");
+                sh->ret = -6;
+                sh->erro = "<<<";
+                return ;
+            }
+            var[0]++;
+        }
+        else
+            break ;
+    }
+    printf("Dentro da valid_redirect -> Fim\n");
+}
+*/

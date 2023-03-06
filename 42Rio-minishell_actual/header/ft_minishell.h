@@ -79,7 +79,8 @@ typedef struct  s_minishell
 void    rl_replace_line (const char *text, int clear_undo);
 
 void    ft_isexec(t_minishell *sh, t_node *node);
-void    ft_valid_redirect(t_minishell *sh);
+void    ft_valid_redirect_0(t_minishell *sh);
+void    ft_valid_redirect_1(t_minishell *sh);
 void    ft_cmd_builder_init_var(char *caract, char *str, long *var);
 void    ft_cmd_builder_aux_0(t_minishell *sh, long *i, long *squote, 
                                                                 long *dquote);
