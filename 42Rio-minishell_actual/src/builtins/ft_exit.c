@@ -30,8 +30,8 @@ void ft_builtin_exit(t_minishell *sh, t_node *node)
     {
         if (!node->prev && !node->next)
         {
-            printf("Dentro do if para ambos os ponteiros nulos | altera running para 0\n");
-            printf("%s\n", node->first_cmd);
+//            printf("Dentro do if para ambos os ponteiros nulos | altera running para 0\n");
+//            printf("%s\n", node->first_cmd);
             if (node->cmd[1])
             {
                 i = 0;
@@ -48,9 +48,9 @@ void ft_builtin_exit(t_minishell *sh, t_node *node)
             }
             sh->running = FALSE;
         }
-        else
-        {
-            printf("Dentro do if para ambos os ponteiros não nulos | mantem running como 1\n");
-        }
+//        else
+//        {
+//            printf("Dentro do if para ambos os ponteiros não nulos | mantem running como 1\n");
+//        }
     }
 }

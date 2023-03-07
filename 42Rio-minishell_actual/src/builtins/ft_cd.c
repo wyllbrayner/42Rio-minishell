@@ -168,7 +168,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 {
 	long	i;
 	long	status;
-	printf("Dentro da ft_builtin_cd | Início\n");
+//	printf("Dentro da ft_builtin_cd | Início\n");
 
 	i = 0;
 	status = TRUE;
@@ -186,7 +186,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 		if (i == 2)
 		{
 			ft_single_and_double_quotes(sh, node, "cd ", &status);
-			printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s | status: %li!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2], status);
+//			printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s | status: %li!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2], status);
 		}
 		if (!status)
 		{
@@ -207,7 +207,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 //			printf("Dentro da ft_builtin_cd | getcwd retornou ponteiro (%s)\n", sh->tmp0);
 			if (chdir(node->cmd[1]) == -1)
 			{
-				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | chdir retornou -1\n");
+//				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | chdir retornou -1\n");
 				sh->ret = -7;
 				sh->erro = node->cmd[1];
 				sh->errno = 1;
@@ -233,7 +233,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 			}
 		}
 	}
-	printf("Dentro da ft_builtin_cd | Fim\n");
+//	printf("Dentro da ft_builtin_cd | Fim\n");
 }
 
 /*

@@ -71,7 +71,7 @@ void ft_minishell(void)
 
 void    ft_exec_token(t_minishell *sh)
 {
-    printf("ft_exec_token  - Início\n");
+//    printf("ft_exec_token  - Início\n");
     t_node *head;
 
     head = sh->head;
@@ -84,7 +84,7 @@ void    ft_exec_token(t_minishell *sh)
         {
             if (!head->prev)
             {
-                printf("Chama a função correspondente para %s\n", head->first_cmd);
+//                printf("Chama a função correspondente para %s\n", head->first_cmd);
                 ft_select_way(sh, head);
                 if (sh->ret <= -4)
            	    	ft_minishell_error(sh);
@@ -100,7 +100,7 @@ void    ft_exec_token(t_minishell *sh)
                     printf("pula nó\n");
                 else
                 {
-                    printf("Chama a função correspondente para %s\n", head->first_cmd);
+//                    printf("Chama a função correspondente para %s\n", head->first_cmd);
                     ft_select_way(sh, head);
                     if (sh->ret <= -4)
            	        	ft_minishell_error(sh);
@@ -111,7 +111,7 @@ void    ft_exec_token(t_minishell *sh)
 //            printf("Pula o '|' \n");
         head = head->next;
     }
-    printf("ft_exec_token  - Fim\n");
+//    printf("ft_exec_token  - Fim\n");
 }
 
 void    ft_select_way(t_minishell *sh, t_node *node)
@@ -120,43 +120,43 @@ void    ft_select_way(t_minishell *sh, t_node *node)
     {
         if (ft_strncmp(node->first_cmd, "echo", 5) == 0)
         {
-            printf("Chama a builtin echo\n");
-//            ft_builtin_echo(sh, node);
-            ft_builtin_echo(node->token);
+//            printf("Chama a builtin echo\n");
+            ft_builtin_echo(sh, node);
+//            ft_builtin_echo(node->token);
         }
         else if (ft_strncmp(node->first_cmd, "cd", 3) == 0)
         {
-            printf("Chama a builtin cd\n");
+//            printf("Chama a builtin cd\n");
             ft_builtin_cd(sh, node);
         }
         else if (ft_strncmp(node->first_cmd, "pwd", 4) == 0)
         {
-            printf("Chama a builtin pwd\n");
+//            printf("Chama a builtin pwd\n");
             ft_builtin_pwd(sh);
         }
         else if (ft_strncmp(node->first_cmd, "export", 7) == 0)
         {
-            printf("Chamar a builtin export\n");
+//            printf("Chamar a builtin export\n");
             ft_builtin_export(sh, node);
         }
         else if (ft_strncmp(node->first_cmd, "unset", 6) == 0)
         {
-            printf("Chamar a builtin unset\n");
+//            printf("Chamar a builtin unset\n");
             ft_builtin_unset(sh, node);
         }
         else if (ft_strncmp(node->first_cmd, "env", 4) == 0)
         {
-            printf("Chamar a builtin env\n");
+//            printf("Chamar a builtin env\n");
             ft_builtin_env(sh, node);
         }
         else if (ft_strncmp(node->first_cmd, "exit", 5) == 0)
         {
-            printf("Chamar a builtin exit\n");
+//            printf("Chamar a builtin exit\n");
             ft_builtin_exit(sh, node);
         }
         else
         {
-            printf("Builtin NÃO IDENTIFICADA | procurar dentre as bin\n");
+//            printf("Builtin NÃO IDENTIFICADA | procurar dentre as bin\n");
             int rato;
             rato = 0;
             ft_start_command(sh, &rato, node);
