@@ -16,6 +16,12 @@ void ft_builtin_pwd(t_minishell *sh)
 {
 //    printf("ta vindo pra ca msm\n");
     sh->tmp1 = getcwd(NULL, 0);
+    if (!sh->tmp1)
+    {
+        sh->ret = -3;
+        sh->errnbr = errno;
+        return ;
+    }
     ft_putendl_fd(sh->tmp1, 1);
     ft_free_minishell_single_aux(sh->tmp1);
     sh->tmp1 = NULL;

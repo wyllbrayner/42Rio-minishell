@@ -21,6 +21,7 @@ void ft_builtin_env(t_minishell *sh, t_node *node)
     {
         sh->ret = -7;
         sh->erro = node->cmd[1];
+        sh->errnbr = 127;
     }
     else
     {
@@ -30,6 +31,6 @@ void ft_builtin_env(t_minishell *sh, t_node *node)
             printf("%s\n", sh->env[j]);
             j++;
         }
-    	printf("\033[0m");
+//    	printf("\033[0m");
     }
 }

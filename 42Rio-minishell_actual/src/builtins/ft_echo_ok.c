@@ -134,7 +134,7 @@ int ft_builtin_echo_intern(char *echo)
 		{
 //			while (echo[flag])
 //			{
-				if ((echo[flag] == '\''))
+				if (echo[flag] == '\'')
 					flag++;
 //				else
 //					break ;
@@ -148,7 +148,7 @@ int ft_builtin_echo_intern(char *echo)
 		printf("\n");
 	}
 //	printf("Dentro da ft_builtin_echo_intern - Fim\n");
-	return (EXIT_SUCCESS);
+	return (1);
 }
 
 void    ft_builtin_echo(t_minishell *sh, t_node *node)
@@ -162,11 +162,8 @@ void    ft_builtin_echo(t_minishell *sh, t_node *node)
 	while (node->token[i] && ft_isspace(node->token[i]))
 		i++;
 	ret_echo = ft_builtin_echo_intern(&node->token[i]);
-
 	if (ret_echo)
-		sh->ret = 0;
-//	else
-//		sh->errno = perror;
+		sh->errnbr = 0;
 //	printf("Dentro da ft_builtin_echo - Fim\n");
 }
 

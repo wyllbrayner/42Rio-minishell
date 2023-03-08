@@ -20,7 +20,9 @@ void ft_isexec(t_minishell *sh, t_node *node)
 //        printf("É um executável!!!\n");
         if ((int)ft_strchr_i(node->token, '/') == -1)
         {
-            sh->ret = -8;   //pensar em um código de retorno para isto.
+            sh->ret = -4;
+            sh->errnbr = 127;
+            sh->erro = node->first_cmd;
             return ;
         }
 //        printf("É um executável!!!\n");
@@ -28,7 +30,9 @@ void ft_isexec(t_minishell *sh, t_node *node)
         if (!node->path)
         {
 //            printf("Não mallocou!!!\n");
-            sh->ret = -3;
+            sh->ret = -7;
+            sh->errnbr = 127;
+            sh->erro = node->first_cmd;
             return ;
         }
     }
@@ -39,7 +43,9 @@ void ft_isexec(t_minishell *sh, t_node *node)
 //        printf("É um binário com endereço absoluto!!!\n");
         if (!node->path)
         {
-            sh->ret = -3;
+            sh->ret = -7;
+            sh->errnbr = 127;
+            sh->erro = node->first_cmd;
             return ;
         }
     }
@@ -51,7 +57,9 @@ void ft_isexec(t_minishell *sh, t_node *node)
         sh->tmp1 = NULL;
         if (!node->path)
         {
-            sh->ret = -3;
+            sh->ret = -7;
+            sh->errnbr = 127;
+            sh->erro = node->first_cmd;
             return ;
         }
     }
@@ -59,6 +67,7 @@ void ft_isexec(t_minishell *sh, t_node *node)
 	{
 //        printf("node->path: não tem acesso a: %s\n", node->path);
 		sh->ret = -7;
+        sh->errnbr = 127;
 		sh->erro = node->first_cmd;
         return ;
 	}

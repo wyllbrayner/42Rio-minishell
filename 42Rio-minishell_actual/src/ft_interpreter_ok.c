@@ -21,7 +21,10 @@ void ft_expander_dquote(t_minishell *sh, t_node *node)
     j = 0;
     sh->tmp1 = (char *)malloc(sizeof(char) * (ft_strlen(node->token) + 1)); // malloque tmp1 com a quantidade de caracteres de token + 1 para o nullo.
     if (!sh->tmp1)
+    {
+        sh->errnbr = errno;
         sh->ret = -3;
+    }
     else // se conseguiu mallocar, faça
     {
         while (node->token[i]) // percorra todos os caracteres de token.
@@ -46,7 +49,10 @@ void ft_expander_squote(t_minishell *sh, t_node *node)
     squote = 0;
     sh->tmp1 = (char *)malloc(sizeof(char) * (ft_strlen(node->token) + 1));
     if (!sh->tmp1)
+    {
+        sh->errnbr = errno;
         sh->ret = -3;
+    }
     else
     {
         while (node->token[i]) // percorra todos os caracteres de token
@@ -117,6 +123,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 //        printf("Dentro do if   tmp0: %s#\n", sh->tmp0);
         if (!sh->tmp0)
         {
+            sh->errnbr = errno;
             sh->ret = -3;
             return ;
         }
@@ -131,6 +138,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
                 ft_free_minishell_single_aux(sh->tmp5);
                 sh->tmp5 = NULL;
                 sh->ret = -3;
+                sh->errnbr = errno;
                 return ;
             }
 //            printf("Dentro do else   tmp0: %s#\n", sh->tmp0);
@@ -142,6 +150,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
             sh->tmp5 = NULL;
             if (!sh->tmp1)
             {
+                sh->errnbr = errno;
                 sh->ret = -3;
                 return ;
             }
@@ -195,6 +204,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
         ft_free_minishell_single_aux(sh->tmp0);
         sh->tmp0 = NULL;
         sh->ret = -3;
+        sh->errnbr = errno;
         return ;
     }
     sh->tmp1 = ft_strjoin(sh->tmp5, "=");
@@ -207,6 +217,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
         ft_free_minishell_single_aux(sh->tmp0);
         sh->tmp0 = NULL;
         sh->ret = -3;
+        sh->errnbr = errno;
         return ;
     }
     var[1] = ft_strlen(sh->tmp1);
@@ -225,8 +236,9 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
     {
         if (ft_strncmp(sh->tmp1, "?=", 3) == 0)
         {
-            sh->tmp5 = ft_itoa(sh->errno);
+            sh->tmp5 = ft_itoa(sh->errnbr);           
 //            printf("ft_unset_aux_1 retornou false, mas tmp1 = $?=: %s\n", sh->tmp2);
+//            printf("ft_unset_aux_1 retornou false, mas tmp5 = $?=: %s\n", sh->tmp5);
         }
         else
         {
@@ -241,6 +253,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
         ft_free_minishell_single_aux(sh->tmp0);
         sh->tmp0 = NULL;
         sh->ret = -3;
+        sh->errnbr = errno;
         return ;
     }
     sh->tmp1 = ft_strjoin(sh->tmp0, sh->tmp5);
@@ -249,7 +262,10 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
     ft_free_minishell_single_aux(sh->tmp5);
     sh->tmp5 = NULL;
     if (!sh->tmp1)
+    {
         sh->ret = -3;
+        sh->errnbr = errno;
+    }
     sh->tmp5 = sh->tmp1;
     sh->tmp1 = NULL;
 /*
@@ -338,6 +354,7 @@ void    ft_expand_variable_cd(t_minishell *sh, t_node *node)
         sh->tmp1 = ft_strdup("cd $HOME");
     	if (!sh->tmp1)
 	    {
+            sh->errnbr = errno;
     		sh->ret = -3;
 	    	return ;
     	}
@@ -373,7 +390,7 @@ void ft_expander_variable(t_minishell *sh, t_node *node)
 
 void    ft_interpreter(t_minishell *sh)
 {
-//    printf("Dentro da ft_interpreter - Início\n");
+//    printf("Dentro da ft_interpreter - Início erronbr: %i\n", sh->errnbr);
     t_node *head;
 
     head = sh->head;

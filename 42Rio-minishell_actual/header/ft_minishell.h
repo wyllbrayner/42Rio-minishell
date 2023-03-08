@@ -22,6 +22,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <errno.h>
 
 # define TRUE 1;
 # define FALSE 0;
@@ -46,7 +47,8 @@ typedef struct doubly_node
 
 typedef struct  s_minishell
 {
-    int     ret;
+    int     ret; //one
+/*
     int     out_redirect;
     char    **out_redirect_file;
     int     *out_redirect_file_fd;
@@ -55,25 +57,26 @@ typedef struct  s_minishell
     char    **in_redirect_file;
     int     *in_redirect_file_fd;
     long    in_redirect_file_fd_amount;
-    int     running;
-    int     s_int;
-    int     errno;
+*/
+    int     running; //two
+    int     s_int; //two ???
+    int     errnbr;
 //    char    *cwd;
 //    char    *buff;
-    char    **path;
-    char    *line;
-    char    **env;
-    char    **parse_str;
-    char    *erro;
-    t_node  *head;
-    t_node  *head_tmp;
-    char    caract[4];
-    char    *tmp0;
-    char    *tmp1;
-    char    *tmp2;
-    char    *tmp5;
-    char    **tmp3;
-    char    **tmp4;
+    char    **path; //two
+    char    *line; //one
+    char    **env; //two
+    char    **parse_str; //one ???
+    char    *erro; //one
+    t_node  *head; //one
+    t_node  *head_tmp; //one
+    char    caract[4]; //one
+    char    *tmp0; //one
+    char    *tmp1; //one
+    char    *tmp2; //one
+    char    *tmp5; //one
+    char    **tmp3; //one
+    char    **tmp4; //one
 }           t_minishell;
 
 void    rl_replace_line (const char *text, int clear_undo);
@@ -126,6 +129,8 @@ char	*ft_access_command(t_minishell *sh, t_node *node);
 //char	*ft_access_command(char *cmd, char **str);
 
 void    ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status);
+
+void    ft_redirect_2(t_minishell *sh); // ver
 
 void    ft_minishell_error(t_minishell *sh);
 void    ft_parse_comand_is_valid(t_minishell *sh);

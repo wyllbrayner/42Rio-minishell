@@ -25,6 +25,7 @@ static void    ft_init_path(t_minishell *sh)
             if (!sh->path)
             {
                 sh->ret = -3;
+				sh->errnbr = errno;
                 return ;
             }
         }

@@ -98,6 +98,7 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 				if (!sh->tmp1)
 				{
 					sh->ret = -3;
+					sh->errnbr = errno;
 					return ;
 				}
 				first = FALSE;
@@ -110,6 +111,7 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 					ft_free_minishell_single_aux(sh->tmp1);
 					sh->tmp1 = NULL;
 					sh->ret = -3;
+					sh->errnbr = errno;
 					return ;
 				}
 				sh->tmp5 = ft_strjoin(sh->tmp1, sh->tmp2);
@@ -120,6 +122,7 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 				if (!sh->tmp5)
 				{
 					sh->ret = -3;
+					sh->errnbr = errno;
 					return ;
 				}
 				sh->tmp1 = sh->tmp5;

@@ -164,6 +164,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 }
 */
 
+/*
 void	ft_builtin_cd(t_minishell *sh, t_node *node)
 {
 	long	i;
@@ -192,7 +193,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 		{
 			sh->ret = -7;
 			sh->erro = node->cmd[1];
-			sh->errno = 1;
+			sh->errnbr = 1;
 			return ;
 		}
 		sh->tmp0 = getcwd(NULL, 0);
@@ -200,6 +201,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 		{
 //			printf("Dentro da ft_builtin_cd | getcwd retornou NULL (%s)\n", sh->tmp0);
 			sh->ret = -3;
+			sh->errnbr = errno;
 			return ;
 		}
 		else
@@ -210,7 +212,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 //				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | chdir retornou -1\n");
 				sh->ret = -7;
 				sh->erro = node->cmd[1];
-				sh->errno = 1;
+				sh->errnbr = 1;
 				ft_free_minishell_single_aux(sh->tmp0);
 				sh->tmp0 = NULL;
 			}
@@ -224,6 +226,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 				if (!sh->tmp0)
 				{
 					sh->ret = -3;
+					sh->errnbr = errno;
 					return ;
 				}
 //				printf("sh->tmp0 %s\n", sh->tmp0);
@@ -231,6 +234,64 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 				if (sh->ret < 0)
 					return ;
 			}
+		}
+	}
+//	printf("Dentro da ft_builtin_cd | Fim\n");
+}
+*/
+
+void	ft_builtin_cd(t_minishell *sh, t_node *node)
+{
+	long	status;
+//	printf("Dentro da ft_builtin_cd | Início\n");
+
+	status = TRUE;
+	ft_single_and_double_quotes(sh, node, "cd ", &status);
+//	printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s | status: %li!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2], status);
+	if (!status)
+	{
+		sh->ret = -7;
+		sh->erro = node->cmd[1];
+		sh->errnbr = 1;
+		return ;
+	}
+	sh->tmp0 = getcwd(NULL, 0);
+	if (!sh->tmp0)
+	{
+//		printf("Dentro da ft_builtin_cd | getcwd retornou NULL (%s)\n", sh->tmp0);
+		sh->ret = -3;
+		sh->errnbr = errno;
+		return ;
+	}
+	else
+	{
+//	printf("Dentro da ft_builtin_cd | getcwd retornou ponteiro (%s)\n", sh->tmp0);
+		if (chdir(node->cmd[1]) == -1)
+		{
+//				printf("Dentro da ft_builtin_cd | Apenas um parâmetro | chdir retornou -1\n");
+			sh->ret = -7;
+			sh->erro = node->cmd[1];
+			sh->errnbr = 1;
+			ft_free_minishell_single_aux(sh->tmp0);
+			sh->tmp0 = NULL;
+		}
+		else
+		{
+			ft_builtin_cd_aux_3(sh, "export OLDPWD=");
+			if (sh->ret < 0)
+				return ;
+///////////////////////////////////////////////////////////////////
+			sh->tmp0 = getcwd(NULL, 0);
+			if (!sh->tmp0)
+			{
+				sh->ret = -3;
+				sh->errnbr = errno;
+				return ;
+			}
+//				printf("sh->tmp0 %s\n", sh->tmp0);
+			ft_builtin_cd_aux_3(sh, "export PWD=");
+			if (sh->ret < 0)
+				return ;
 		}
 	}
 //	printf("Dentro da ft_builtin_cd | Fim\n");
@@ -282,6 +343,7 @@ void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node)
 	if (!node->cmd)
 	{
 		sh->ret = -3;
+		sh->errnbr = errno;
 		return ;
 	}
 	ft_free_minishell_single_aux(node->first_cmd);
@@ -290,6 +352,7 @@ void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node)
 	if (!node->first_cmd)
 	{
 		sh->ret = -3;
+		sh->errnbr = errno;
 		return ;
 	}
 //	printf("Dentro da ft_builtin_cd_aux_2 | Fim\n");
@@ -304,6 +367,7 @@ static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str)
 					sh->ret = -3;
 					ft_free_minishell_single_aux(sh->tmp0);
 					sh->tmp0 = NULL;
+					sh->errnbr = errno;
 					return ;
 				}
 /*

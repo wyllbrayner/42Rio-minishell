@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_minishell sh;
+
 t_node	*ft_node_create(char *cmd)
 {
 //	printf("Dentro da ft_node_create | inicio cmd: #%s#\n", cmd);
@@ -21,12 +23,16 @@ t_node	*ft_node_create(char *cmd)
 		return (NULL);
 	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
+	{
+		sh.errnbr = errno;
 		return (NULL);
+	}
 	node->token = ft_strdup(cmd);
 	if (!node->token)
 	{
 		free(node);
 		node = NULL;
+//		sh.errnbr = errno;
 		return (NULL);
 	}
 	node->cmd = ft_split(cmd, ' ');
@@ -36,6 +42,7 @@ t_node	*ft_node_create(char *cmd)
 		node->token = NULL;
 		free(node);
 		node = NULL;
+//		sh.errnbr = errno;
 		return (NULL);
 	}
 	node->first_cmd = ft_strdup(node->cmd[0]);
@@ -47,6 +54,7 @@ t_node	*ft_node_create(char *cmd)
 		node->token = NULL;
 		free(node);
 		node = NULL;
+//		sh.errnbr = errno;
 		return (NULL);
 	}
 	node->path = NULL;
@@ -118,6 +126,7 @@ void ft_list_destroy(t_node **head)
 			tmp->redirect_file_fd_amount = 0;
 //			printf("token: %s Apagado\n", tmp->token);
 			free(tmp);
+//			sh.errnbr = errno;
 			tmp = NULL;
 		}
 	}

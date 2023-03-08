@@ -21,12 +21,13 @@ void ft_heredoc(t_minishell *sh);
 
 void ft_parse(t_minishell *sh)
 {
-//    printf("Dentro da parse | inicio\n");
+//    printf("Dentro da parse | inicio errnbr: %i\n", sh->errnbr);
     if (sh)
     {
         ft_valid_empty_cmd(sh);
         if (sh->ret < 0)
             return ;
+//    printf("Dentro da parse | intermediario errnbr: %i\n", sh->errnbr);
         add_history(sh->line);
 //        printf("Após a emplty cmd ret: %d\n", sh->ret);
         ft_valid_amount_of_quotes(sh);
@@ -54,12 +55,16 @@ void ft_parse(t_minishell *sh)
         if (!sh->parse_str)
         {
             sh->ret = -3;
+            sh->errnbr = errno;
             return ;
         }
 //        ft_print_list(sh->head);
         ft_valid_lexcal_cmd(sh);
         if (sh->ret < 0)
+        {
+            sh->errnbr = 258;
             return ;
+        }
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
 //        ft_print_list(sh->head);
 //        ft_print_rev_list(sh->head);
@@ -69,23 +74,22 @@ void ft_parse(t_minishell *sh)
         ft_redirect(sh);
         if (sh->ret < 0)
             return ;
-/*
-*/
         ft_heredoc(sh);
         if (sh->ret < 0)
             return ;
     }
     else
         sh->ret = -1;
-//    printf("Dentro da parse | fim\n");
+//    printf("Dentro da parse | fim errnbr: %i\n", sh->errnbr);
 }
 
 void ft_valid_empty_cmd(t_minishell *sh)
 {
-//    printf("Dentro da ft_valid_empty_cmd | inicio\n");
+//    printf("Dentro da ft_valid_empty_cmd | inicio errnbr: %i\n", sh->errnbr);
     sh->tmp0 = ft_strtrim(sh->line, " ");
     if (!sh->tmp0)
     {
+//        sh->errnbr = errno;
         sh->ret = -3;
         return ;
     }
@@ -93,13 +97,14 @@ void ft_valid_empty_cmd(t_minishell *sh)
     {
         sh->ret = -8;
     }
+//    printf("Dentro da ft_valid_empty_cmd | intermediário errnbr: %i\n", sh->errnbr);
     ft_free_minishell_single_aux(sh->line);
     sh->line = NULL;
     sh->line = sh->tmp0;
     sh->tmp0 = NULL;
 //    ft_free_minishell_single_aux(sh->tmp1);
 //    sh->tmp1 = NULL;
-//    printf("Dentro da ft_valid_empty_cmd | fim\n");
+//    printf("Dentro da ft_valid_empty_cmd | fim errnbr: %i\n", sh->errnbr);
 }
 
 void ft_valid_amount_of_quotes(t_minishell *sh)
@@ -153,10 +158,12 @@ void    ft_valid_redirect_1(t_minishell *sh)
         if (sh->line[var[0]] == '|')
         {
             sh->ret = -6;
-            sh->erro ="|";
+            sh->erro = "|";
+            sh->errnbr = 258;
             break ;
         }
-        var[0]++;
+        if (sh->line[var[0]])
+            var[0]++;
     }
 //    printf("Dentro da valid_redirect_1 -> Fim\n");
 }
@@ -185,6 +192,7 @@ void    ft_valid_redirect_0(t_minishell *sh)
 //                    printf("Dentro da valid_redirect 0 -> 1° if\n");
                     sh->ret = -6;
                     sh->erro = ">>>";
+                    sh->errnbr = 258;
                     return ;
                 }
                 else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
@@ -192,6 +200,7 @@ void    ft_valid_redirect_0(t_minishell *sh)
 //                    printf("Dentro da valid_redirect 0 -> 2° if\n");
                     sh->ret = -6;
                     sh->erro = "<<<";
+                    sh->errnbr = 258;
                     return ;
                 }
             }
@@ -204,6 +213,7 @@ void    ft_valid_redirect_0(t_minishell *sh)
 //                        printf("Dentro da valid_redirect 0 -> 1° if\n");
                         sh->ret = -6;
                         sh->erro = ">>>";
+                        sh->errnbr = 258;
                         return ;
                     }
                     else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
@@ -211,6 +221,7 @@ void    ft_valid_redirect_0(t_minishell *sh)
 //                        printf("Dentro da valid_redirect 0 -> 2° if\n");
                         sh->ret = -6;
                         sh->erro = "<<<";
+                        sh->errnbr = 258;
                         return ;
                     }   
                 }
@@ -230,13 +241,18 @@ void ft_valid_lexcal_cmd(t_minishell *sh)
 
     tmp = sh->head;
     sh->ret = -6;
-    sh->erro ="|"; 
+    sh->erro = "|";
     while (tmp)
     {
         if ((!tmp->prev) && (tmp->cmd[0][0] == '|'))
             return ;
         if ((!tmp->next) && (tmp->cmd[0][0] == '|'))
             return ;
+        if ((!tmp->next) && (tmp->cmd[0][0] == '>'))
+        {
+            sh->erro = NULL;
+            return ;
+        }
         if ((tmp->cmd[0][0] == '|') && (tmp->next))
         {
             if (!tmp->next->cmd[0])
@@ -292,6 +308,7 @@ void    ft_redirect_aux_1(t_minishell *sh, t_node *node, int type)
 //            printf("Dentro da ft_redirect_aux_1 | dentro do loop | dentro do 1ª if type: %d | j: %d | node->redirect_file[%d]: %s\n", type, j, j, node->redirect_file[j]);
             sh->ret = -7;
             sh->erro = node->redirect_file[j];
+            sh->errnbr = 1;
             return ;
         }
 //        printf("Dentro da ft_redirect_aux_1 -> Início type: %d | j: %d | node->redirect_file[%d]: %s pré open\n", type, j, j, node->redirect_file[j]);
@@ -306,6 +323,7 @@ void    ft_redirect_aux_1(t_minishell *sh, t_node *node, int type)
 //            printf("Dentro da ft_redirect_aux_1 | dentro do loop | dentro do 2ª if type: %d | j: %d | node->redirect_file[%d]: %s\n", type, j, j, node->redirect_file[j]);
             sh->ret = -7;
             sh->erro = node->redirect_file[j];
+            sh->errnbr = 1;
             return ;
         }
         j++;
@@ -321,6 +339,7 @@ void    ft_redirect_aux_0(t_minishell *sh, t_node *node)
     if (!node->redirect_file)
     {
         sh->ret = -3;
+        sh->errnbr = errno;
         return;
     }
     int j = 0;
@@ -340,6 +359,7 @@ void    ft_redirect_aux_0(t_minishell *sh, t_node *node)
     if (!node->redirect_file_fd)
     {
         sh->ret = -3;
+        sh->errnbr = errno;
         return;
     }
 //    printf("Conseguiu mallocar %i fds\n", node->redirect_file_fd_amount);

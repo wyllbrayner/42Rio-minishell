@@ -18,8 +18,6 @@ void    ft_minishell_error(t_minishell *sh)
     {
         if (sh->ret == -1)
             printf("(Minishell): Erro inesperado!\n");
-//        else if (sh->ret == -2)
-//            printf("(Minishell): %s: No such file or directory\n", sh->erro);
         else if (sh->ret == -3)
             printf("malloc retornou error\n");
         else if (sh->ret == -4)
@@ -44,6 +42,6 @@ void    ft_minishell_error(t_minishell *sh)
         else if (sh->ret == -11)
             printf("(Minishell): %s: numeric argument required\n", sh->erro);
         sh->ret = 0;
-        sh->erro = NULL;
+        sh->erro = (void *)0;
     }
 }

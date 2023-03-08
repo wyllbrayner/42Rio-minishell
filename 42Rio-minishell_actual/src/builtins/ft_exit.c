@@ -17,14 +17,14 @@ void ft_builtin_exit(t_minishell *sh, t_node *node)
     long i;
 
     i = 0;
-    sh->errno = 0;
+    sh->errnbr = 0;
     while (node->cmd[i])
         i++;
     if (i >= 3)
     {
         sh->ret = -9;
         sh->erro = node->cmd[2];
-        sh->errno = 1;
+        sh->errnbr = 1;
     }
     else
     {
@@ -39,12 +39,12 @@ void ft_builtin_exit(t_minishell *sh, t_node *node)
                 {
                     if (!ft_strchr("+-0123456789", node->cmd[1][i]))
                     {
-                        sh->errno = 2;
+                        sh->errnbr = 2;
                         return ;
                     }
                     i++;
                 }
-                sh->errno = (ft_atoi(node->cmd[1]) % 255);
+                sh->errnbr = (ft_atoi(node->cmd[1]) % 255);
             }
             sh->running = FALSE;
         }

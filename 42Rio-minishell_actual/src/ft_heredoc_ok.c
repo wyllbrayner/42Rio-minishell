@@ -26,6 +26,7 @@ void    ft_heredoc_build_list(t_minishell *sh, t_node *node)
             if (!sh->tmp1)
             {
                 sh->ret = -3;
+                sh->errnbr = errno;
                 return ;
             }
             ft_list_add_last(&sh->head_tmp, ft_node_create(sh->tmp1));
@@ -66,6 +67,7 @@ void    ft_heredoc_expand_var(t_minishell *sh)
                 if (!sh->tmp2)
                 {
                     sh->ret = -3;
+                    sh->errnbr = errno;
                     return ;
                 }
                 sh->tmp1 = sh->tmp2;
@@ -95,6 +97,7 @@ void    ft_heredoc_fd(t_minishell *sh, t_node *node)
     if (!sh->tmp0)
     {
         sh->ret = -3;
+        sh->errnbr = errno;
         return;
     }
     node->redirect_file = ft_split(sh->tmp0, ' ');
@@ -103,12 +106,14 @@ void    ft_heredoc_fd(t_minishell *sh, t_node *node)
     if (!node->redirect_file)
     {
         sh->ret = -3;
+        sh->errnbr = errno;
         return;
     }
     node->redirect_file_fd = (int *)malloc(sizeof(int) * 1);
     if (!node->redirect_file_fd)
     {
         sh->ret = -3;
+        sh->errnbr = errno;
 		return ;
     }
     *node->redirect_file_fd = open(node->redirect_file[0], O_RDWR | O_CREAT, 0666);
@@ -117,6 +122,7 @@ void    ft_heredoc_fd(t_minishell *sh, t_node *node)
 //        printf("Não foi possível abrir o arquivo: %i\n", *node->redirect_file_fd);
         sh->ret = -7;
         sh->erro = node->redirect_file[0];
+        sh->errnbr = 1;
 		return ;
 	}
 //    printf("fd 1º open: %i\n", *node->redirect_file_fd);
@@ -136,6 +142,7 @@ void    ft_heredoc_fd(t_minishell *sh, t_node *node)
 //        printf("Erro no dup\n");
         sh->ret = -7;
         sh->erro = node->redirect_file[0];
+        sh->errnbr = errno;
 		return ;
     }
     else

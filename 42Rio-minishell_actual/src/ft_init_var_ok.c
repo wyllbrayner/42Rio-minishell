@@ -27,7 +27,10 @@ void    ft_init_var(t_minishell *sh, char **envp)
             i++;
         sh->env = (char **)malloc(sizeof(char *) * (++i));
         if (!sh->env)
+        {
+            sh->errnbr = errno;
             sh->ret = -3;
+        }
         else
             ft_init_var_aux_env(sh, envp, i);
     }
@@ -39,6 +42,7 @@ void    ft_init_var_aux_one(t_minishell *sh)
 {
 //    printf("Dentro da init_var_aux_one ret: %i \n", sh->ret);
     sh->ret = 0;
+/*
     sh->out_redirect = 0;
     sh->out_redirect_file = NULL;
     sh->out_redirect_file_fd = NULL;
@@ -47,6 +51,7 @@ void    ft_init_var_aux_one(t_minishell *sh)
     sh->in_redirect_file = NULL;
     sh->in_redirect_file_fd = NULL;
     sh->in_redirect_file_fd_amount = 0;
+*/
     sh->line = NULL;
     sh->parse_str = NULL;
     sh->erro = NULL;
@@ -71,8 +76,9 @@ void    ft_init_var_aux_two(t_minishell *sh)
         sh->s_int = TRUE;
         sh->env = NULL;
         sh->path = NULL;
-        sh->errno = 0;
-        sh->errno = -42; /// retirar antes de entragar ou após de mapear os códigos e saída
+        sh->errnbr = 0;
+//        sh->errno = -42; /// retirar antes de entregar ou após mapear os códigos e saída
+//    printf("Dentro da init_var_aux_two errnbr: %i\n", sh->errnbr);
 }
 
 static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
@@ -84,6 +90,7 @@ static void    ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
         sh->env[i] = ft_strdup(envp[i]);
         if (!sh->env[i])
         {
+            sh->errnbr = errno;
             sh->ret = -3;
             return ;
         }

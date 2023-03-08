@@ -131,10 +131,40 @@ static void    ft_cmd_builder_aux_1(t_minishell *sh, char *cmd)
     if (!cmd)
     {
         sh->ret = -3;
+        sh->errnbr = errno;
         return ;
     }
     sh->tmp0 = ft_strtrim(cmd, " ");
 //    printf("Dentro da init cmd aux_1 -> Início: trim(cmd): #%s#\n", sh->tmp0);
+    ft_free_minishell_single_aux(cmd);
+    cmd = NULL;
+    if (sh->tmp0 && *sh->tmp0)
+    {
+        ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
+        ft_free_minishell_single_aux(sh->tmp0);
+        sh->tmp0 = NULL;
+    }
+    else if (!sh->tmp0 || !*sh->tmp0)
+    {
+        ft_free_minishell_single_aux(sh->tmp0);
+        sh->tmp0 = NULL;
+    }
+//    ft_print_list(sh->head);
+//    printf("Dentro da init cmd aux_1 -> Fim\n");
+}
+
+/*
+static void    ft_cmd_builder_aux_1(t_minishell *sh, char *cmd)
+{
+    printf("Dentro da init cmd aux_1 -> Início: cmd: #%s#\n", cmd);
+    if (!cmd)
+    {
+        sh->ret = -3;
+        sh->errnbr = errno;
+        return ;
+    }
+    sh->tmp0 = ft_strtrim(cmd, " ");
+    printf("Dentro da init cmd aux_1 -> Início: trim(cmd): #%s#\n", sh->tmp0);
     ft_free_minishell_single_aux(cmd);
     cmd = NULL;
     if (!sh->tmp0 || !*sh->tmp0)
@@ -143,11 +173,13 @@ static void    ft_cmd_builder_aux_1(t_minishell *sh, char *cmd)
         sh->tmp0 = NULL;
         sh->ret = -6;
         sh->erro = "|";
+        sh->errnbr = 258;
         return ;
     }
     ft_list_add_last(&sh->head, ft_node_create(sh->tmp0));
     ft_free_minishell_single_aux(sh->tmp0);
     sh->tmp0 = NULL;
-//    ft_print_list(sh->head);
-//    printf("Dentro da init cmd aux_1 -> Fim\n");
+    ft_print_list(sh->head);
+    printf("Dentro da init cmd aux_1 -> Fim\n");
 }
+*/

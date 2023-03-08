@@ -28,16 +28,16 @@ void ft_free_minishell(t_minishell *sh, int status)
         ft_free_minishell_double_aux(sh->parse_str);
         sh->parse_str = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para out_redirect\n");
-        ft_free_minishell_double_aux(sh->out_redirect_file);
-        sh->out_redirect_file = NULL;
+//        ft_free_minishell_double_aux(sh->out_redirect_file);
+//        sh->out_redirect_file = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para out_redirect_file_fd\n");
 /*
         ft_free_minishell_close_fd(sh->out_redirect_file_fd, sh->out_redirect_file_fd_amount);
         sh->out_redirect_file_fd = NULL;
 */
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para in_redirect\n");
-        ft_free_minishell_double_aux(sh->in_redirect_file);
-        sh->in_redirect_file = NULL;
+//        ft_free_minishell_double_aux(sh->in_redirect_file);
+//        sh->in_redirect_file = NULL;
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para in_redirect_file_fd\n");
 /*
         ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
@@ -59,6 +59,7 @@ void ft_free_minishell(t_minishell *sh, int status)
 //	printf("Dentro da ft_free_minishell | fim\n");
 }
 
+extern t_minishell sh;
 void ft_free_minishell_single_aux(char *str)
 {
 //	printf("Dentro da ft_single_aux | inicio\n");
@@ -66,8 +67,10 @@ void ft_free_minishell_single_aux(char *str)
     {
 //      	printf("Dentro da ft_single_aux | dentro do if | libera str %s\n", str);
         free(str);
+//        sh.errnbr = errno;
 //     	printf("Dentro da ft_single_aux | dentro do if | aponta str para NULL %s\n", str);
         str = NULL;
+
 //      	printf("Dentro da ft_single_aux | dentro do if | após apontar str para NULL %s\n", str);
     }
 //	printf("Dentro da ft_single_aux | fim\n");
@@ -93,12 +96,40 @@ void ft_free_minishell_double_aux(char **str_double)
         }
 //     	printf("Dentro da ft_double_aux | dentro do if | libera str_double\n");
         free(str_double);
+//        sh.errnbr = errno;
 //     	printf("Dentro da ft_double_aux | dentro do if | aponta str_double para NULL\n");
         str_double = NULL;
     }
 //	printf("Dentro da ft_double_aux | fim\n");
 }
 
+void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
+{
+        long i;
+//        printf("Dentro da ft_free_minishell_close_fd amount_fd: %ld | início\n", amount_fd);
+
+        i = 0;
+        if (file_fd && amount_fd != 0)
+        {
+                if (amount_fd > 1)
+                        amount_fd = 1;
+                while (i < amount_fd)
+                {
+                        if (file_fd[i] != -1)
+                        {
+                            close(file_fd[i]);
+                            sh.errnbr = errno;
+                        }
+                        i++;
+                }
+                free(file_fd);
+//                sh.errnbr = errno;
+                file_fd = NULL;
+        }
+//	printf("Dentro da ft_free_minishell_close_fd | fim\n");
+}
+
+/*
 void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
 {
         long i;
@@ -110,11 +141,16 @@ void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
                 while (i < amount_fd)
                 {
                         if (file_fd[i] != -1)
+                        {
                             close(file_fd[i]);
+                            sh.errnbr = errno;
+                        }
                         i++;
                 }
                 free(file_fd);
+                sh.errnbr = errno;
                 file_fd = NULL;
         }
 	printf("Dentro da ft_free_minishell_close_fd | fim\n");
 }
+*/

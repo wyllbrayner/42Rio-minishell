@@ -25,6 +25,7 @@ int main(int argc, char **argv, char **envp)
         sh.ret = -7;
         sh.erro = argv[1];
         ft_minishell_error(&sh);
+        sh.errnbr = 127;
     }
     else
     {
