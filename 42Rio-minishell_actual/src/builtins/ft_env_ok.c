@@ -31,6 +31,7 @@ void ft_builtin_env(t_minishell *sh, t_node *node)
             printf("%s\n", sh->env[j]);
             j++;
         }
+        sh->errnbr = 0;
 //    	printf("\033[0m");
     }
 }

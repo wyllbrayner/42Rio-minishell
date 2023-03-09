@@ -247,14 +247,6 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 
 	status = TRUE;
 	ft_single_and_double_quotes(sh, node, "cd ", &status);
-//	printf("token: %s | cmd[0]: %s | cmd[1]: %s | cmd[2]: %s | status: %li!!!!\n", node->token, node->cmd[0], node->cmd[1], node->cmd[2], status);
-	if (!status)
-	{
-		sh->ret = -7;
-		sh->erro = node->cmd[1];
-		sh->errnbr = 1;
-		return ;
-	}
 	sh->tmp0 = getcwd(NULL, 0);
 	if (!sh->tmp0)
 	{
@@ -292,6 +284,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 			ft_builtin_cd_aux_3(sh, "export PWD=");
 			if (sh->ret < 0)
 				return ;
+			sh->errnbr = 0;
 		}
 	}
 //	printf("Dentro da ft_builtin_cd | Fim\n");
@@ -365,9 +358,9 @@ static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str)
 				if (!sh->tmp1)
 				{
 					sh->ret = -3;
+					sh->errnbr = errno;
 					ft_free_minishell_single_aux(sh->tmp0);
 					sh->tmp0 = NULL;
-					sh->errnbr = errno;
 					return ;
 				}
 /*

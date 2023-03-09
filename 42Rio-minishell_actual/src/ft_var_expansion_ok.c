@@ -26,10 +26,10 @@ void ft_variable_expansion(t_minishell *sh)
 //            printf("Nó: %s     possui %c\n", tmp->cmd[0], '$');
             ft_variable_expansion_aux(sh, tmp);
         }
-        else
-        {
+//        else
+//        {
 //            printf("Nó: %s não possui %c\n", tmp->cmd[0], '$');
-        }
+//        }
         tmp = tmp->next;
     }
 //    printf("Dentro da expansão de variáveis - Fim\n");
@@ -65,6 +65,7 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *node)
             if (!sh->tmp1)
             {
 //                printf("Não Mallocou\n");
+                sh->errnbr = errno;
                 sh->ret = -3;
                 return;
             }
@@ -80,8 +81,8 @@ void    ft_variable_expansion_aux(t_minishell *sh, t_node *node)
 //                printf("sh->tmp1 (depois): %s\n", sh->tmp1);
             }
         }
-        else
-            printf("Faça alguma coisa\n");
+//        else
+//            printf("Faça alguma coisa\n");
 //        printf("Dentro da expansão de variáveis_aux - Fim\n");
     }
 }

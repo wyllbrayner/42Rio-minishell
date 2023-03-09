@@ -75,7 +75,9 @@ void	ft_start_command(t_minishell *sh, int *rato, t_node *node)
 			*rato = fork();
 			if (*rato == 0)
 			{
-				execve(node->path, node->cmd, sh->env);
+//				execve(node->path, node->cmd, sh->env);
+				if (execve(node->path, node->cmd, sh->env) == -1)
+					sh->errnbr = errno;
 			}
 			// waitpid(pid, NULL, 0);
 		}

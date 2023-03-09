@@ -64,7 +64,6 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 	end = 0;
 	first = TRUE;
 	count = 0;
-
 //	printf("Dentro da quotes | Início - status: %s | c: %c\n", node->cmd[1], c);
 	while (node->cmd[1][i])
 	{
@@ -97,8 +96,8 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 				sh->tmp1 = ft_substr(node->cmd[1], start, (end - start));
 				if (!sh->tmp1)
 				{
-					sh->ret = -3;
 					sh->errnbr = errno;
+					sh->ret = -3;
 					return ;
 				}
 				first = FALSE;
@@ -108,13 +107,14 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 				sh->tmp2 = ft_substr(node->cmd[1], start, (end - start));
 				if (!sh->tmp2)
 				{
+					sh->errnbr = errno;
 					ft_free_minishell_single_aux(sh->tmp1);
 					sh->tmp1 = NULL;
 					sh->ret = -3;
-					sh->errnbr = errno;
 					return ;
 				}
 				sh->tmp5 = ft_strjoin(sh->tmp1, sh->tmp2);
+				sh->errnbr = errno;
 				ft_free_minishell_single_aux(sh->tmp1);
 				sh->tmp1 = NULL;
 				ft_free_minishell_single_aux(sh->tmp2);
@@ -122,7 +122,6 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, long *
 				if (!sh->tmp5)
 				{
 					sh->ret = -3;
-					sh->errnbr = errno;
 					return ;
 				}
 				sh->tmp1 = sh->tmp5;

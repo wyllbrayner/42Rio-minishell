@@ -11,40 +11,24 @@
 /* ************************************************************************** */
 
 #include "../header/ft_minishell.h"
-
+// ls > sair1 | cat Makefile | exit 100 | echo retorno da execução $? .
 void ft_free_minishell(t_minishell *sh, int status)
 {
     t_node *tmp;
 
-//	printf("Dentro da ft_free_minishell | inicio\n");
+//	printf("Dentro da ft_free_minishell | inicio errnbr: %i\n", sh->errnbr);
     if (sh && (status == 1))
     {
 //    	printf("Dentro da ft_free_minishell | dentro do if\n");
-        tmp = sh->head;
         ft_free_minishell_single_aux(sh->line);
         sh->line = NULL;
-// NÃO APAGAR!! retirar o comentário a partir de recolocar a readline ft_free_minishell_single_aux(sh->line); // NÂO APAGAR
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para parse_str\n");
         ft_free_minishell_double_aux(sh->parse_str);
         sh->parse_str = NULL;
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para out_redirect\n");
-//        ft_free_minishell_double_aux(sh->out_redirect_file);
-//        sh->out_redirect_file = NULL;
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para out_redirect_file_fd\n");
-/*
-        ft_free_minishell_close_fd(sh->out_redirect_file_fd, sh->out_redirect_file_fd_amount);
-        sh->out_redirect_file_fd = NULL;
-*/
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para in_redirect\n");
-//        ft_free_minishell_double_aux(sh->in_redirect_file);
-//        sh->in_redirect_file = NULL;
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a close_fd para in_redirect_file_fd\n");
-/*
-        ft_free_minishell_close_fd(sh->in_redirect_file_fd, sh->in_redirect_file_fd_amount);
-        sh->in_redirect_file_fd = NULL;
-*/
 //    	printf("Dentro da ft_free_minishell | dentro do if | chama a list_destroy para tmp = sh->head\n");
+        tmp = sh->head;
         ft_list_destroy(&tmp);
+//	printf("Dentro da ft_free_minishell | intermediário errnbr: %i\n", sh->errnbr);
         ft_init_var_aux_one(sh);
     }
     if (sh && (status == 2))
@@ -56,7 +40,7 @@ void ft_free_minishell(t_minishell *sh, int status)
         sh->path = NULL;
         ft_init_var_aux_two(sh);
     }
-//	printf("Dentro da ft_free_minishell | fim\n");
+//	printf("Dentro da ft_free_minishell | fim errnbr: %i\n", sh->errnbr);
 }
 
 extern t_minishell sh;
@@ -117,8 +101,8 @@ void ft_free_minishell_close_fd(int *file_fd, long amount_fd)
                 {
                         if (file_fd[i] != -1)
                         {
-                            close(file_fd[i]);
-                            sh.errnbr = errno;
+                            if (close(file_fd[i]) == -1)
+                                    sh.errnbr = errno;
                         }
                         i++;
                 }

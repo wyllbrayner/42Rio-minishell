@@ -45,3 +45,4 @@ void    ft_minishell_error(t_minishell *sh)
         sh->erro = (void *)0;
     }
 }
+/// echo $?

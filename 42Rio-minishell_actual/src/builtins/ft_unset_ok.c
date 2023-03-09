@@ -38,14 +38,10 @@ void ft_builtin_unset(t_minishell *sh, t_node *node)
             if (sh->ret < 0)
                 return ; 
         }
-        else
-        {
-            sh->ret = -10;
-            sh->erro = node->cmd[1];
-        }
         ft_free_minishell_single_aux(sh->tmp1);
         sh->tmp1 = NULL;
     }
+    sh->errnbr = 0;
 }
 
 void ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status)
@@ -72,6 +68,7 @@ void ft_unset_aux_2(t_minishell *sh, long i)
     sh->tmp3 = (char **)malloc(sizeof(char *) * len);
     if (!sh->tmp3)
     {
+        sh->errnbr = errno;
         ft_free_minishell_single_aux(sh->tmp1);
         sh->tmp1 = NULL;
         sh->ret = -3;

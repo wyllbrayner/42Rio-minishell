@@ -43,7 +43,6 @@ void ft_parse(t_minishell *sh)
         if (sh->ret < 0)
             return ;
 /*
-        printf("Após a valid quotes ret: %d\n", sh->ret);
         ft_valid_redirect_out(sh);
         if (sh->ret < 0)
             return ;
@@ -68,15 +67,18 @@ void ft_parse(t_minishell *sh)
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
 //        ft_print_list(sh->head);
 //        ft_print_rev_list(sh->head);
+/*
         ft_interpreter(sh);
         if (sh->ret < 0)
             return ;
+*/
         ft_redirect(sh);
         if (sh->ret < 0)
             return ;
         ft_heredoc(sh);
         if (sh->ret < 0)
             return ;
+//        printf("Após a valid quotes ret: %d\n", sh->ret);
     }
     else
         sh->ret = -1;
@@ -89,7 +91,7 @@ void ft_valid_empty_cmd(t_minishell *sh)
     sh->tmp0 = ft_strtrim(sh->line, " ");
     if (!sh->tmp0)
     {
-//        sh->errnbr = errno;
+        sh->errnbr = errno;
         sh->ret = -3;
         return ;
     }

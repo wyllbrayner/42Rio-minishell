@@ -115,7 +115,7 @@ void    ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
     printf("tmp1: %s#\n", sh->tmp1);
     printf("tmp2: %s#\n", sh->tmp2);
     printf("tmp5: %s#\n", sh->tmp5);
-    printf("Dentro da ft_expand_variable_0 - Início\n");
+    printf("Dentro da ft_expand_variable_0 - Início errnbr: %i\n", sh->errnbr);
 */
     if (!sh->tmp5)
     {

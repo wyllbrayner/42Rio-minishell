@@ -81,8 +81,12 @@ void    ft_exec_token(t_minishell *sh)
 //        printf("nó [token    ]: %s\n", head->token);
 //        printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
 //        printf("nó [first cmd]: %s\n", head->first_cmd);
+//          printf("Para token: %s o retorno atual é: %d\n", head->token, sh->errnbr);
         if (head->first_cmd[0] != '|' && head->first_cmd[0] != '<' && head->first_cmd[0] != '>')
         {
+            ft_expander_quote(sh, head);
+            ft_expander_variable(sh, head);
+//            printf("Para token: %s o retorno atual é: %d\n", head->token, sh->errnbr);
             if (!head->prev)
             {
 //                printf("Chama a função correspondente para %s\n", head->first_cmd);
@@ -92,11 +96,14 @@ void    ft_exec_token(t_minishell *sh)
             }
             if (head->prev)
             {
+                if (head->prev->first_cmd[0] != '<' && head->prev->first_cmd[0] != '>')
+                {
+//                    printf("Chama a função correspondente para %s\n", head->first_cmd);
+                    ft_select_way(sh, head);
+                    if (sh->ret <= -4)
+           	        	ft_minishell_error(sh);
+                }
 /*
-                if (ft_strncmp(head->prev->first_cmd, "<<", 2) == 0)
-                    ft_heredoc_builder(sh, head);
-                else if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
-*/
                 if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
                     printf("pula nó\n");
                 else
@@ -106,10 +113,10 @@ void    ft_exec_token(t_minishell *sh)
                     if (sh->ret <= -4)
            	        	ft_minishell_error(sh);
                 }                
+*/                
             }
         }
-//        else
-//            printf("Pula o '|' \n");
+//        printf("Para token: %s o retorno atual é: %d\n", head->token, sh->errnbr);
         head = head->next;
     }
 //    printf("ft_exec_token  - Fim\n");
@@ -160,12 +167,13 @@ void    ft_select_way(t_minishell *sh, t_node *node)
 //            printf("Builtin NÃO IDENTIFICADA | procurar dentre as bin\n");
             int rato;
             rato = 0;
+            sh->errnbr = 0;
             ft_start_command(sh, &rato, node);
             wait(NULL);
         }
     }
-    else
-        printf("sh->parse não inicializado\n");     
+//    else
+//        printf("sh->parse não inicializado\n");     
 }
 
 
