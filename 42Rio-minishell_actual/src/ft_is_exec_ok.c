@@ -25,8 +25,8 @@ void ft_isexec(t_minishell *sh, t_node *node)
             sh->erro = node->first_cmd;
             return ;
         }
-//        printf("É um executável!!!\n");
         node->path = ft_substr(node->first_cmd, 0, ft_strlen(node->first_cmd));
+//        printf("É um executável!!! %s\n", node->path);
         if (!node->path)
         {
 //            printf("Não mallocou!!!\n");

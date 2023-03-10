@@ -17,17 +17,17 @@ void    ft_minishell_error(t_minishell *sh)
     if (sh)
     {
         if (sh->ret == -1)
-            printf("(Minishell): Erro inesperado!\n");
+            ft_putendl_fd("(Minishell): Erro inesperado!", 2);
         else if (sh->ret == -3)
-            printf("malloc retornou error\n");
+            ;
         else if (sh->ret == -4)
             printf("(Minishell): %s: command not found\n", sh->erro);
         else if (sh->ret == -5)
-            printf("(Minishell): Error: unclosed quotes\n");
+            ft_putendl_fd("(Minishell): Error: unclosed quotes", 2);
         else if (sh->ret == -6)
         {
             if (!sh->erro)
-                printf("(Minishell): syntax error near unexpected token `newline'\n");
+                ft_putendl_fd("(Minishell): syntax error near unexpected token `newline'", 2);
             else
                 printf("(Minishell): syntax error near unexpected token `%s'\n", sh->erro);
         }

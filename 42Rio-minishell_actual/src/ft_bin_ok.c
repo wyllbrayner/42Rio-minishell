@@ -60,6 +60,7 @@ char	*ft_access_command(t_minishell *sh, t_node *node)
 
 void	ft_start_command(t_minishell *sh, int *rato, t_node *node)
 {
+//	printf("Dentro da ft_start_command - Início\n");
 	if (sh && rato)
 	{
 		ft_init_path(sh);
@@ -72,18 +73,57 @@ void	ft_start_command(t_minishell *sh, int *rato, t_node *node)
 			return;
 		else
 		{
+	        sh->errnbr = 0;
 			*rato = fork();
 			if (*rato == 0)
 			{
-//				execve(node->path, node->cmd, sh->env);
+//				printf("Dentro da ft_start_command - Entrou no filho\n");
 				if (execve(node->path, node->cmd, sh->env) == -1)
+				{
+//					printf("Dentro da ft_start_command - Erro na execve\n");
 					sh->errnbr = errno;
+				}
+			}
+			else
+			{
+//				printf("Dentro da ft_start_command - Entrou no pai\n");
+				waitpid(*rato, NULL, 0);
+//				printf("Dentro da ft_start_command - Saiu   do pai\n");
 			}
 			// waitpid(pid, NULL, 0);
 		}
 	}
+//	printf("Dentro da ft_start_command - Fim\n");
 }
+/*
+ls
+cd
+pwd
+echo vamos expandir os retornos $?
+cd $OLDPWD
+echo vamos expandir os retornos $?
+ls
+echo vamos expandir os retornos $?
+cd srs
+echo vamos expandir os retornos $?
+lss
+echo vamos expandir os retornos $?
+echo vamos expandir os retornos $?
+ll | echo vamos expandir os retornos $? | echo vamos expandir os retornos $?
+ls
+cat Makefile
+echo vamos expandir os retornos $?
+cat Makefil
+echo vamos expandir os retornos $?
+exit
 
+
+
+
+
+
+
+*/
 
 /*
 char	*ft_access_command(char *cmd, char **path)

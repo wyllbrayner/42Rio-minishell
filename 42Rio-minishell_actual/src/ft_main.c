@@ -102,18 +102,7 @@ void    ft_exec_token(t_minishell *sh)
                     ft_select_way(sh, head);
                     if (sh->ret <= -4)
            	        	ft_minishell_error(sh);
-                }
-/*
-                if (head->prev->first_cmd[0] == '<' || head->prev->first_cmd[0] == '>')
-                    printf("pula nó\n");
-                else
-                {
-//                    printf("Chama a função correspondente para %s\n", head->first_cmd);
-                    ft_select_way(sh, head);
-                    if (sh->ret <= -4)
-           	        	ft_minishell_error(sh);
-                }                
-*/                
+                }               
             }
         }
 //        printf("Para token: %s o retorno atual é: %d\n", head->token, sh->errnbr);
@@ -167,7 +156,6 @@ void    ft_select_way(t_minishell *sh, t_node *node)
 //            printf("Builtin NÃO IDENTIFICADA | procurar dentre as bin\n");
             int rato;
             rato = 0;
-            sh->errnbr = 0;
             ft_start_command(sh, &rato, node);
             wait(NULL);
         }
