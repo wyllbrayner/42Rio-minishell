@@ -77,6 +77,7 @@ void	ft_start_command(t_minishell *sh, int *rato, t_node *node)
 			*rato = fork();
 			if (*rato == 0)
 			{
+				
 //				printf("Dentro da ft_start_command - Entrou no filho\n");
 				if (execve(node->path, node->cmd, sh->env) == -1)
 				{

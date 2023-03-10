@@ -13,6 +13,7 @@
 #include "../header/ft_minishell.h"
 
 t_minishell sh;
+// SIGQUIT (ctrl + \)
 
 void ft_minishell(void);
 
@@ -46,11 +47,29 @@ int main(int argc, char **argv, char **envp)
 //        ft_strlcat(sh.cwd, ":> ", ft_strlen(sh.cwd) + 4);
 //        sh.line = readline(sh.cwd);
 
+void ft_sigint_handler(int sig)
+{
+    if (sig == SIGINT)
+    {
+        sh.s_int = FALSE;
+        sh.tmp0 = NULL;
+//        printf("(Minishell - 42Rio): Dentro de SIGINT\n");
+        printf("(Minishell - 42Rio):                                       \n");
+//        printf("(Minishell - 42Rio): \n");
+//        if (RL_ISSTATE(RL_STATE_READCMD))
+//            ioctl(STDIN_FILENO, TIOCSTI, "\n");
+    	rl_on_new_line();
+	    rl_replace_line("", 0);
+    	rl_redisplay();
+    }
+}
+
 void ft_minishell(void)
 {
     while (sh.running && (sh.ret == 0))
     {
-//        signal(SIGINT, &ft_sigint_handler);
+        signal(SIGINT, &ft_sigint_handler);
+        signal(SIGQUIT, SIG_IGN);
 //        signal(SIGQUIT, &ft_sigquit_handler);
         sh.line = readline("(Minishell - 42Rio): ");
         if (!sh.line)
@@ -165,17 +184,6 @@ void    ft_select_way(t_minishell *sh, t_node *node)
 }
 
 
-
-/*
-void ft_sigint_handler(int sig)
-{
-    sh.s_int = FALSE;
-    printf("(Minishell - 42Rio): ^C\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-*/
 
 /*
 void ft_sigquit_handler(int sig)

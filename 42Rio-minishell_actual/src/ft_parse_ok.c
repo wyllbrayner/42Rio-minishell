@@ -50,6 +50,7 @@ void ft_parse(t_minishell *sh)
         if (sh->ret < 0)
             return ;
 */
+        ft_print_list(sh->head);
         sh->parse_str = ft_split(sh->line, ' ');
         if (!sh->parse_str)
         {
@@ -65,7 +66,6 @@ void ft_parse(t_minishell *sh)
             return ;
         }
 //        printf("Após a lexcal_cmd ret: %d\n", sh->ret);
-//        ft_print_list(sh->head);
 //        ft_print_rev_list(sh->head);
 /*
         ft_interpreter(sh);
@@ -78,6 +78,7 @@ void ft_parse(t_minishell *sh)
         ft_heredoc(sh);
         if (sh->ret < 0)
             return ;
+
 //        printf("Após a valid quotes ret: %d\n", sh->ret);
     }
     else
