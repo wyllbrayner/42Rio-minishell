@@ -36,7 +36,7 @@ void	ft_isexec(t_minishell *sh, t_node *node)
 		node->path = ft_substr(node->first_cmd, 0, ft_strlen(node->first_cmd));
 		if (!node->path)
 		{
-			sh->ret = -7;
+			sh->ret = -4;
 			sh->errnbr = 127;
 			sh->erro = node->first_cmd;
 			return ;
@@ -47,7 +47,7 @@ void	ft_isexec(t_minishell *sh, t_node *node)
 		node->path = ft_substr(node->first_cmd, 0, ft_strlen(node->first_cmd));
 		if (!node->path)
 		{
-			sh->ret = -7;
+			sh->ret = -4;
 			sh->errnbr = 127;
 			sh->erro = node->first_cmd;
 			return ;
@@ -59,7 +59,7 @@ void	ft_isexec(t_minishell *sh, t_node *node)
 		sh->tmp1 = NULL;
 		if (!node->path)
 		{
-			sh->ret = -7;
+			sh->ret = -4;
 			sh->errnbr = 127;
 			sh->erro = node->first_cmd;
 			return ;

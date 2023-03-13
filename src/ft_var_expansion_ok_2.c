@@ -53,7 +53,10 @@ void	ft_variable_expansion_aux(t_minishell *sh, t_node *node)
 		sh->tmp1 = sh->tmp2;
 		sh->tmp2 = NULL;
 		var[3] = FALSE;
-		ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
+
+		ft_unset_aux_1(sh, var);
+
+//		ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
 		ft_free_minishell_single_aux(sh->tmp1);
 		sh->tmp1 = NULL;
 		if (var[3])

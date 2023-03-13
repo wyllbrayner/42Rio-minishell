@@ -12,7 +12,7 @@
 
 #include "../../header/ft_minishell.h"
 
-void	ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status);
+void	ft_unset_aux_1(t_minishell *sh, long *var);
 void	ft_unset_aux_2(t_minishell *sh, long i);
 void	ft_unset_aux_3(t_minishell *sh, long i);
 
@@ -31,7 +31,7 @@ void	ft_builtin_unset(t_minishell *sh, t_node *node)
 		sh->tmp1 = sh->tmp2;
 		sh->tmp2 = NULL;
 		var[3] = FALSE;
-		ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
+		ft_unset_aux_1(sh, var);
 		if (var[3])
 		{
 			ft_unset_aux_2(sh, var[2]);
@@ -44,17 +44,17 @@ void	ft_builtin_unset(t_minishell *sh, t_node *node)
 	sh->errnbr = 0;
 }
 
-void	ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status)
+void	ft_unset_aux_1(t_minishell *sh, long *var)
 {
-	*i = 0;
-	while (sh->env[*i])
+	var[2] = 0;
+	while (sh->env[var[2]])
 	{
-		if (ft_strncmp(sh->env[*i], sh->tmp1, ((end) - start)) == 0)
+		if (ft_strncmp(sh->env[var[2]], sh->tmp1, ((var[1]) - var[0])) == 0)
 		{
-			*status = TRUE;
+			var[3] = TRUE;
 			break ;
 		}
-		*i = *i + 1;
+		var[2] = var[2] + 1;
 	}
 }
 

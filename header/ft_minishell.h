@@ -97,11 +97,14 @@ void    ft_builtin_env(t_minishell *sh, t_node *node);
 void	ft_builtin_cd(t_minishell *cmd, t_node *node);
 void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node);
 void    ft_builtin_echo(t_minishell *sh, t_node *node);
+int     filter_space(char *str);
 void    ft_builtin_pwd(t_minishell *sh);
 void    ft_builtin_export(t_minishell *sh, t_node *node);
 void    ft_builtin_unset(t_minishell *sh, t_node *node);
 
-void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first, long *status);
+void	ft_valid_quotes_aux2(t_minishell *sh, t_node *node, long *var);
+
+void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first);
 void    ft_init_var(t_minishell *sh, char **envp);
 void    ft_init_var_aux_one(t_minishell *sh);
 void    ft_init_var_aux_two(t_minishell *sh);
@@ -111,7 +114,8 @@ void    ft_parse(t_minishell *sh);
 void    ft_select_way(t_minishell *sh, t_node *no);
 char	*ft_access_command(t_minishell *sh, t_node *node);
 
-void    ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status);
+//void    ft_unset_aux_1(t_minishell *sh, long *i, long start, long end, long *status);
+void    ft_unset_aux_1(t_minishell *sh, long *i);
 void    ft_redirect_2(t_minishell *sh); // ver
 void    ft_minishell_error(t_minishell *sh);
 void    ft_parse_comand_is_valid(t_minishell *sh);

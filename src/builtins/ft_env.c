@@ -12,10 +12,16 @@
 
 #include "../../header/ft_minishell.h"
 
+//    printf("Dentro de ft_builtin_env Início cmd[0]: %s | cmd[1]: %s \n", 
+//	node->cmd[0], node->cmd[1]);
+//        while (sh->env[j] && sh->s_int)
+//    	printf("\033[0m");
+//    printf("Dentro de ft_builtin_env Fim cmd[0]: %s | cmd[1]: %s \n", 
+//	node->cmd[0], node->cmd[1]);
 void	ft_builtin_env(t_minishell *sh, t_node *node)
 {
 	long	j;
-//    printf("Dentro de ft_builtin_env Início cmd[0]: %s | cmd[1]: %s \n", node->cmd[0], node->cmd[1]);
+
 	if (node->cmd[1])
 	{
 		sh->ret = -7;
@@ -25,15 +31,12 @@ void	ft_builtin_env(t_minishell *sh, t_node *node)
 	else
 	{
 		j = 0;
-//        while (sh->env[j] && sh->s_int)
 		while (sh->env[j])
 		{
-			ft_printf("%s\n", sh->env[j]);
+			printf("%s\n", sh->env[j]);
 			j++;
 		}
 		if (sh->s_int == 1)
 			sh->errnbr = 0;
-//    	printf("\033[0m");
 	}
-//    printf("Dentro de ft_builtin_env Fim cmd[0]: %s | cmd[1]: %s \n", node->cmd[0], node->cmd[1]);
 }

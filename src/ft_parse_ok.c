@@ -42,7 +42,7 @@ void ft_parse(t_minishell *sh)
         ft_cmd_builder(sh);
         if (sh->ret < 0)
             return ;
-//        ft_print_list(sh->head);
+        ft_print_list(sh->head);
         sh->parse_str = ft_split(sh->line, ' ');
         if (!sh->parse_str)
         {

@@ -224,7 +224,11 @@ void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 	var[0] = 0;
 	var[3] = FALSE;
 //    printf("Antes de ft_unset_aux_1                        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
-	ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
+
+
+	ft_unset_aux_1(sh, var);
+
+//	ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
 //    printf("Após     ft_unset_aux_1                        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
 	if (var[3])
 	{
