@@ -12,9 +12,8 @@
 
 #include "../../header/ft_minishell.h"
 
-void	ft_unset_aux_1(t_minishell *sh, long *var);
-void	ft_unset_aux_2(t_minishell *sh, long i);
-void	ft_unset_aux_3(t_minishell *sh, long i);
+static void	ft_unset_aux_2(t_minishell *sh, long i);
+static void	ft_unset_aux_3(t_minishell *sh, long i);
 
 void	ft_builtin_unset(t_minishell *sh, t_node *node)
 {
@@ -58,7 +57,7 @@ void	ft_unset_aux_1(t_minishell *sh, long *var)
 	}
 }
 
-void	ft_unset_aux_2(t_minishell *sh, long i)
+static void	ft_unset_aux_2(t_minishell *sh, long i)
 {
 	long	len;
 
@@ -84,7 +83,7 @@ void	ft_unset_aux_2(t_minishell *sh, long i)
 	sh->tmp3 = NULL;
 }
 
-void	ft_unset_aux_3(t_minishell *sh, long i)
+static void	ft_unset_aux_3(t_minishell *sh, long i)
 {
 	long	j;
 	long	k;

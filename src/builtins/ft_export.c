@@ -25,10 +25,105 @@
 //                printf("Não achei a variável de ambiente: %s em env[%ld]: 
 //%s\n", sh->tmp1, i, sh->env[i]);
 //                printf("Total de variáveis de ambiente: %ld\n", i);
+
+static void	ft_builtin_export_aux0(t_minishell *sh, t_node *node, long *var);
+static void	ft_builtin_export_aux1(t_minishell *sh, t_node *node, long *var);
+static void	ft_builtin_export_aux2(t_minishell *sh, t_node *node, long *var);
+static void	ft_builtin_export_aux3(t_minishell *sh, t_node *node, long *var);
+
 void	ft_builtin_export(t_minishell *sh, t_node *node)
 {
-	long	end;
+	long	var[3];
+
+	if (node->cmd[1])
+	{
+		ft_single_and_double_quotes(sh, node, "export ");
+		var[1] = ft_strchr_i(node->cmd[1], '=');
+		ft_builtin_export_aux0(sh, node, var);
+		if (sh->ret < 0)
+			return ;
+	}
+	else
+	{
+		var[0] = 0;
+		while (sh->env[var[0]])
+			printf("declare -x %s\n", sh->env[var[0]++]);
+	}
+	sh->errnbr = 0;
+}
+
+static void	ft_builtin_export_aux0(t_minishell *sh, t_node *node, long *var)
+{
+	if (var[1])
+	{
+		ft_builtin_export_aux1(sh, node, var);
+		if (var[2])
+			ft_builtin_export_aux2(sh, node, var);
+		else
+		{
+			ft_builtin_export_aux3(sh, node, var);
+			if (sh->ret < 0)
+				return ;
+		}
+		ft_free_minishell_single_aux(sh->tmp1);
+		sh->tmp1 = NULL;
+		sh->tmp3 = NULL;
+	}
+}
+
+//	sh->tmp1 = ft_substr(node->cmd[1], 0, var[1]);
+//		if (ft_strncmp(sh->env[var[0]], sh->tmp1, var[1]) == 0)
+static void	ft_builtin_export_aux1(t_minishell *sh, t_node *node, long *var)
+{
+	sh->tmp1 = ft_substr(node->cmd[1], 0, (var[1] + 1));
+	var[0] = 0;
+	var[2] = FALSE;
+	while (sh->env[var[0]])
+	{
+		if (ft_strncmp(sh->env[var[0]], sh->tmp1, (var[1] + 1)) == 0)
+		{
+			var[2] = TRUE;
+			break ;
+		}
+		var[0]++;
+	}
+}
+
+static void	ft_builtin_export_aux2(t_minishell *sh, t_node *node, long *var)
+{
+	ft_free_minishell_single_aux(sh->env[var[0]]);
+	sh->env[var[0]] = NULL;
+	sh->env[var[0]] = ft_substr(node->cmd[1], 0, ft_strlen(node->cmd[1]));
+}
+
+static void	ft_builtin_export_aux3(t_minishell *sh, t_node *node, long *var)
+{
+	var[0]++;
+	sh->tmp3 = (char **)malloc(sizeof(char *) * (++var[0]));
+	if (!sh->tmp3)
+	{
+		sh->errnbr = errno;
+		ft_free_minishell_single_aux(sh->tmp1);
+		sh->ret = -3;
+		return ;
+	}
+	sh->tmp3[--var[0]] = NULL;
+	sh->tmp3[--var[0]] = ft_substr(node->cmd[1], 0, ft_strlen(node->cmd[1]));
+	while (--var[0] >= 0)
+	{
+		sh->tmp3[var[0]] = sh->env[var[0]];
+		sh->env[var[0]] = NULL;
+	}
+	ft_free_minishell_double_aux(sh->env);
+	sh->env = NULL;
+	sh->env = sh->tmp3;
+}
+
+/*
+void	ft_builtin_export(t_minishell *sh, t_node *node)
+{
 	long	i;
+	long	end;
 	long	status;
 
 	if (node->cmd[1])
@@ -90,3 +185,4 @@ void	ft_builtin_export(t_minishell *sh, t_node *node)
 	}
 	sh->errnbr = 0;
 }
+*/

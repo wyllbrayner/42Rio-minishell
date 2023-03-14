@@ -17,9 +17,12 @@ extern t_minishell	sh;
 
 //	printf("Dentro da ft_free_minishell | inicio errnbr: %i\n", sh->errnbr);
 //    	printf("Dentro da ft_free_minishell | dentro do if\n");
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double para parse_str\n");
-//    	printf("Dentro da ft_free_minishell | dentro do if | chama a list_destroy para tmp = sh->head\n");
-//	printf("Dentro da ft_free_minishell | intermediário errnbr: %i\n", sh->errnbr);
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a double 
+//para parse_str\n");
+//    	printf("Dentro da ft_free_minishell | dentro do if | chama a 
+//list_destroy para tmp = sh->head\n");
+//	printf("Dentro da ft_free_minishell | intermediário errnbr: %i\n", 
+//sh->errnbr);
 //    	printf("Dentro da ft_free_minishell | dentro do else | inicio\n");
 //	printf("Dentro da ft_free_minishell | fim errnbr: %i\n", sh->errnbr);
 void	ft_free_minishell(t_minishell *sh, int status)
@@ -47,9 +50,12 @@ void	ft_free_minishell(t_minishell *sh, int status)
 }
 
 //	printf("Dentro da ft_single_aux | inicio\n");
-//      	printf("Dentro da ft_single_aux | dentro do if | libera str %s\n", str);
-//     	printf("Dentro da ft_single_aux | dentro do if | aponta str para NULL %s\n", str);
-//      	printf("Dentro da ft_single_aux | dentro do if | após apontar str para NULL %s\n", str);
+//  printf("Dentro da ft_single_aux | dentro do if | libera str 
+//%s\n", str);
+//  printf("Dentro da ft_single_aux | dentro do if | aponta str para NULL
+// %s\n", str);
+//  printf("Dentro da ft_single_aux | dentro do if | após apontar str para 
+//NULL %s\n", str);
 //	printf("Dentro da ft_single_aux | fim\n");
 void	ft_free_minishell_single_aux(char *str)
 {
@@ -61,13 +67,18 @@ void	ft_free_minishell_single_aux(char *str)
 }
 
 //	printf("Dentro da ft_double_aux | inicio\n");
-//    	printf("Dentro da ft_double_aux | dentro do if\n");
-//    	printf("Dentro da ft_double_aux | dentro do if | str_double[0]: %s\n", str_double[0]);
-//    	printf("Dentro da ft_double_aux | dentro do if | str_double[1]: %s\n", str_double[1]);
-//        	printf("Dentro da ft_double_aux | dentro do if | dentro do loop | chama a single aux para %s\n", str_double[i]);
-//     	printf("Dentro da ft_double_aux | dentro do if | libera str_double\n");
-//     	printf("Dentro da ft_double_aux | dentro do if | aponta str_double para NULL\n");
+//  printf("Dentro da ft_double_aux | dentro do if\n");
+//  printf("Dentro da ft_double_aux | dentro do if | str_double[0]: %s\n", 
+//str_double[0]);
+//  printf("Dentro da ft_double_aux | dentro do if | str_double[1]: %s\n", 
+//str_double[1]);
+// 	printf("Dentro da ft_double_aux | dentro do if | dentro do loop | chama
+// a single aux para %s\n", str_double[i]);
+//  printf("Dentro da ft_double_aux | dentro do if | libera str_double\n");
+//  printf("Dentro da ft_double_aux | dentro do if | aponta str_double para 
+//NULL\n");
 //	printf("Dentro da ft_double_aux | fim\n");
+
 void	ft_free_minishell_double_aux(char **str_double)
 {
 	long	i;
@@ -86,7 +97,8 @@ void	ft_free_minishell_double_aux(char **str_double)
 	}
 }
 
-//        printf("Dentro da ft_free_minishell_close_fd amount_fd: %ld | início\n", amount_fd);
+//  printf("Dentro da ft_free_minishell_close_fd amount_fd: %ld 
+//| início\n", amount_fd);
 //	printf("Dentro da ft_free_minishell_close_fd | fim\n");
 void	ft_free_minishell_close_fd(int *file_fd, long amount_fd)
 {

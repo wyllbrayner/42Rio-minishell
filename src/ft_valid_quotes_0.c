@@ -40,7 +40,7 @@ void	ft_single_and_double_quotes(t_minishell *sh, t_node *node, char *first)
 //	printf("Dentro da single_and_double_quotes | Após valid quotes para %c 
 //tmp1: %s\n", c, sh->tmp1);
 //	printf("Dentro da single_and_double_quotes_aux | fim %s\n", first);
-void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, \
+static void	ft_single_and_double_quotes_aux(t_minishell *sh, t_node *node, \
 char *first, int c)
 {
 	ft_valid_quotes(sh, node, first, c);
