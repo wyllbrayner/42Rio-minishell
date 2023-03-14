@@ -12,104 +12,7 @@
 
 #include "../header/ft_minishell.h"
 
-void	ft_expander_dquote(t_minishell *sh, t_node *node)
-{
-	long	i;
-	long	j;
 
-	i = 0;
-	j = 0;
-	sh->tmp1 = (char *)malloc(sizeof(char) * (ft_strlen(node->token) + 1)); // malloque tmp1 com a quantidade de caracteres de token + 1 para o nullo.
-	if (!sh->tmp1)
-	{
-		sh->errnbr = errno;
-		sh->ret = -3;
-	}
-	else // se conseguiu mallocar, faça
-	{
-		while (node->token[i]) // percorra todos os caracteres de token.
-		{
-			if (node->token[i] != '\"') //se o caracter de token for diferente de '\"', faça
-				sh->tmp1[j++] = node->token[i]; // copie o caracter de token para tmp1 
-			i++; // adicione um ao contador
-		}
-		sh->tmp1[j] = '\0'; // feche a string tmp1 com nullo
-		ft_builtin_cd_aux_2(sh, node); //substitua token por sh->tmp1
-	}
-}
-
-void	ft_expander_squote(t_minishell *sh, t_node *node)
-{
-	long	i;
-	long	j;
-	long	squote;
-
-    	i = 0;
-	j = 0;
-	squote = 0;
-	sh->tmp1 = (char *)malloc(sizeof(char) * (ft_strlen(node->token) + 1));
-	if (!sh->tmp1)
-	{
-		sh->errnbr = errno;
-		sh->ret = -3;
-	}
-	else
-	{
-		while (node->token[i]) // percorra todos os caracteres de token
-		{
-			while (node->token[i]) // percorra token, enquanto token existir e for igual a '\'', faça
-			{
-				if (node->token[i] == '\'')
-				{
-					i++; // adicione um ao contador
-					squote++; // adicione um ao contador de aspas simples
-				}
-				else
-					break ;
-			}
-/*
-            while (node->token[i] && node->token[i] == '\'') // percorra token, enquanto token existir e for igual a '\'', faça
-            {
-                i++; // adicione um ao contador
-                squote++; // adicione um ao contador de aspas simples
-            }
-*/
-			if (squote % 2) // verifique se a quantidade de aspas simples é impar
-				sh->tmp1[j++] = '\''; // se for impar, acrescente uma aspas simples em tmp1
-			squote = 0; // reinicie o contador de aspas simples
-			while (node->token[i]) // percorra token e faça
-			{
-				if (node->token[i] != '\'') // se token for diferente de '\'', faça
-					sh->tmp1[j++] = node->token[i]; // copie token para tmp1
-				else // caso contrário
-					break ;// interrompa
-				i++; // adicione um ao contador
-			}
-		}
-		sh->tmp1[j] = '\0'; // feche a string tmp1 com nullo
-		ft_builtin_cd_aux_2(sh, node); //substitua token por sh->tmp1
-	}
-}
-
-void	ft_expander_quote(t_minishell *sh, t_node *node)
-{
-//    printf("Dentro da ft_expander_quote - Início\n");
-//    printf("Antes de ft_expand_variable_dquote, node->token: %s\n", node->token);
-	ft_expander_dquote(sh, node);
-	if (sh->ret < 0)
-		return ;
-//    printf("Após     ft_expand_variable_dquote, node->token: %s\n", node->token);
-//    printf("===================================================\n");
-//    printf("Antes de ft_expand_variable_squote, node->token: %s\n", node->token);
-	ft_expander_squote(sh, node);
-	if (sh->ret < 0)
-		return ;
-//    printf("Após     ft_expand_variable_squote, node->token: %s\n", node->token);
-//    printf("Dentro da ft_expander_quote - Fim\n");
-}
-
-void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
-{
 /*
     printf("tmp0: %s#\n", sh->tmp0);
     printf("tmp1: %s#\n", sh->tmp1);
@@ -117,10 +20,44 @@ void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
     printf("tmp5: %s#\n", sh->tmp5);
     printf("Dentro da ft_expand_variable_0 - Início errnbr: %i\n", sh->errnbr);
 */
+//        printf("Dentro do if   tmp0: %s#\n", sh->tmp0);
+//            printf("Dentro do else   tmp0: %s#\n", sh->tmp0);
+//            printf("Dentro do else, join de tmp5: %s# e tmp0: %s# em tmp1: %s#\n", sh->tmp5, sh->tmp0, sh->tmp1);
+//        printf("Dentro do else, troca os ponteiros de tmp0: %s# e tmp1: %s#\n", sh->tmp0, sh->tmp1);
+/*
+    printf("Após os ifs\n");
+    printf("tmp0: %s#\n", sh->tmp0);
+    printf("tmp1: %s#\n", sh->tmp1);
+    printf("tmp2: %s#\n", sh->tmp2);
+    printf("tmp5: %s#\n", sh->tmp5);
+*/
+//    printf("Após colocar o histórico tmp0 v[0] recebe v[5] -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
+//    printf("Andou até o próximo '$~/\' (espaço)'        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
+//            printf("é ~\n");
+//            printf("é ~\n");
+//    printf("malloca len: %ld posições a partir de: var[0]: %ld até var[5]: %ld -> tmp5: %s\n", (var[5] - var[0]), var[0], var[5], sh->tmp5);
+//        printf("sh->tmp5 não conseguiu mallocar\n");
+//    printf("join de tmp5: %s com = em tmp1: %s\n", sh->tmp5, sh->tmp1);
+//        printf("sh->tmp1 não conseguiu mallocar\n");
+//    printf("Antes de ft_unset_aux_1                        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
+//	ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
+//    printf("Após     ft_unset_aux_1                        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
+//        printf("ft_unset_aux_1 retornou true e tmp2: %s\n", sh->tmp2);
+//            printf("ft_unset_aux_1 retornou false, mas tmp1 = $?=: %s\n", sh->tmp2);
+//            printf("ft_unset_aux_1 retornou false, mas tmp5 = $?=: %s\n", sh->tmp5);
+//            printf("ft_unset_aux_1 retornou false, malloca espaço: #%s#\n", sh->tmp2);
+/*
+    printf("Dentro da ft_expand_variable_0 - Fim\n");
+    printf("tmp0: %s#\n", sh->tmp0);
+    printf("tmp1: %s#\n", sh->tmp1);
+    printf("tmp2: %s#\n", sh->tmp2);
+    printf("tmp5: %s#\n", sh->tmp5);
+*/
+void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
+{
 	if (!sh->tmp5)
 	{
 		sh->tmp0 = ft_substr(node->token, var[0], var[5]);
-//        printf("Dentro do if   tmp0: %s#\n", sh->tmp0);
 		if (!sh->tmp0)
 		{
 			sh->errnbr = errno;
@@ -141,9 +78,7 @@ void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 				sh->errnbr = errno;
 				return ;
 			}
-//            printf("Dentro do else   tmp0: %s#\n", sh->tmp0);
 			sh->tmp1 = ft_strjoin(sh->tmp5, sh->tmp0);
-//            printf("Dentro do else, join de tmp5: %s# e tmp0: %s# em tmp1: %s#\n", sh->tmp5, sh->tmp0, sh->tmp1);
 			ft_free_minishell_single_aux(sh->tmp0);
 			sh->tmp0 = NULL;
 			ft_free_minishell_single_aux(sh->tmp5);
@@ -163,44 +98,26 @@ void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 			sh->tmp5 = NULL;
 			var[5] = var[0];
 		}
-//        printf("Dentro do else, troca os ponteiros de tmp0: %s# e tmp1: %s#\n", sh->tmp0, sh->tmp1);
 	}
-/*
-    printf("Após os ifs\n");
-    printf("tmp0: %s#\n", sh->tmp0);
-    printf("tmp1: %s#\n", sh->tmp1);
-    printf("tmp2: %s#\n", sh->tmp2);
-    printf("tmp5: %s#\n", sh->tmp5);
-*/
 	if (node->token[var[5]])
 	{
 		if (node->token[var[5]] != '~')
 			var[5]++;
 	}
 	var[0] = var[5];
-//    printf("Após colocar o histórico tmp0 v[0] recebe v[5] -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
 	while (node->token[var[5]] && !(ft_strchr("/$~\'", node->token[var[5]])) && !ft_isspace(node->token[var[5]]))
 	    var[5]++;
-//    printf("Andou até o próximo '$~/\' (espaço)'        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
 	if ((var[0] == var[5]) && (node->token[var[5]] == '~') && (node->token[(var[5] - 1)] == ' '))
 	{
 		if (!node->token[(var[5] + 1)])
-		{
-//            printf("é ~\n");
 			sh->tmp5 = ft_strdup("HOME");
-		}
 		else if (((node->token[(var[5] + 1)] == ' ') || (node->token[(var[5] + 1)] == '/')))
-		{
-//            printf("é ~\n");
 			sh->tmp5 = ft_strdup("HOME");
-		}
 	}
 	else
 		sh->tmp5 = ft_substr(node->token, var[0], (var[5] - var[0]));
-//    printf("malloca len: %ld posições a partir de: var[0]: %ld até var[5]: %ld -> tmp5: %s\n", (var[5] - var[0]), var[0], var[5], sh->tmp5);
 	if (!sh->tmp5)
 	{
-//        printf("sh->tmp5 não conseguiu mallocar\n");
 		ft_free_minishell_single_aux(sh->tmp0);
 		sh->tmp0 = NULL;
 		sh->ret = -3;
@@ -208,12 +125,10 @@ void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 		return ;
 	}
 	sh->tmp1 = ft_strjoin(sh->tmp5, "=");
-//    printf("join de tmp5: %s com = em tmp1: %s\n", sh->tmp5, sh->tmp1);
 	ft_free_minishell_single_aux(sh->tmp5);
 	sh->tmp5 = NULL;
 	if (!sh->tmp1)
 	{
-//        printf("sh->tmp1 não conseguiu mallocar\n");
 		ft_free_minishell_single_aux(sh->tmp0);
 		sh->tmp0 = NULL;
 		sh->ret = -3;
@@ -223,32 +138,18 @@ void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 	var[1] = ft_strlen(sh->tmp1);
 	var[0] = 0;
 	var[3] = FALSE;
-//    printf("Antes de ft_unset_aux_1                        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
-
-
 	ft_unset_aux_1(sh, var);
-
-//	ft_unset_aux_1(sh, &var[2], var[0], var[1], &var[3]);
-//    printf("Após     ft_unset_aux_1                        -> v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
 	if (var[3])
 	{
 		var[4] = ft_strchr_i(sh->env[var[2]], '=');
 		sh->tmp5 = ft_substr(sh->env[var[2]], (var[4] + 1), ft_strlen(sh->env[var[2]]) - var[4]);
-//        printf("ft_unset_aux_1 retornou true e tmp2: %s\n", sh->tmp2);
 	}
 	else
 	{
 		if (ft_strncmp(sh->tmp1, "?=", 3) == 0)
-		{
 			sh->tmp5 = ft_itoa(sh->errnbr);           
-//            printf("ft_unset_aux_1 retornou false, mas tmp1 = $?=: %s\n", sh->tmp2);
-//            printf("ft_unset_aux_1 retornou false, mas tmp5 = $?=: %s\n", sh->tmp5);
-		}
 		else
-		{
 			sh->tmp5 = ft_strdup("");
-//            printf("ft_unset_aux_1 retornou false, malloca espaço: #%s#\n", sh->tmp2);
-		}
 	}
 	ft_free_minishell_single_aux(sh->tmp1);
 	sh->tmp1 = NULL;
@@ -272,18 +173,14 @@ void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var)
 	}
 	sh->tmp5 = sh->tmp1;
 	sh->tmp1 = NULL;
-/*
-    printf("Dentro da ft_expand_variable_0 - Fim\n");
-    printf("tmp0: %s#\n", sh->tmp0);
-    printf("tmp1: %s#\n", sh->tmp1);
-    printf("tmp2: %s#\n", sh->tmp2);
-    printf("tmp5: %s#\n", sh->tmp5);
-*/
 }
 
+//    printf("Dentro da ft_expand_variable - Início (token: %s)\n", node->token);
+//            printf("Chama    a expand_variable_0 - v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
+//            printf("Retorna da expand_variable_0 - v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
+//    printf("Dentro da ft_expand_variable - Fim (token: %s)\n", node->token);
 void	ft_expand_variable(t_minishell *sh, t_node *node)
 {
-//    printf("Dentro da ft_expand_variable - Início (token: %s)\n", node->token);
 	long	var[7] = {0};
 
 	var[0] = 0;
@@ -293,6 +190,7 @@ void	ft_expand_variable(t_minishell *sh, t_node *node)
 		var[5]++;
 	while (node->token[var[5]] && ft_isspace(node->token[var[5]]))
 		var[5]++;
+
 	while (node->token[var[5]])
 	{
 		while (node->token[var[5]] && !(ft_strchr("$~", node->token[var[5]])))
@@ -300,14 +198,13 @@ void	ft_expand_variable(t_minishell *sh, t_node *node)
 			if (node->token[var[5]] == '\'')
 			{
 				if (var[6])
-				{
-					var[6] = FALSE;
-				}
+					var[6] = 0;
 				else
 					var[6] = TRUE;
 			}
 			var[5]++;
 		}
+
 		if (node->token[var[5]] && var[6])
 		{
 			while (node->token[var[5]] && node->token[var[5]] != '\'')
@@ -316,22 +213,19 @@ void	ft_expand_variable(t_minishell *sh, t_node *node)
 		}
 		else
 		{
-//            printf("Chama    a expand_variable_0 - v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
 			ft_expand_variable_0(sh, node, var);
-//            printf("Retorna da expand_variable_0 - v[0]: %ld; v[1]: %ld; v[2]: %ld; v[3]: %ld; v[4]: %ld; v[5]: %ld; v[6]: %ld\n", var[0], var[1], var[2], var[3], var[4], var[5], var[6]);
 			if (sh->ret < 0)
 				return ;
 			var[0] = var[5];
 			if (node->token[var[5]] == '\'')
 			{
 				if (var[6])
-				{
-					var[6] = FALSE;
-				}
+					var[6] = 0;
 				else
 					var[6] = TRUE;
 			}
 		}
+
 		if (node->token[var[5]])
 		{
 			if (node->token[var[5]] != '~')
@@ -342,8 +236,8 @@ void	ft_expand_variable(t_minishell *sh, t_node *node)
 				var[0] = var[5];
 			}
 		}
+
 	}
-//    printf("Dentro da ft_expand_variable - Fim (token: %s)\n", node->token);
 }
 
 void	ft_expand_variable_cd(t_minishell *sh, t_node *node)
@@ -368,28 +262,26 @@ void	ft_expand_variable_cd(t_minishell *sh, t_node *node)
 	}
 }
 
-void	ft_expander_variable(t_minishell *sh, t_node *node)
-{
 //    printf("Dentro da ft_expander_variable - Início\n");
 //    printf("token: #%s# e first_cmd: #%s#\n", node->token, node->first_cmd);
-	sh->ret = 0;
-	if (ft_strncmp(node->first_cmd, "cd", 2) == 0)
-	{
 //        printf("Estender variável para cd: %s#\n", node->token);
-		ft_expand_variable_cd(sh, node);
-	}
 //        printf("Estender variável para diferente de cd\n");
 //    printf("Antes de 1° ft_expand_variable, node->token: %s\n", node->token);
-	ft_expand_variable(sh, node);
 //        printf("Após     ft_expand_variable, sh->tmp5     %s\n", sh->tmp5);
+//    printf("Após  da 1º ft_expand_variable, node->token: %s\n", node->token);
+//    printf("Dentro da ft_expander_variable - Fim\n");
+void	ft_expander_variable(t_minishell *sh, t_node *node)
+{
+	sh->ret = 0;
+	if (ft_strncmp(node->first_cmd, "cd", 2) == 0)
+		ft_expand_variable_cd(sh, node);
+	ft_expand_variable(sh, node);
 	if (sh->tmp5)
 	{
 		sh->tmp1 = sh->tmp5;
 		sh->tmp5 = NULL;
-		ft_builtin_cd_aux_2(sh, node); //substitua token por sh->tmp1
+		ft_builtin_cd_aux_2(sh, node);
 	}
-//    printf("Após  da 1º ft_expand_variable, node->token: %s\n", node->token);
-//    printf("Dentro da ft_expander_variable - Fim\n");
 }
 
 void	ft_interpreter(t_minishell *sh)

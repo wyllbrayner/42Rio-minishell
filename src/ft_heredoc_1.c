@@ -34,6 +34,12 @@
 static void	ft_heredoc_fd_aux0(t_minishell *sh, t_node *node);
 static void	ft_heredoc_fd_aux1(t_minishell *sh, t_node *n);
 
+//    printf("Dentro da ft_heredoc -> Início\n");
+//        printf("nó [token    ]: %s\n", head->token);
+//        printf("nó [cmd[0]   ]: %s\n", head->cmd[0]);
+//        printf("nó [first cmd]: %s\n", head->first_cmd);
+//    printf("Dentro da ft_heredoc -> Fim\n");
+
 void	ft_heredoc_fd(t_minishell *sh, t_node *n)
 {
 	ft_heredoc_fd_aux0(sh, n);

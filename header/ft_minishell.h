@@ -67,15 +67,16 @@ void    rl_replace_line (const char *text, int clear_undo);
 
 void    ft_sigint_handler(int sig);
 void    ft_isexec(t_minishell *sh, t_node *node);
-void    ft_valid_redirect_0(t_minishell *sh);
 void    ft_valid_redirect_1(t_minishell *sh);
 
 void    ft_cmd_builder(t_minishell *sh);
 void    ft_cmd_builder_init_var(char *caract, char *str, long *var);
 void    ft_cmd_builder_aux_0(t_minishell *sh, long *i, long *squote, 
                                                                 long *dquote);
-
+void    ft_valid_lexcal_cmd(t_minishell *sh);
 void    ft_minishell_error(t_minishell *sh);
+void    valid_redirect(t_minishell *sh);
+void    ft_redirect_builder(t_minishell *sh);
 
 void    ft_heredoc_builder(t_minishell *sh, t_node *node);
 void    ft_interpreter(t_minishell *sh);
@@ -86,6 +87,7 @@ void    ft_free_minishell_double_aux(char **str_double);
 void    ft_free_minishell_close_fd(int *file_fd, long amount_fd);
 
 int     ft_valid_quote(long squote, long dquote);
+
 void    ft_expander_quote(t_minishell *sh, t_node *node);
 void    ft_expand_variable(t_minishell *sh, t_node *node);
 void    ft_expander_variable(t_minishell *sh, t_node *node);
