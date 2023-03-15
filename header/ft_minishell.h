@@ -79,7 +79,12 @@ void    valid_redirect(t_minishell *sh);
 void    ft_redirect_builder(t_minishell *sh);
 
 void    ft_heredoc_builder(t_minishell *sh, t_node *node);
-void    ft_interpreter(t_minishell *sh);
+void    ft_interpreter(t_minishell *sh, t_node *node);
+
+void	ft_expand_variable(t_minishell *sh, t_node *node);
+void	ft_expand_variable_0(t_minishell *sh, t_node *node, long *var);
+void	ft_expand_variable_0_aux_04(t_minishell *sh, long *var);
+void	ft_expand_variable_0_aux_05(t_minishell *sh);
 
 void    ft_free_minishell(t_minishell *sh, int status);
 void    ft_free_minishell_single_aux(char *str);
