@@ -12,7 +12,7 @@
 
 #include "../header/ft_minishell.h"
 
-void		ft_variable_expansion_aux(t_minishell *sh, t_node *node);
+static void		ft_variable_expansion_aux(t_minishell *sh, t_node *node);
 static void	ft_variable_expansion_aux_1(t_minishell *sh, t_node *n, long *var);
 static void	ft_variable_expansion_aux_2(t_minishell *sh, long *var, long *len);
 
@@ -51,6 +51,33 @@ void	ft_variable_expansion(t_minishell *sh)
 //            printf("Faça alguma coisa\n");
 //        printf("Dentro da expansão de variáveis_aux - Fim\n");
 
+static void	ft_variable_expansion_aux(t_minishell *sh, t_node *node)
+{
+	long	var[4];
+	long	len;
+	long	caract;
+
+	var[0] = ft_strchr_i(node->token, '$');
+	if (var[0])
+	{
+		ft_variable_expansion_aux_1(sh, node, var);
+		if (var[3])
+		{
+			ft_variable_expansion_aux_2(sh, var, &len);
+			if (sh->ret < 0)
+				return ;
+			else
+			{
+				sh->tmp1[--len] = '\0';
+				ft_strlcpy(sh->tmp1, node->token, (var[0] + 1));
+				caract = ft_strchr_i(sh->env[var[2]], '=');
+				ft_strlcpy(sh->tmp1 + (var[0]), \
+	sh->env[var[2]] + (caract + 1), ft_strlen(sh->env[var[2]]) - caract);
+			}
+		}
+	}
+}
+
 static void	ft_variable_expansion_aux_1(t_minishell *sh, t_node *n, long *var)
 {
 	var[1] = ft_strlen(n->token);
@@ -75,32 +102,5 @@ static void	ft_variable_expansion_aux_2(t_minishell *sh, long *var, long *len)
 	{
 		sh->errnbr = errno;
 		sh->ret = -3;
-	}
-}
-
-void	ft_variable_expansion_aux(t_minishell *sh, t_node *node)
-{
-	long	var[4];
-	long	len;
-	long	caract;
-
-	var[0] = ft_strchr_i(node->token, '$');
-	if (var[0])
-	{
-		ft_variable_expansion_aux_1(sh, node, var);
-		if (var[3])
-		{
-			ft_variable_expansion_aux_2(sh, var, &len);
-			if (sh->ret < 0)
-				return ;
-			else
-			{
-				sh->tmp1[--len] = '\0';
-				ft_strlcpy(sh->tmp1, node->token, (var[0] + 1));
-				caract = ft_strchr_i(sh->env[var[2]], '=');
-				ft_strlcpy(sh->tmp1 + (var[0]), \
-	sh->env[var[2]] + (caract + 1), ft_strlen(sh->env[var[2]]) - caract);
-			}
-		}
 	}
 }

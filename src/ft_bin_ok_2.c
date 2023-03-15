@@ -80,11 +80,11 @@ void	ft_start_command(t_minishell *sh, int *rato, t_node *node)
 			return ;
 		else
 		{
-//			sh->errnbr = 0;// lembrar a razão disto e o possível impacto em retirá-lo
 			*rato = fork();
 			if (*rato == 0)
 			{
 				signal(SIGQUIT, SIG_DFL);
+				signal(SIGINT, SIG_DFL);
 				if (execve(node->path, node->cmd, sh->env) == -1)
 					sh->errnbr = errno;
 			}

@@ -43,7 +43,6 @@ void	ft_init_var_aux_one(t_minishell *sh)
 {
 	sh->ret = 0;
 	sh->line = NULL;
-	sh->parse_str = NULL;
 	sh->erro = NULL;
 	sh->head = NULL;
 	sh->head_tmp = NULL;
@@ -66,6 +65,8 @@ void	ft_init_var_aux_two(t_minishell *sh)
 	sh->env = NULL;
 	sh->path = NULL;
 	sh->errnbr = 0;
+	sh->bkp_fd_in = 0;
+	sh->bkp_fd_out = 0;
 }
 
 //        printf("Dentro da init_var_aux_env: env[%ld]: %s\n", i, sh->env[i]);

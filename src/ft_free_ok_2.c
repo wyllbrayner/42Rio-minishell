@@ -33,8 +33,6 @@ void	ft_free_minishell(t_minishell *sh, int status)
 	{
 		ft_free_minishell_single_aux(sh->line);
 		sh->line = NULL;
-		ft_free_minishell_double_aux(sh->parse_str);
-		sh->parse_str = NULL;
 		tmp = sh->head;
 		ft_list_destroy(&tmp);
 		ft_init_var_aux_one(sh);

@@ -25,7 +25,7 @@ static void	ft_valid_redirect_0_aux_0(t_minishell *sh, long *var);
 static void	ft_valid_redirect_0_aux_1(t_minishell *sh, long *var);
 static void	ft_valid_redirect_0_aux_2(t_minishell *sh, long *var);
 
-void	valid_redirect(t_minishell *sh)
+void	ft_valid_redirect(t_minishell *sh)
 {
 	ft_valid_redirect_0(sh);
 	if (sh->ret < 0)

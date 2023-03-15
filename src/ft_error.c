@@ -42,7 +42,7 @@ static void	ft_minishell_error_aux_0(t_minishell *sh)
 	else if (sh->ret == -6)
 	{
 		if (!sh->erro)
-			ft_printf("(Minishell): syntax error near unexpected token `newline'\n");
+			ft_printf(MSGERROR);
 		else
 			ft_printf("(Minishell): syntax error near unexpected token `%s'\n", \
 			sh->erro);

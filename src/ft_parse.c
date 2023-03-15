@@ -29,19 +29,12 @@ void	ft_parse(t_minishell *sh)
 	ft_valid_amount_of_quotes(sh);
 	if (sh->ret < 0)
 		return ;
-	valid_redirect(sh);
+	ft_valid_redirect(sh);
 	if (sh->ret < 0)
 		return ;
 	ft_cmd_builder(sh);
 	if (sh->ret < 0)
 		return ;
-	sh->parse_str = ft_split(sh->line, ' ');
-	if (!sh->parse_str)
-	{
-		sh->ret = -3;
-		sh->errnbr = errno;
-		return ;
-	}
 	ft_valid_lexcal_cmd(sh);
 	if (sh->ret < 0)
 		return ;

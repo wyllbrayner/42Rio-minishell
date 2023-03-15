@@ -16,12 +16,31 @@ extern t_minishell	sh;
 
 //	printf("Dentro da ft_node_create | inicio cmd: #%s#\n", cmd);
 //	printf("Dentro da ft_node_create | fim\n");
+
+static t_node	*ft_node_create_aux_0(char *cmd);
+static t_node	*ft_node_create_aux_1(t_node *node);
+static void		ft_list_destroy_aux0(t_node *tmp);
+
 t_node	*ft_node_create(char *cmd)
 {
 	t_node	*node;
 
+	node = NULL;
 	if (!cmd)
 		return (NULL);
+	node = ft_node_create_aux_0(cmd);
+	if (!node)
+		return (NULL);
+	node = ft_node_create_aux_1(node);
+	if (!node)
+		return (NULL);
+	return (node);
+}
+
+static t_node	*ft_node_create_aux_0(char *cmd)
+{
+	t_node	*node;
+
 	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
 	{
@@ -44,6 +63,11 @@ t_node	*ft_node_create(char *cmd)
 		node = NULL;
 		return (NULL);
 	}
+	return (node);
+}
+
+static t_node	*ft_node_create_aux_1(t_node *node)
+{
 	node->first_cmd = ft_strdup(node->cmd[0]);
 	if (!node->first_cmd)
 	{
@@ -59,32 +83,14 @@ t_node	*ft_node_create(char *cmd)
 	node->redirect_file = NULL;
 	node->redirect_file_fd = NULL;
 	node->redirect_file_fd_amount = 0;
+	node->command = FALSE;
+	node->infile = NULL;
+	node->outfile = NULL;
+	node->i = NULL;
+	node->status = NULL;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);
-}
-
-//	printf("Dentro da ft_list_add_last | inicio\n");
-//			printf("Dentro da ft_list_add_last | entrou no if\n");
-//			printf("Dentro da ft_list_add_last | entrou no else\n");
-//				printf("Dentro da ft_list_add_last | entrou no else | dentro lo loop\n");
-//	printf("Dentro da ft_list_add_last | fim\n");
-void	ft_list_add_last(t_node **head, t_node *node)
-{
-	t_node	*head_int;
-
-	if (!*head && node)
-		*head = node;
-	else
-	{
-		head_int = *head;
-		while (head_int->next)
-		{
-			head_int = head_int->next;
-		}
-		head_int->next = node;
-		node->prev = head_int;
-	}
 }
 
 //	printf("Dentro da ft_list_destroy | inicio\n");
@@ -92,6 +98,7 @@ void	ft_list_add_last(t_node **head, t_node *node)
 //			printf("Vamos apagar o token: %s\n", head_int->token);
 //			printf("token: %s Apagado\n", tmp->token);
 //	printf("Dentro da ft_list_destroy | fim\n");
+
 void	ft_list_destroy(t_node **head)
 {
 	t_node	*head_int;
@@ -105,62 +112,33 @@ void	ft_list_destroy(t_node **head)
 		{
 			tmp = head_int;
 			head_int = head_int->next;
-			ft_free_minishell_single_aux(tmp->token);
-			tmp->token = NULL;
-			ft_free_minishell_double_aux(tmp->cmd);
-			tmp->cmd = NULL;
-			ft_free_minishell_single_aux(tmp->first_cmd);
-			tmp->first_cmd = NULL;
-			ft_free_minishell_single_aux(tmp->path);
-			tmp->path = NULL;
-			ft_free_minishell_double_aux(tmp->redirect_file);
-			tmp->redirect_file = NULL;
-			if (tmp->redirect_file_fd)
-				ft_free_minishell_close_fd(tmp->redirect_file_fd, tmp->redirect_file_fd_amount);
-			tmp->redirect_file_fd = NULL;
-			tmp->redirect_file_fd_amount = 0;
+			ft_list_destroy_aux0(tmp);
 			free(tmp);
 			tmp = NULL;
 		}
 	}
 }
 
-//	printf("Dentro da ft_print_list | inicio\n");
-//	printf("Dentro da ft_print_list | fim\n");
-void	ft_print_list(const t_node *node)
+static void	ft_list_destroy_aux0(t_node *tmp)
 {
-	t_node	*p;
-
-	p = (t_node *)node;
-	if (p)
-	{
-		printf("HEAD -> ");
-		while (p)
-		{
-			printf("token: %s -> ", p->token);
-			p = p->next;
-		}
-		printf("NULL\n");
-	}
-}
-
-//	printf("Dentro da ft_print_rev_list | inicio\n");
-//	printf("Dentro da ft_print_rev_list | fim\n");
-void	ft_print_rev_list(const t_node *node)
-{
-	t_node	*p;
-
-	p = (t_node *)node;
-	if (p)
-	{
-		while (p->next)
-			p = p->next;
-		printf("NULL -> ");
-		while (p)
-		{
-			printf("token: %s -> ", p->token);
-			p = p->prev;
-		}	
-		printf("HEAD\n");
-	}
+	ft_free_minishell_single_aux(tmp->token);
+	tmp->token = NULL;
+	ft_free_minishell_double_aux(tmp->cmd);
+	tmp->cmd = NULL;
+	ft_free_minishell_single_aux(tmp->first_cmd);
+	tmp->first_cmd = NULL;
+	ft_free_minishell_single_aux(tmp->path);
+	tmp->path = NULL;
+	ft_free_minishell_double_aux(tmp->redirect_file);
+	tmp->redirect_file = NULL;
+	if (tmp->redirect_file_fd)
+		ft_free_minishell_close_fd(tmp->redirect_file_fd, \
+		tmp->redirect_file_fd_amount);
+	tmp->redirect_file_fd = NULL;
+	tmp->redirect_file_fd_amount = 0;
+	tmp->command = FALSE;
+	tmp->infile = NULL;
+	tmp->outfile = NULL;
+	tmp->i = NULL;
+	tmp->status = NULL;
 }

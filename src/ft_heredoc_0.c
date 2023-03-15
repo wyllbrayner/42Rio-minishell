@@ -79,7 +79,11 @@ static void	ft_heredoc_build_list_aux0(t_minishell *sh, t_node *node)
 		ft_free_minishell_single_aux(sh->tmp1);
 		sh->tmp1 = NULL;
 		sh->tmp0 = readline("(42Rio) > ");
+		if (!sh->tmp0)
+			break ;
 	}
+	if (!sh->tmp0)
+		sh->ret = -3;
 	ft_free_minishell_single_aux(sh->tmp0);
 	sh->tmp0 = NULL;
 	if (sh->s_int != 1)

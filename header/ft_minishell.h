@@ -13,8 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-//# include <stdlib.h>
-
 # include "../libft/libft.h"
 # include "get_next_line.h"
 # include <stdio.h>
@@ -23,9 +21,11 @@
 # include <readline/history.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <stdbool.h>
 
 # define TRUE 1;
 # define FALSE 0;
+# define MSGERROR "(Minishell): syntax error near unexpected token `newline'\n"
 
 typedef struct doubly_node
 {
@@ -36,6 +36,11 @@ typedef struct doubly_node
     char                **redirect_file;
     int                 *redirect_file_fd;
     int                 redirect_file_fd_amount;
+    bool                command; //novo
+    int                 *infile; //novo
+    int                 *outfile;//novo
+    int                 *i;      //novo
+    int                 *status; //novo
 	struct doubly_node	*prev;
 	struct doubly_node	*next;
 }	t_node;
@@ -46,11 +51,12 @@ typedef struct  s_minishell
     int     running; //two
     int     s_int; //one
     int     errnbr; //two
+    int     bkp_fd_in; // two
+    int     bkp_fd_out;// two
 //    char    *cwd;
     char    **path; //two
     char    *line; //one
     char    **env; //two
-    char    **parse_str; //one ???
     char    *erro; //one
     t_node  *head; //one
     t_node  *head_tmp; //one
@@ -67,7 +73,8 @@ void    rl_replace_line (const char *text, int clear_undo);
 
 void    ft_sigint_handler(int sig);
 void    ft_isexec(t_minishell *sh, t_node *node);
-void    ft_valid_redirect_1(t_minishell *sh);
+void    ft_valid_redirect_1(t_minishell *sh); // ok
+
 
 void    ft_cmd_builder(t_minishell *sh);
 void    ft_cmd_builder_init_var(char *caract, char *str, long *var);
@@ -75,8 +82,9 @@ void    ft_cmd_builder_aux_0(t_minishell *sh, long *i, long *squote,
                                                                 long *dquote);
 void    ft_valid_lexcal_cmd(t_minishell *sh);
 void    ft_minishell_error(t_minishell *sh);
-void    valid_redirect(t_minishell *sh);
+void    ft_valid_redirect(t_minishell *sh);
 void    ft_redirect_builder(t_minishell *sh);
+void	ft_exec_token(t_minishell *sh);
 
 void    ft_heredoc_builder(t_minishell *sh, t_node *node);
 void    ft_interpreter(t_minishell *sh, t_node *node);
@@ -96,8 +104,7 @@ int     ft_valid_quote(long squote, long dquote);
 void    ft_expander_quote(t_minishell *sh, t_node *node);
 void    ft_expand_variable(t_minishell *sh, t_node *node);
 void    ft_expander_variable(t_minishell *sh, t_node *node);
-void    ft_variable_expansion(t_minishell *sh);
-void    ft_variable_expansion_aux(t_minishell *sh, t_node *no);
+void    ft_variable_expansion(t_minishell *sh); // ok
 
 void    ft_builtin_exit(t_minishell *sh, t_node *node);
 void    ft_builtin_env(t_minishell *sh, t_node *node);
@@ -120,7 +127,6 @@ void    ft_init_var_aux_two(t_minishell *sh);
 
 void	ft_start_command(t_minishell *sh, int *rato, t_node *node);
 void    ft_parse(t_minishell *sh);
-void    ft_select_way(t_minishell *sh, t_node *no);
 char	*ft_access_command(t_minishell *sh, t_node *node);
 
 void    ft_redirect_2(t_minishell *sh); // ver
