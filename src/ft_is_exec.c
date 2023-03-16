@@ -51,7 +51,7 @@ void	ft_isexec(t_minishell *sh, t_node *node)
 	}
 	if (access(node->path, X_OK | F_OK) == -1)
 	{
-		sh->ret = -7;
+		sh->ret = -4;
 		g_sig.errnbr = 127;
 		sh->erro = node->first_cmd;
 	}

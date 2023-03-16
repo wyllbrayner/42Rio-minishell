@@ -25,7 +25,7 @@ size_t	ft_strchr_i(const char *str, int c)
 	}
 	return (i);
 }
-
+/*
 size_t	ft_strrchr_i(const char *str, int c)
 {
 	long	len;
@@ -39,6 +39,7 @@ size_t	ft_strrchr_i(const char *str, int c)
 	}
 	return (-1);
 }
+*/
 
 int	ft_valid_quote(long squote, long dquote)
 {

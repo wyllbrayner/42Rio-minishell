@@ -61,6 +61,32 @@ char *first, int c)
 //printf("Dentro da quotes | Início\n");
 //printf("Dentro da quotes | Início - status: %s | c: %c\n", node->cmd[1], c);
 //	printf("Dentro da quotes | Fim\n");
+
+static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, int c)
+{
+	long	var[5];
+
+	if (node->cmd[1])
+	{
+		ft_valid_quotes_aux0(var);
+		while (node->cmd[1][var[0]])
+		{
+			ft_valid_quotes_aux1(node, c, var);
+			if (var[2] != var[1])
+			{
+				ft_valid_quotes_aux2(sh, node, var);
+				if (sh->ret < 0)
+					return ;
+			}
+			else
+			{
+				if (var[3] && (ft_strncmp(first_c, "cd ", 4) == 0))
+					sh->tmp1 = ft_strdup(".");
+			}
+		}
+	}
+}
+/*
 static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, int c)
 {
 	long	var[5];
@@ -82,6 +108,7 @@ static void	ft_valid_quotes(t_minishell *sh, t_node *node, char *first_c, int c)
 		}
 	}
 }
+*/
 
 /*
 	var[0] = 0; //i = 0;

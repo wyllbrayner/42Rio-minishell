@@ -19,8 +19,9 @@ t_signal	g_sig;
 //        ft_strlcat(sh.cwd, ":> ", ft_strlen(sh.cwd) + 4);
 //        sh.line = readline(sh.cwd);
 
-//void	ft_minishell(void);
-void	ft_minishell(t_minishell *sh);
+static void	ft_minishell(t_minishell *sh);
+static void	ft_handle_signal(void);
+static void	ft_sigint_handler(int sig);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -47,54 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-/*
-int	main(int argc, char **argv, char **envp)
-{
-	if (argc != 1)
-	{
-		sh.ret = -7;
-		sh.erro = argv[1];
-		ft_minishell_error(&sh);
-		sh.errnbr = 127;
-	}
-	else
-	{
-		ft_init_var(&sh, envp);
-		if (sh.ret < 0)
-		{
-			ft_minishell_error(&sh);
-			ft_free_minishell(&sh, 2);
-		}
-		else
-			ft_minishell();
-	}
-	return (0);
-}
-*/
-
-//        if (RL_ISSTATE(RL_STATE_READCMD))
-//            ioctl(STDIN_FILENO, TIOCSTI, "\n");
-void	ft_sigint_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		g_sig.s_int = FALSE;
-		g_sig.errnbr = 130;
-		ft_putstr_fd("\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
-void	ft_handle_signal(void)
-{
-	signal(SIGINT, &ft_sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-//void	ft_minishell(void)
-void	ft_minishell(t_minishell *sh)
+static void	ft_minishell(t_minishell *sh)
 {
 	while (sh->running && (sh->ret == 0))
 	{
@@ -118,4 +72,25 @@ void	ft_minishell(t_minishell *sh)
 	if (sh->ret < 0)
 		ft_minishell_error(sh);
 	ft_free_minishell(sh, 2);
+}
+
+static void	ft_handle_signal(void)
+{
+	signal(SIGINT, &ft_sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+//        if (RL_ISSTATE(RL_STATE_READCMD))
+//            ioctl(STDIN_FILENO, TIOCSTI, "\n");
+static void	ft_sigint_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_sig.s_int = FALSE;
+		g_sig.errnbr = 130;
+		ft_putstr_fd("\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }

@@ -17,9 +17,10 @@ extern t_signal	g_sig;
 static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node);
 static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str);
 
-//	printf("Dentro da ft_builtin_cd | Início\n");
 //	 printf("Dentro da ft_builtin_cd | getcwd retornou NULL (%s)\n", sh->tmp0);
-//	printf("Dentro da ft_builtin_cd | Fim\n");
+//	printf("Dentro da ft_builtin_cd | Início %s\n", node->token);
+//	printf("Dentro da ft_builtin_cd | pós dq %s\n", node->token);
+//	printf("Dentro da ft_builtin_cd | Fim %s\n", node->token);
 void	ft_builtin_cd(t_minishell *sh, t_node *node)
 {
 	ft_single_and_double_quotes(sh, node, "cd ");
