@@ -12,6 +12,7 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
 //    printf("Dentro da ft_isexec: token: %s ; first: %s ; ft_strchr: %s\n", 
 //node->token, node->first_cmd, ft_strchr("/", node->first_cmd[0]));
 //        printf("É um executável!!!\n");
@@ -51,7 +52,7 @@ void	ft_isexec(t_minishell *sh, t_node *node)
 	if (access(node->path, X_OK | F_OK) == -1)
 	{
 		sh->ret = -7;
-		sh->errnbr = 127;
+		g_sig.errnbr = 127;
 		sh->erro = node->first_cmd;
 	}
 }
@@ -61,7 +62,7 @@ static void	ft_isexec_aux0(t_minishell *sh, t_node *node)
 	if ((int)ft_strchr_i(node->token, '/') == -1)
 	{
 		sh->ret = -4;
-		sh->errnbr = 127;
+		g_sig.errnbr = 127;
 		sh->erro = node->first_cmd;
 		return ;
 	}
@@ -69,7 +70,7 @@ static void	ft_isexec_aux0(t_minishell *sh, t_node *node)
 	if (!node->path)
 	{
 		sh->ret = -4;
-		sh->errnbr = 127;
+		g_sig.errnbr = 127;
 		sh->erro = node->first_cmd;
 		return ;
 	}
@@ -81,7 +82,7 @@ static void	ft_isexec_aux1(t_minishell *sh, t_node *node)
 	if (!node->path)
 	{
 		sh->ret = -4;
-		sh->errnbr = 127;
+		g_sig.errnbr = 127;
 		sh->erro = node->first_cmd;
 		return ;
 	}
@@ -93,7 +94,7 @@ static void	ft_isexec_aux2(t_minishell *sh, t_node *node)
 	if (!node->path)
 	{
 		sh->ret = -4;
-		sh->errnbr = 127;
+		g_sig.errnbr = 127;
 		sh->erro = node->first_cmd;
 		return ;
 	}

@@ -12,7 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
-extern t_minishell	sh;
+extern t_signal	g_sig;
+//extern t_minishell	sh;
 
 //	printf("Dentro da ft_node_create | inicio cmd: #%s#\n", cmd);
 //	printf("Dentro da ft_node_create | fim\n");
@@ -44,7 +45,7 @@ static t_node	*ft_node_create_aux_0(char *cmd)
 	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
 	{
-		sh.errnbr = errno;
+		g_sig.errnbr = errno;
 		return (NULL);
 	}
 	node->token = ft_strdup(cmd);

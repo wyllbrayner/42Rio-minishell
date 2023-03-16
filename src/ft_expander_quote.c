@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 static void	ft_expander_dquote(t_minishell *sh, t_node *node);
 static void	ft_expander_squote(t_minishell *sh, t_node *node);
 static void	ft_expander_squote_aux_0(t_minishell *sh, t_node *node, long *var);
@@ -73,7 +75,7 @@ static void	ft_expander_dquote(t_minishell *sh, t_node *node)
 	sh->tmp1 = (char *)malloc(sizeof(char) * (ft_strlen(node->token) + 1));
 	if (!sh->tmp1)
 	{
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		sh->ret = -3;
 	}
 	else
@@ -99,7 +101,7 @@ static void	ft_expander_squote(t_minishell *sh, t_node *node)
 	sh->tmp1 = (char *)malloc(sizeof(char) * (ft_strlen(node->token) + 1));
 	if (!sh->tmp1)
 	{
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		sh->ret = -3;
 	}
 	else

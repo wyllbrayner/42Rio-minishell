@@ -12,7 +12,9 @@
 
 #include "../header/ft_minishell.h"
 
-static void		ft_variable_expansion_aux(t_minishell *sh, t_node *node);
+extern t_signal	g_sig;
+
+static void	ft_variable_expansion_aux(t_minishell *sh, t_node *node);
 static void	ft_variable_expansion_aux_1(t_minishell *sh, t_node *n, long *var);
 static void	ft_variable_expansion_aux_2(t_minishell *sh, long *var, long *len);
 
@@ -100,7 +102,7 @@ static void	ft_variable_expansion_aux_2(t_minishell *sh, long *var, long *len)
 	sh->tmp1 = (char *)malloc(sizeof(char) * *len);
 	if (!sh->tmp1)
 	{
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		sh->ret = -3;
 	}
 }

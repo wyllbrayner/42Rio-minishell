@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 static void	ft_init_var_aux_env(t_minishell *sh, char **envp, long i);
 
 void	ft_init_var(t_minishell *sh, char **envp)
@@ -28,7 +30,7 @@ void	ft_init_var(t_minishell *sh, char **envp)
 		sh->env = (char **)malloc(sizeof(char *) * (++i));
 		if (!sh->env)
 		{
-			sh->errnbr = errno;
+			g_sig.errnbr = errno;
 			sh->ret = -3;
 		}
 		else
@@ -53,7 +55,7 @@ void	ft_init_var_aux_one(t_minishell *sh)
 	sh->tmp3 = NULL;
 	sh->tmp4 = NULL;
 	sh->tmp5 = NULL;
-	sh->s_int = TRUE;
+	g_sig.s_int = TRUE;
 }
 
 //    printf("Dentro da init_var_aux_two \n");
@@ -64,7 +66,7 @@ void	ft_init_var_aux_two(t_minishell *sh)
 	sh->running = TRUE;
 	sh->env = NULL;
 	sh->path = NULL;
-	sh->errnbr = 0;
+	g_sig.errnbr = 0;
 	sh->bkp_fd_in = 0;
 	sh->bkp_fd_out = 0;
 }
@@ -79,7 +81,7 @@ static	void	ft_init_var_aux_env(t_minishell *sh, char **envp, long i)
 		sh->env[i] = ft_strdup(envp[i]);
 		if (!sh->env[i])
 		{
-			sh->errnbr = errno;
+			g_sig.errnbr = errno;
 			sh->ret = -3;
 			return ;
 		}

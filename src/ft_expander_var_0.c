@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 //    printf("Dentro da ft_interpreter - Início erronbr: %i\n", sh->errnbr);
 //    printf("Dentro da ft_interpreter - Fim\n");
 void		ft_expander_variable(t_minishell *sh, t_node *node);
@@ -57,7 +59,7 @@ static void	ft_expand_variable_cd(t_minishell *sh, t_node *node)
 		sh->tmp1 = ft_strdup("cd $HOME");
 		if (!sh->tmp1)
 		{
-			sh->errnbr = errno;
+			g_sig.errnbr = errno;
 			sh->ret = -3;
 			return ;
 		}

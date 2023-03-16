@@ -12,17 +12,19 @@
 
 #include "../../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 void	ft_builtin_pwd(t_minishell *sh)
 {
 	sh->tmp1 = getcwd(NULL, 0);
 	if (!sh->tmp1)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	ft_putendl_fd(sh->tmp1, STDOUT_FILENO);
 	ft_free_minishell_single_aux(sh->tmp1);
 	sh->tmp1 = NULL;
-	sh->errnbr = 0;
+	g_sig.errnbr = 0;
 }

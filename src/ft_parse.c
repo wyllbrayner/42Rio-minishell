@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 static void	ft_valid_empty_cmd(t_minishell *sh);
 static void	ft_valid_amount_of_quotes(t_minishell *sh);
 static void	ft_heredoc(t_minishell *sh);
@@ -53,7 +55,7 @@ static void	ft_valid_empty_cmd(t_minishell *sh)
 	sh->tmp0 = ft_strtrim(sh->line, " ");
 	if (!sh->tmp0)
 	{
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		sh->ret = -3;
 		return ;
 	}

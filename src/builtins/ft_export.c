@@ -26,6 +26,8 @@
 //%s\n", sh->tmp1, i, sh->env[i]);
 //                printf("Total de variáveis de ambiente: %ld\n", i);
 
+extern t_signal	g_sig;
+
 static void	ft_builtin_export_aux0(t_minishell *sh, t_node *node, long *var);
 static void	ft_builtin_export_aux1(t_minishell *sh, t_node *node, long *var);
 static void	ft_builtin_export_aux2(t_minishell *sh, t_node *node, long *var);
@@ -49,7 +51,7 @@ void	ft_builtin_export(t_minishell *sh, t_node *node)
 		while (sh->env[var[0]])
 			printf("declare -x %s\n", sh->env[var[0]++]);
 	}
-	sh->errnbr = 0;
+	g_sig.errnbr = 0;
 }
 
 static void	ft_builtin_export_aux0(t_minishell *sh, t_node *node, long *var)
@@ -102,7 +104,7 @@ static void	ft_builtin_export_aux3(t_minishell *sh, t_node *node, long *var)
 	sh->tmp3 = (char **)malloc(sizeof(char *) * (++var[0]));
 	if (!sh->tmp3)
 	{
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		ft_free_minishell_single_aux(sh->tmp1);
 		sh->ret = -3;
 		return ;

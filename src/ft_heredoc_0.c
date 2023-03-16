@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 //    printf("ft_heredoc_build_list - Inicio\n");
 //    printf("ft_heredoc_build_list - Fim\n");
 static void	ft_heredoc_build_list(t_minishell *sh, t_node *node);
@@ -64,7 +66,7 @@ static void	ft_heredoc_build_list(t_minishell *sh, t_node *node)
 static void	ft_heredoc_build_list_aux0(t_minishell *sh, t_node *node)
 {
 	while ((ft_strncmp(sh->tmp0, node->token, \
-	(ft_strlen(node->token) + 1)) != 0) && sh->s_int == 1)
+	(ft_strlen(node->token) + 1)) != 0) && g_sig.s_int == 1)
 	{
 		sh->tmp1 = ft_strjoin(" ", sh->tmp0);
 		ft_free_minishell_single_aux(sh->tmp0);
@@ -72,7 +74,7 @@ static void	ft_heredoc_build_list_aux0(t_minishell *sh, t_node *node)
 		if (!sh->tmp1)
 		{
 			sh->ret = -3;
-			sh->errnbr = errno;
+			g_sig.errnbr = errno;
 			return ;
 		}
 		ft_list_add_last(&sh->head_tmp, ft_node_create(sh->tmp1));
@@ -86,7 +88,7 @@ static void	ft_heredoc_build_list_aux0(t_minishell *sh, t_node *node)
 		sh->ret = -3;
 	ft_free_minishell_single_aux(sh->tmp0);
 	sh->tmp0 = NULL;
-	if (sh->s_int != 1)
+	if (g_sig.s_int != 1)
 		sh->ret = -3;
 }
 //    printf("ft_heredoc_expand_var - Início\n");
@@ -124,7 +126,7 @@ static void	ft_heredoc_expand_var_aux0(t_minishell *sh, t_node *node)
 		if (!sh->tmp2)
 		{
 			sh->ret = -3;
-			sh->errnbr = errno;
+			g_sig.errnbr = errno;
 			return ;
 		}
 		sh->tmp1 = sh->tmp2;

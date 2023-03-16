@@ -45,12 +45,18 @@ typedef struct doubly_node
 	struct doubly_node	*next;
 }	t_node;
 
+typedef struct s_signal
+{
+    int     s_int; //one
+    int     errnbr; //two
+} t_signal;
+
 typedef struct  s_minishell
 {
     int     ret; //one
     int     running; //two
-    int     s_int; //one
-    int     errnbr; //two
+//    int     s_int; //one aqui
+//    int     errnbr; //two aqui
     int     bkp_fd_in; // two
     int     bkp_fd_out;// two
 //    char    *cwd;
@@ -110,7 +116,7 @@ void    ft_builtin_exit(t_minishell *sh, t_node *node);
 void    ft_builtin_env(t_minishell *sh, t_node *node);
 void	ft_builtin_cd(t_minishell *cmd, t_node *node);
 void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node);
-void    ft_builtin_echo(t_minishell *sh, t_node *node);
+void    ft_builtin_echo(t_node *node);
 int     filter_space(char *str);
 void    ft_builtin_pwd(t_minishell *sh);
 void    ft_builtin_export(t_minishell *sh, t_node *node);

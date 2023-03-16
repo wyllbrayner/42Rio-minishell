@@ -12,6 +12,8 @@
 
 #include "../../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 //    printf("Dentro de ft_builtin_env Início cmd[0]: %s | cmd[1]: %s \n", 
 //	node->cmd[0], node->cmd[1]);
 //        while (sh->env[j] && sh->s_int)
@@ -26,7 +28,7 @@ void	ft_builtin_env(t_minishell *sh, t_node *node)
 	{
 		sh->ret = -7;
 		sh->erro = node->cmd[1];
-		sh->errnbr = 127;
+		g_sig.errnbr = 127;
 	}
 	else
 	{
@@ -36,7 +38,7 @@ void	ft_builtin_env(t_minishell *sh, t_node *node)
 			printf("%s\n", sh->env[j]);
 			j++;
 		}
-		if (sh->s_int == 1)
-			sh->errnbr = 0;
+		if (g_sig.s_int == 1)
+			g_sig.errnbr = 0;
 	}
 }

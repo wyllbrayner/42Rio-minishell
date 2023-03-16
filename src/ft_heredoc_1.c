@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 //    printf("ft_heredoc_fd - Início\n");
 //   printf("Não foi possível abrir o arquivo: %i\n", *node->redirect_file_fd);
 //    printf("fd 1º open: %i\n", *node->redirect_file_fd);
@@ -53,7 +55,7 @@ void	ft_heredoc_fd(t_minishell *sh, t_node *n)
 	{
 		sh->ret = -7;
 		sh->erro = n->redirect_file[0];
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	else
@@ -66,7 +68,7 @@ static void	ft_heredoc_fd_aux0(t_minishell *sh, t_node *node)
 	if (!sh->tmp0)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	node->redirect_file = ft_split(sh->tmp0, ' ');
@@ -75,14 +77,14 @@ static void	ft_heredoc_fd_aux0(t_minishell *sh, t_node *node)
 	if (!node->redirect_file)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	node->redirect_file_fd = (int *)malloc(sizeof(int) * 1);
 	if (!node->redirect_file_fd)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 }
@@ -96,7 +98,7 @@ static void	ft_heredoc_fd_aux1(t_minishell *sh, t_node *n)
 	{
 		sh->ret = -7;
 		sh->erro = n->redirect_file[0];
-		sh->errnbr = 1;
+		g_sig.errnbr = 1;
 		return ;
 	}
 	tmp = sh->head_tmp;

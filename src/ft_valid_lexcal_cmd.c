@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 static int	ft_valid_lexcal_cmd_aux_0(t_minishell *sh, t_node *tmp);
 static int	ft_valid_lexcal_cmd_aux_1(t_minishell *sh, t_node *tmp);
 
@@ -28,9 +30,9 @@ void	ft_valid_lexcal_cmd(t_minishell *sh)
 	sh->ret = -6;
 	sh->erro = "|";
 	tmp_ret = 0;
-	if (sh->errnbr != 0)
-		tmp_ret = sh->errnbr;
-	sh->errnbr = 258;
+	if (g_sig.errnbr != 0)
+		tmp_ret = g_sig.errnbr;
+	g_sig.errnbr = 258;
 	while (tmp)
 	{
 		if (ft_valid_lexcal_cmd_aux_0(sh, tmp))
@@ -41,7 +43,7 @@ void	ft_valid_lexcal_cmd(t_minishell *sh)
 	}
 	sh->ret = 0;
 	sh->erro = NULL;
-	sh->errnbr = tmp_ret;
+	g_sig.errnbr = tmp_ret;
 }
 
 static int	ft_valid_lexcal_cmd_aux_0(t_minishell *sh, t_node *tmp)

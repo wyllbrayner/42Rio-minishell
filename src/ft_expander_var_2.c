@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 //    printf("Dentro da ft_interpreter - Início erronbr: %i\n", sh->errnbr);
 //    printf("Dentro da ft_interpreter - Fim\n");
 
@@ -99,7 +101,7 @@ static void	ft_expand_variable_0_aux_00(t_minishell *sh, t_node *node, \
 		ft_free_minishell_single_aux(sh->tmp5);
 		sh->tmp5 = NULL;
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	sh->tmp1 = ft_strjoin(sh->tmp5, sh->tmp0);
@@ -109,7 +111,7 @@ static void	ft_expand_variable_0_aux_00(t_minishell *sh, t_node *node, \
 	sh->tmp5 = NULL;
 	if (!sh->tmp1)
 	{
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		sh->ret = -3;
 		return ;
 	}
@@ -125,7 +127,7 @@ static void	ft_expand_variable_0_aux_01(t_minishell *sh, t_node *node, \
 		sh->tmp0 = ft_substr(node->token, var[0], var[5]);
 		if (!sh->tmp0)
 		{
-			sh->errnbr = errno;
+			g_sig.errnbr = errno;
 			sh->ret = -3;
 			return ;
 		}
@@ -179,7 +181,7 @@ static void	ft_expand_variable_0_aux_03(t_minishell *sh)
 		ft_free_minishell_single_aux(sh->tmp0);
 		sh->tmp0 = NULL;
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	sh->tmp1 = ft_strjoin(sh->tmp5, "=");
@@ -190,7 +192,7 @@ static void	ft_expand_variable_0_aux_03(t_minishell *sh)
 		ft_free_minishell_single_aux(sh->tmp0);
 		sh->tmp0 = NULL;
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 }

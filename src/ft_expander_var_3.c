@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 void	ft_expand_variable_0_aux_04(t_minishell *sh, long *var)
 {
 	var[1] = ft_strlen(sh->tmp1);
@@ -27,7 +29,7 @@ void	ft_expand_variable_0_aux_04(t_minishell *sh, long *var)
 	else
 	{
 		if (ft_strncmp(sh->tmp1, "?=", 3) == 0)
-			sh->tmp5 = ft_itoa(sh->errnbr);
+			sh->tmp5 = ft_itoa(g_sig.errnbr);
 		else
 			sh->tmp5 = ft_strdup("");
 	}
@@ -42,7 +44,7 @@ void	ft_expand_variable_0_aux_05(t_minishell *sh)
 		ft_free_minishell_single_aux(sh->tmp0);
 		sh->tmp0 = NULL;
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	sh->tmp1 = ft_strjoin(sh->tmp0, sh->tmp5);
@@ -53,7 +55,7 @@ void	ft_expand_variable_0_aux_05(t_minishell *sh)
 	if (!sh->tmp1)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 	}
 	sh->tmp5 = sh->tmp1;
 	sh->tmp1 = NULL;

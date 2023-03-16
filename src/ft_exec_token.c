@@ -67,7 +67,7 @@ static void	ft_select_way(t_minishell *sh, t_node *node)
 	if (sh && node)
 	{
 		if (ft_strncmp(node->first_cmd, "echo", 5) == 0)
-			ft_builtin_echo(sh, node);
+			ft_builtin_echo(node);
 		else if (ft_strncmp(node->first_cmd, "cd", 3) == 0)
 			ft_builtin_cd(sh, node);
 		else if (ft_strncmp(node->first_cmd, "pwd", 4) == 0)

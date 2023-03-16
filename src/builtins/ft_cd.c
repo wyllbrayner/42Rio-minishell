@@ -12,6 +12,8 @@
 
 #include "../../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node);
 static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str);
 
@@ -25,7 +27,7 @@ void	ft_builtin_cd(t_minishell *sh, t_node *node)
 	if (!sh->tmp0)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	else
@@ -45,7 +47,7 @@ static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node)
 	{
 		sh->ret = -7;
 		sh->erro = node->cmd[1];
-		sh->errnbr = 1;
+		g_sig.errnbr = 1;
 		ft_free_minishell_single_aux(sh->tmp0);
 		sh->tmp0 = NULL;
 	}
@@ -58,13 +60,13 @@ static void	ft_builtin_cd_aux_1(t_minishell *sh, t_node *node)
 		if (!sh->tmp0)
 		{
 			sh->ret = -3;
-			sh->errnbr = errno;
+			g_sig.errnbr = errno;
 			return ;
 		}
 		ft_builtin_cd_aux_3(sh, "export PWD=");
 		if (sh->ret < 0)
 			return ;
-		sh->errnbr = 0;
+		g_sig.errnbr = 0;
 	}
 }
 
@@ -82,7 +84,7 @@ void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node)
 	if (!node->cmd)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	ft_free_minishell_single_aux(node->first_cmd);
@@ -91,7 +93,7 @@ void	ft_builtin_cd_aux_2(t_minishell *sh, t_node *node)
 	if (!node->first_cmd)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 }
@@ -102,7 +104,7 @@ static void	ft_builtin_cd_aux_3(t_minishell *sh, char *str)
 	if (!sh->tmp1)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		ft_free_minishell_single_aux(sh->tmp0);
 		sh->tmp0 = NULL;
 		return ;

@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 // exit | echo -n "''cat |o|.c '|' cat > |o|.c e test de envio''"
 // ls -la Makefile libminishell.a | exit
 
@@ -60,7 +62,7 @@ static void	ft_cmd_builder_aux_1(t_minishell *sh, char *cmd)
 	if (!cmd)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	sh->tmp0 = ft_strtrim(cmd, " ");

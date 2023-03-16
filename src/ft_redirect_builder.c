@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 void	ft_redirect_builder_aux_0(t_minishell *sh, t_node *node);
 void	ft_redirect_builder_aux_1(t_minishell *sh, t_node *node, int type);
 void	ft_redirect_builder_aux_1_0(int j, t_minishell *sh, t_node *node, \
@@ -61,7 +63,7 @@ void	ft_redirect_builder_aux_0(t_minishell *sh, t_node *node)
 	if (!node->redirect_file)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	while (node->redirect_file[node->redirect_file_fd_amount])
@@ -71,7 +73,7 @@ void	ft_redirect_builder_aux_0(t_minishell *sh, t_node *node)
 	if (!node->redirect_file_fd)
 	{
 		sh->ret = -3;
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		return ;
 	}
 	if (ft_strncmp(node->prev->token, ">", 2) == 0)
@@ -104,7 +106,7 @@ void	ft_redirect_builder_aux_1(t_minishell *sh, t_node *node, int type)
 		{
 			sh->ret = -7;
 			sh->erro = node->redirect_file[j];
-			sh->errnbr = 1;
+			g_sig.errnbr = 1;
 			return ;
 		}
 		ft_redirect_builder_aux_1_0(j, sh, node, type);
@@ -136,6 +138,6 @@ void	ft_redirect_builder_aux_1_0(int j, t_minishell *sh, t_node *node, \
 		else
 			sh->ret = -7;
 		sh->erro = node->redirect_file[j];
-		sh->errnbr = 1;
+		g_sig.errnbr = 1;
 	}
 }

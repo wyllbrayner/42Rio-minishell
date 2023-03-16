@@ -12,6 +12,8 @@
 
 #include "../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 //    printf("Dentro da valid_redirect 0 -> Início\n");
 //  var[0] = 0;         //    i = 0;
 //  var[1] = 0;         //    start = 0;
@@ -78,13 +80,13 @@ static void	ft_valid_redirect_0_aux_1(t_minishell *sh, long *var)
 	{
 		sh->ret = -6;
 		sh->erro = ">>>";
-		sh->errnbr = 258;
+		g_sig.errnbr = 258;
 	}
 	else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
 	{
 		sh->ret = -6;
 		sh->erro = "<<<";
-		sh->errnbr = 258;
+		g_sig.errnbr = 258;
 	}
 }
 
@@ -96,13 +98,13 @@ static void	ft_valid_redirect_0_aux_2(t_minishell *sh, long *var)
 		{
 			sh->ret = -6;
 			sh->erro = ">>>";
-			sh->errnbr = 258;
+			g_sig.errnbr = 258;
 		}
 		else if (ft_strncmp(&sh->line[var[0]], "<<<", 3) == 0)
 		{
 			sh->ret = -6;
 			sh->erro = "<<<";
-			sh->errnbr = 258;
+			g_sig.errnbr = 258;
 		}
 	}
 }

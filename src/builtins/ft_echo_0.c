@@ -19,6 +19,9 @@
 //				printf("Dentro da filter_echo | 2º loop | 2º if token: 
 //%s | i: %d\n", str, i);
 //	printf("Dentro da filter_echo - Fim\n");
+
+extern t_signal	g_sig;
+
 static int	ft_builtin_echo_intern(char *echo);
 static void	ft_builtin_echo_intern_aux_0(char *echo);
 static int	filter_echo(char *str);
@@ -26,7 +29,7 @@ static void	print_echo(char *str, int n);
 
 //	printf("Dentro da ft_builtin_echo - errnbr: %i Inicio\n", sh->errnbr);
 //	printf("Dentro da ft_builtin_echo - errnbr: %i Fim\n", sh->errnbr);
-void	ft_builtin_echo(t_minishell *sh, t_node *node)
+void	ft_builtin_echo(t_node *node)
 {
 	long	i;
 	long	ret_echo;
@@ -37,7 +40,7 @@ void	ft_builtin_echo(t_minishell *sh, t_node *node)
 		i++;
 	ret_echo = ft_builtin_echo_intern(&node->token[i]);
 	if (ret_echo)
-		sh->errnbr = 0;
+		g_sig.errnbr = 0;
 }
 
 //	printf("Dentro da ft_builtin_echo_intern - Inicio\n");

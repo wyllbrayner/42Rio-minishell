@@ -12,6 +12,8 @@
 
 #include "../../header/ft_minishell.h"
 
+extern t_signal	g_sig;
+
 static void	ft_unset_aux_2(t_minishell *sh, long i);
 static void	ft_unset_aux_3(t_minishell *sh, long i);
 
@@ -40,7 +42,7 @@ void	ft_builtin_unset(t_minishell *sh, t_node *node)
 		ft_free_minishell_single_aux(sh->tmp1);
 		sh->tmp1 = NULL;
 	}
-	sh->errnbr = 0;
+	g_sig.errnbr = 0;
 }
 
 void	ft_unset_aux_1(t_minishell *sh, long *var)
@@ -67,7 +69,7 @@ static void	ft_unset_aux_2(t_minishell *sh, long i)
 	sh->tmp3 = (char **)malloc(sizeof(char *) * len);
 	if (!sh->tmp3)
 	{
-		sh->errnbr = errno;
+		g_sig.errnbr = errno;
 		ft_free_minishell_single_aux(sh->tmp1);
 		sh->tmp1 = NULL;
 		sh->ret = -3;
