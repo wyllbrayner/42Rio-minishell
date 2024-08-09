@@ -15,7 +15,7 @@
 extern t_signal	g_sig;
 
 void	ft_init_path(t_minishell *sh)
-{	
+{
 	long	i;
 
 	i = 0;

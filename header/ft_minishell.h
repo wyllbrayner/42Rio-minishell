@@ -28,9 +28,8 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <termios.h>
-
-# define TRUE 1;
-# define FALSE 0;
+# define TRUE 1
+# define FALSE 0
 # define MSGERROR "(Minishell): syntax error near unexpected token `newline'\n"
 
 typedef struct doubly_node

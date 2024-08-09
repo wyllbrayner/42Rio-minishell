@@ -25,4 +25,4 @@ char	*ft_strdup(const char *str)
 		return (NULL);
 	ptret[len] = '\0';
 	return (ptret);
-}	
+}

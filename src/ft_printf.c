@@ -24,7 +24,7 @@ int	ft_printf(const char *frase, ...)
 	ret = 0;
 	va_start(ap, frase);
 	while (frase[i])
-	{	
+	{
 		if (frase[i] == '%' && (!ft_strchr("cspdiuxX%", frase[i + 1]) || \
 		!frase[i + 1]))
 			i++;

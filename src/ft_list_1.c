@@ -59,7 +59,7 @@ void	ft_print_rev_list(const t_node *node)
 		{
 			printf("token: %s -> ", p->token);
 			p = p->prev;
-		}	
+		}
 		printf("HEAD\n");
 	}
 }
