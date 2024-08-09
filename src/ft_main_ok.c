@@ -45,9 +45,9 @@ int	main(int argc, char **argv, char **envp)
 
 static void	ft_minishell(t_minishell *sh)
 {
+	ft_handle_signal();
 	while (sh->running && (sh->ret == 0))
 	{
-		ft_handle_signal();
 		sh->line = readline("(Minishell - 42Rio): ");
 		if (!sh->line)
 		{
