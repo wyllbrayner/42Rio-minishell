@@ -1,60 +1,53 @@
-LB          = lib$(NAME).a
 LOCLIBFT    = ./libft
-LOCLHEADER  = ./header
-SRCDIR      = ./src
-OBJDIR      = ./obj
+SRCDIR      = ./src/
 SRCS        = ft_bin.c ft_cmd_builder_0.c ft_cmd_builder_1_ok.c ft_error_ok.c ft_exec_token.c ft_execute.c ft_expander_quote.c ft_expander_var_0.c \
 			  ft_expander_var_1.c ft_expander_var_2.c ft_expander_var_3.c ft_free_ok.c ft_heredoc_0_ok.c ft_heredoc_1_ok.c ft_init_var_ok.c ft_is_exec.c ft_list_0.c \
 			  ft_list_1.c ft_main_ok.c ft_parse.c ft_parse_redirect.c ft_pipe_j.c ft_redirect_builder.c ft_redirect_j.c ft_utils_ok.c ft_valid_lexcal_cmd.c ft_valid_quotes_0.c \
 			  ft_valid_quotes_1.c ft_valid_redirect_0_ok.c ft_valid_redirect_1_ok.c ft_var_expansion.c ft_cd.c ft_echo_0.c ft_env.c ft_exit.c ft_export.c ft_pwd.c \
 			  ft_unset.c ft_printf.c ft_printf_utils.c ft_puthex.c ft_utoa.c
-SRCS        := $(addprefix $(SRCDIR)/,$(SRCS))
-OBJS        = $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.c=.o)))
+SRCS        := $(addprefix $(SRCDIR), $(SRCS))
+OBJDIR      = ./obj/
+OBJS        = $(addprefix $(OBJDIR), $(notdir $(SRCS:.c=.o)))
 NAME        = minishell
 UTIL        = ar
 OPT         = rc
 SUMM        = ranlib
-RM          = rm -f
+RM          = rm -rf
 FLAG        = -Wall -Wextra -Werror
 COMP        = cc
 IN          = -I ./includes/
 
 detected_OS := $(shell uname)
 ifeq ($(detected_OS),Linux)
-LDFLAGS = -L /usr/local/opt/readline/lib
-CPPFLAGS = -I /usr/local/opt/readline/include
+	LDFLAGS = -L /usr/local/opt/readline/lib
+	CPPFLAGS = -I /usr/local/opt/readline/include
 else
-CPPFLAGS += -I ~/.brew/opt/readline/include
-LDFLAGS += -L ~/.brew/opt/readline/lib
+	CPPFLAGS += -I ~/.brew/opt/readline/include
+	LDFLAGS += -L ~/.brew/opt/readline/lib
 endif
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)
-	$(COMP) $(FLAG) $(IN) -c $< -o $@
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LOCLIBFT)/libft.a $(LOCLHEADER)/ft_$(NAME).h
-	$(COMP) $(FLAG) -o $(NAME) $(OBJS) -L$(LOCLIBFT) -lft -lreadline $(CPPFLAGS) $(LDFLAGS)
-
-$(OBJS): | $(OBJDIR)
-
-$(OBJDIR):
+$(OBJDIR)%.o: $(SRCDIR)%.c
 	@mkdir -p $(OBJDIR)
-
-$(LOCLIBFT)/libft.a:
-	make -C $(LOCLIBFT)
+	$(COMP) $(FLAG) $(IN) -c $< -o $@
 
 .c.o:
 	$(COMP) $(FLAG) -I ~/.brew/opt/readline/include/ -c $< -o $(<:.c=.o)
 
+$(NAME): $(LOCLIBFT)/libft.a $(OBJS)
+	$(COMP) $(FLAG) -o $(NAME) $(OBJS) -L$(LOCLIBFT) -lft -lreadline $(CPPFLAGS) $(LDFLAGS)
+
+$(LOCLIBFT)/libft.a:
+	make -C $(LOCLIBFT)
+
 clean:
 	make clean -C $(LOCLIBFT)
-	$(RM) -r $(OBJDIR)
+	@$(RM) $(OBJDIR)
 
 fclean: clean
 	make fclean -C $(LOCLIBFT)
-	$(RM) $(NAME) $(LB)
+	@$(RM) $(NAME)
 
 re: fclean all
 
