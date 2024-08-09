@@ -10,15 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/libftprintf.h"
+#include "../header/ft_minishell.h"
 
 static int	ft_printf_arg(const char *frase, va_list ap);
+static int	ft_pointer(void *ptr);
 
 int	ft_printf(const char *frase, ...)
 {
-	va_list	ap;
-	int		i;
-	int		ret;
+	va_list			ap;
+	int				ret;
+	unsigned int	i;
 
 	i = 0;
 	ret = 0;
@@ -34,10 +35,7 @@ int	ft_printf(const char *frase, ...)
 			i += 2;
 		}
 		else
-		{
-			ret += ft_putchar(frase[i]);
-			i++;
-		}
+			ret += ft_putchar(frase[i++]);
 	}
 	va_end(ap);
 	return (ret);
@@ -60,8 +58,18 @@ static int	ft_printf_arg(const char *frase, va_list ap)
 	else if (*frase == 'x')
 		return (ft_puthex(va_arg(ap, unsigned int), "0123456789abcdef", 16));
 	else if (*frase == 'p')
-		return (ft_putstr("0x") + ft_putpointer(va_arg(ap, void *), \
-		"0123456789abcdef", 16));
+		return (ft_pointer(va_arg(ap, void *)));
 	else
 		return (0);
+}
+
+static int	ft_pointer(void *ptr)
+{
+	if (ptr)
+	{
+		return (ft_putstr("0x") + ft_putpointer(ptr, \
+		"0123456789abcdef", 16));
+	}
+	else
+		return (ft_putstr(STRNULL));
 }

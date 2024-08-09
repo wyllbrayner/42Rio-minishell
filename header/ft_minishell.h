@@ -13,7 +13,6 @@
 #ifndef FT_MINISHELL_H
 # define FT_MINISHELL_H
 
-# include "../libft/libft.h"
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -27,6 +26,8 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <termios.h>
+# include "./libftprintf.h"
+
 # define TRUE 1
 # define FALSE 0
 # define MSGERROR "(Minishell): syntax error near unexpected token `newline'\n"
