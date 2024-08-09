@@ -35,7 +35,7 @@ void	ft_builtin_export(t_minishell *sh, t_node *node)
 	{
 		var[0] = 0;
 		while (sh->env[var[0]])
-			printf("declare -x %s\n", sh->env[var[0]++]);
+			ft_printf("declare -x %s\n", sh->env[var[0]++]);
 	}
 	g_sig.errnbr = 0;
 }

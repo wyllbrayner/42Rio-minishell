@@ -29,7 +29,7 @@ void	ft_builtin_env(t_minishell *sh, t_node *node)
 		j = 0;
 		while (sh->env[j])
 		{
-			printf("%s\n", sh->env[j]);
+			ft_printf("%s\n", sh->env[j]);
 			j++;
 		}
 		if (g_sig.s_int == 1)

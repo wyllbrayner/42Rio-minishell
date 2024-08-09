@@ -35,13 +35,13 @@ void	ft_print_list(const t_node *node)
 	p = (t_node *)node;
 	if (p)
 	{
-		printf("HEAD -> ");
+		ft_printf("HEAD -> ");
 		while (p)
 		{
-			printf("token: %s -> ", p->token);
+			ft_printf("token: %s -> ", p->token);
 			p = p->next;
 		}
-		printf("NULL\n");
+		ft_printf("NULL\n");
 	}
 }
 
@@ -54,12 +54,12 @@ void	ft_print_rev_list(const t_node *node)
 	{
 		while (p->next)
 			p = p->next;
-		printf("NULL -> ");
+		ft_printf("NULL -> ");
 		while (p)
 		{
-			printf("token: %s -> ", p->token);
+			ft_printf("token: %s -> ", p->token);
 			p = p->prev;
 		}
-		printf("HEAD\n");
+		ft_printf("HEAD\n");
 	}
 }
