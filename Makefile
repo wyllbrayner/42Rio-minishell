@@ -9,13 +9,13 @@ SRCS        := $(addprefix $(SRCDIR), $(SRCS))
 OBJDIR      = ./obj/
 OBJS        = $(addprefix $(OBJDIR), $(notdir $(SRCS:.c=.o)))
 NAME        = minishell
-UTIL        = ar
-OPT         = rc
-SUMM        = ranlib
 RM          = rm -rf
 FLAG        = -Wall -Wextra -Werror
 COMP        = cc
 IN          = -I ./includes/
+YELLOW		= \033[33m
+GREEN		= \033[32m
+RESET		= \033[0m
 
 detected_OS := $(shell uname)
 ifeq ($(detected_OS),Linux)
@@ -30,13 +30,15 @@ all: $(NAME)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c
 	@mkdir -p $(OBJDIR)
-	$(COMP) $(FLAG) $(IN) -c $< -o $@
+	@$(COMP) $(FLAG) $(IN) -c $< -o $@
+	@echo -n "#"
 
 .c.o:
 	$(COMP) $(FLAG) -I ~/.brew/opt/readline/include/ -c $< -o $(<:.c=.o)
 
 $(NAME): $(LOCLIBFT)/libft.a $(OBJS)
-	$(COMP) $(FLAG) -o $(NAME) $(OBJS) -L$(LOCLIBFT) -lft -lreadline $(CPPFLAGS) $(LDFLAGS)
+	@$(COMP) $(FLAG) -o $(NAME) $(OBJS) -L$(LOCLIBFT) -lft -lreadline $(CPPFLAGS) $(LDFLAGS)
+	@echo "\n\$(GREEN) 💯 | $(NAME) created.$(RESET)"
 
 $(LOCLIBFT)/libft.a:
 	make -C $(LOCLIBFT)
@@ -44,10 +46,12 @@ $(LOCLIBFT)/libft.a:
 clean:
 	make clean -C $(LOCLIBFT)
 	@$(RM) $(OBJDIR)
+	@echo "$(YELLOW) 🧹 | $(NAME) cleaned.$(RESET)"
 
 fclean: clean
 	make fclean -C $(LOCLIBFT)
 	@$(RM) $(NAME)
+	@echo "$(YELLOW) 🌪️ | $(NAME) all cleaned.$(RESET)"
 
 re: fclean all
 
