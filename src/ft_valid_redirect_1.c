@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_list_1.c                                        :+:      :+:    :+:   */
+/*   ft_valid_redirect_1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,54 +12,44 @@
 
 #include "../header/ft_minishell.h"
 
-void	ft_list_add_last(t_node **head, t_node *node)
-{
-	t_node	*head_int;
+extern t_signal	g_sig;
 
-	if (!*head && node)
-		*head = node;
+static int	ft_valid_redirect_1_aux_0(t_minishell *sh, long *var);
+
+void	ft_valid_redirect_1(t_minishell *sh)
+{
+	long	var[5];
+
+	ft_cmd_builder_init_var(sh->caract, "><", var);
+	while (sh->line[var[0]])
+	{
+		if (ft_valid_redirect_1_aux_0(sh, var))
+			break ;
+	}
+}
+
+static int	ft_valid_redirect_1_aux_0(t_minishell *sh, long *var)
+{
+	ft_cmd_builder_aux_0(sh, &var[0], &var[3], &var[2]);
+	if (sh->line[var[0]])
+		var[0]++;
 	else
+		return (1);
+	while (sh->line[var[0]])
 	{
-		head_int = *head;
-		while (head_int->next)
-			head_int = head_int->next;
-		head_int->next = node;
-		node->prev = head_int;
+		if (ft_isspace(sh->line[var[0]]))
+			var[0]++;
+		else
+			return (1);
 	}
-}
-
-void	ft_print_list(const t_node *node)
-{
-	t_node	*p;
-
-	p = (t_node *)node;
-	if (p)
+	if (sh->line[var[0]] == '|')
 	{
-		ft_printf("HEAD -> ");
-		while (p)
-		{
-			ft_printf("token: %s -> ", p->token);
-			p = p->next;
-		}
-		ft_printf("NULL\n");
+		sh->ret = -6;
+		sh->erro = "|";
+		g_sig.errnbr = 258;
+		return (1);
 	}
-}
-
-void	ft_print_rev_list(const t_node *node)
-{
-	t_node	*p;
-
-	p = (t_node *)node;
-	if (p)
-	{
-		while (p->next)
-			p = p->next;
-		ft_printf("NULL -> ");
-		while (p)
-		{
-			ft_printf("token: %s -> ", p->token);
-			p = p->prev;
-		}
-		ft_printf("HEAD\n");
-	}
+	if (sh->line[var[0]])
+		var[0]++;
+	return (0);
 }
