@@ -1,10 +1,16 @@
 LOCLIBFT    = ./libft
 SRCDIR      = ./src/
-SRCS        = ft_bin.c ft_cmd_builder_0.c ft_cmd_builder_1_ok.c ft_error_ok.c ft_exec_token.c ft_execute.c ft_expander_quote.c ft_expander_var_0.c \
-			  ft_expander_var_1.c ft_expander_var_2.c ft_expander_var_3.c ft_free_ok.c ft_heredoc_0_ok.c ft_heredoc_1_ok.c ft_init_var_ok.c ft_is_exec.c ft_list_0.c \
-			  ft_list_1.c ft_main_ok.c ft_parse.c ft_parse_redirect.c ft_pipe_j.c ft_redirect_builder.c ft_redirect_j.c ft_utils_ok.c ft_valid_lexcal_cmd.c ft_valid_quotes_0.c \
-			  ft_valid_quotes_1.c ft_valid_redirect_0_ok.c ft_valid_redirect_1_ok.c ft_var_expansion.c ft_cd.c ft_echo_0.c ft_env.c ft_exit.c ft_export.c ft_pwd.c \
-			  ft_unset.c ft_printf.c ft_printf_utils.c ft_puthex.c ft_putnbr_u.c
+SRCS        = ft_bin.c ft_cmd_builder_0.c ft_cmd_builder_1.c ft_error.c \
+				ft_exec_token.c ft_execute.c ft_expander_quote.c \
+				ft_expander_var_0.c ft_expander_var_1.c ft_expander_var_2.c \
+				ft_expander_var_3.c ft_free.c ft_heredoc_0.c ft_heredoc_1.c \
+				ft_init_var.c ft_is_exec.c ft_list_0.c ft_list_1.c ft_main.c \
+				ft_parse.c ft_parse_redirect.c ft_pipe.c ft_redirect_builder.c \
+				ft_redirect.c ft_utils.c ft_valid_lexcal_cmd.c \
+				ft_valid_quotes_0.c ft_valid_quotes_1.c ft_valid_redirect_0.c \
+				ft_valid_redirect_1.c ft_var_expansion.c ft_cd.c ft_echo.c \
+				ft_env.c ft_exit.c ft_export.c ft_pwd.c ft_unset.c \
+				ft_printf.c ft_printf_utils.c ft_puthex.c ft_putnbr_u.c
 SRCS        := $(addprefix $(SRCDIR), $(SRCS))
 OBJDIR      = ./obj/
 OBJS        = $(addprefix $(OBJDIR), $(notdir $(SRCS:.c=.o)))
@@ -55,4 +61,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all re clean fclean
+.PHONY: all $(NAME) $(LOCLIBFT)/libft.a clean fclean re
