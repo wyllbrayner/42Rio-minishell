@@ -64,7 +64,7 @@ char	*ft_nbr_to_str(unsigned long n, char *base, size_t t_base)
 	char	*hex;
 
 	size = ft_nbrlen(n, t_base);
-	hex = (char *)ft_calloc(sizeof(char), (size + 1));;
+	hex = (char *)ft_calloc(sizeof(char), (size + 1));
 	if (!hex)
 		return (NULL);
 	if (n == 0)
